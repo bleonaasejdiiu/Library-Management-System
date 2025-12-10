@@ -1,38 +1,303 @@
-.App {
-  text-align: center;
+/* --- 1. RESET & GLOBAL FONTS --- */
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap');
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Open Sans', sans-serif;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+body {
+  background-color: #f8f9fa; /* Gri shumë e hapur */
+  color: #333;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Struktura për ta mbajtur Footer-in poshtë */
+.app-layout {
   display: flex;
   flex-direction: column;
-  align-items: center;
+  min-height: 100vh;
+}
+
+.main-content {
+  flex: 1;
+}
+
+/* --- 2. NAVBAR --- */
+.navbar {
+  background-color: #fff;
+  height: 80px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  display: flex;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+}
+
+.navbar-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1300px;
+  padding: 0 20px;
+}
+
+/* LOGO STYLE */
+.navbar-logo {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #2c3e50;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.logo-image {
+  height: 35px;
+  width: auto;
+}
+
+.nav-menu {
+  display: flex;
+  list-style: none;
+  gap: 30px;
+}
+
+.nav-links {
+  text-decoration: none;
+  color: #555;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: 0.3s;
+  text-transform: uppercase;
+}
+.nav-links:hover, .nav-links.active { color: #e67e22; }
+
+/* Butoni Login */
+.btn-login {
+  background-color: #2c3e50;
   color: white;
+  padding: 10px 25px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s;
+  border: none;
+  cursor: pointer;
+}
+.btn-login:hover { background-color: #e67e22; }
+
+/* --- 3. HERO SECTION --- */
+.hero-search-section {
+  background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.8)), url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+  height: 350px;
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  padding: 20px;
+  margin-bottom: 40px;
 }
 
-.App-link {
-  color: #61dafb;
+.hero-search-section h1 {
+  font-size: 3rem;
+  margin-bottom: 20px;
+  font-weight: 700;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.search-bar-container {
+  background: white;
+  padding: 8px;
+  border-radius: 50px;
+  display: flex;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 10px 20px;
+  font-size: 1rem;
+  border-radius: 50px;
+}
+
+.search-btn {
+  background-color: #e67e22;
+  color: white;
+  border: none;
+  padding: 10px 30px;
+  border-radius: 40px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+/* --- 4. CATALOG GRID (LIBRAT) --- */
+.catalog-section {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0 20px 60px 20px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 10px;
+}
+
+.section-header h2 { font-size: 1.8rem; color: #2c3e50; }
+.view-all { color: #e67e22; text-decoration: none; font-weight: bold; }
+
+/* GRID SYSTEM */
+.books-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 30px;
+}
+
+.book-card {
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+  border-color: #e67e22;
+}
+
+.card-image {
+  height: 280px;
+  background-color: #f9f9f9;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  padding: 10px;
+}
+
+.card-image img {
+  height: 100%;
+  width: auto;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* Hije e lehtë librit */
+}
+
+.card-info {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.card-category { font-size: 0.75rem; color: #e67e22; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; }
+.card-title { font-size: 1rem; font-weight: 700; color: #2c3e50; margin-bottom: 5px; line-height: 1.4; }
+.card-author { font-size: 0.85rem; color: #7f8c8d; margin-bottom: 15px; }
+
+.card-footer {
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.status-dot { font-size: 0.8rem; font-weight: bold; }
+.status-available { color: #27ae60; }
+.status-loaned { color: #c0392b; }
+
+.btn-rent {
+  background-color: #2c3e50;
+  color: white;
+  border: none;
+  padding: 6px 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.2s;
+  font-size: 0.8rem;
+}
+.btn-rent:hover { background-color: #e67e22; }
+
+
+/* --- 5. FOOTER (I BARDHË / LIGHT) --- */
+.footer-container {
+  background-color: #ffffff;
+  color: #333;
+  padding: 60px 0 0 0;
+  margin-top: auto;
+  border-top: 1px solid #e0e0e0;
+}
+
+.footer-content {
+  max-width: 1300px;
+  margin: 0 auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  padding: 0 20px 40px 20px;
+}
+
+.footer-section { flex: 1; min-width: 250px; margin-bottom: 20px; }
+
+/* Logo në Footer */
+.footer-logo {
+  font-size: 1.6rem;
+  font-weight: 800;
+  color: #2c3e50;
+  text-decoration: none;
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.text-highlight { color: #e67e22; }
+
+.footer-section p { color: #666; line-height: 1.6; max-width: 300px; }
+
+.footer-section h3 {
+  color: #2c3e50;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #e67e22;
+  display: inline-block;
+  padding-bottom: 5px;
+}
+
+.footer-section ul { list-style: none; }
+.footer-section ul li { margin-bottom: 10px; }
+.footer-section ul li a { color: #555; text-decoration: none; transition: 0.3s; }
+.footer-section ul li a:hover { color: #e67e22; padding-left: 5px; }
+
+.footer-bottom {
+  background-color: #f8f9fa;
+  text-align: center;
+  padding: 20px;
+  color: #777;
+  font-size: 0.9rem;
+  border-top: 1px solid #eee;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .nav-menu { display: none; }
+  .footer-content { flex-direction: column; gap: 30px; }
 }
