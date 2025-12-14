@@ -1,306 +1,581 @@
-/* --- 1. RESET & GLOBAL FONTS --- */
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap');
+/* =========================================
+   1. GLOBAL RESET & FONTS
+   ========================================= */
+@import url('https://fonts.googleapis.com/css2?family=Merriweather:wght@300;400;700;900&family=Open+Sans:wght@400;600;700&display=swap');
 
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: 'Open Sans', sans-serif;
+  box-sizing: border-box;
 }
 
 body {
-  background-color: #f8f9fa; /* Gri shumë e hapur */
+  background-color: #f8f8f8;
+  font-family: 'Open Sans', sans-serif;
   color: #333;
+  line-height: 1.6;
 }
 
-/* Struktura për ta mbajtur Footer-in poshtë */
-.app-layout {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
+a { text-decoration: none; color: inherit; transition: 0.3s; }
+ul { list-style: none; }
+button { font-family: 'Open Sans', sans-serif; }
 
-.main-content {
-  flex: 1;
-}
+/* Layout Structure */
+.app-layout { display: flex; flex-direction: column; min-height: 100vh; }
+.main-content { flex: 1; }
 
-/* --- 2. NAVBAR --- */
+/* =========================================
+   2. NAVBAR (E ZEZA SI JUNKYBOOKS)
+   ========================================= */
 .navbar {
-  background-color: #fff;
+  background-color: #111; /* E zezë */
   height: 80px;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  display: flex;
+  justify-content: center;
   position: sticky;
   top: 0;
   z-index: 1000;
-  display: flex;
-  justify-content: center;
+  border-bottom: 3px solid #e67e22; /* Vijë portokalli */
 }
 
 .navbar-container {
+  width: 100%;
+  max-width: 1200px;
+  padding: 0 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 100%;
-  max-width: 1300px;
-  padding: 0 20px;
 }
 
-/* LOGO STYLE */
 .navbar-logo {
+  font-family: 'Merriweather', serif;
   font-size: 1.6rem;
-  font-weight: 800;
-  color: #2c3e50;
-  text-decoration: none;
+  font-weight: 900;
+  color: white;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
+.logo-image { height: 40px; width: auto; }
 
-.logo-image {
-  height: 35px;
-  width: auto;
-}
-
-.nav-menu {
-  display: flex;
-  list-style: none;
-  gap: 30px;
-}
+.nav-menu { display: flex; gap: 30px; }
 
 .nav-links {
-  text-decoration: none;
-  color: #555;
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: 0.3s;
+  color: #ccc;
+  font-weight: 700;
   text-transform: uppercase;
+  font-size: 0.85rem;
+  transition: 0.3s;
+  letter-spacing: 0.5px;
 }
 .nav-links:hover, .nav-links.active { color: #e67e22; }
 
-/* Butoni Login */
 .btn-login {
-  background-color: #2c3e50;
+  background: #e67e22;
   color: white;
   padding: 10px 25px;
-  border-radius: 5px;
-  text-decoration: none;
+  border-radius: 2px;
   font-weight: bold;
+  border: none;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: 0.85rem;
   transition: 0.3s;
+}
+.btn-login:hover { background: #d35400; }
+
+/* =========================================
+   3. HERO SECTION (MASSIVE SLIDER STYLE)
+   ========================================= */
+.hero-section {
+  position: relative;
+  height: 600px;
+  background: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+}
+
+.hero-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5); /* Hijezim i lehtë */
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  max-width: 900px;
+  padding: 20px;
+}
+
+.hero-tag {
+  display: block;
+  color: #e67e22;
+  font-weight: 800;
+  letter-spacing: 2px;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+.hero-content h1 {
+  font-family: 'Merriweather', serif;
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+  line-height: 1.2;
+  text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+}
+
+.hero-content p {
+  font-size: 1.3rem;
+  margin-bottom: 40px;
+  color: #f0f0f0;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.5);
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+}
+
+.btn-orange {
+  background: #e67e22;
+  color: white;
+  padding: 15px 40px;
+  font-size: 1.1rem;
+  font-weight: bold;
   border: none;
   cursor: pointer;
+  border-radius: 4px;
+  transition: 0.3s;
 }
-.btn-login:hover { background-color: #e67e22; }
+.btn-orange:hover { background: #d35400; transform: translateY(-2px); }
 
-/* --- 3. HERO SECTION --- */
-.hero-search-section {
-  background: linear-gradient(rgba(44, 62, 80, 0.9), rgba(44, 62, 80, 0.8)), url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
-  height: 350px;
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+.btn-transparent {
+  background: transparent;
+  border: 2px solid white;
   color: white;
-  text-align: center;
-  padding: 20px;
-  margin-bottom: 40px;
-}
-
-.hero-search-section h1 {
-  font-size: 3rem;
-  margin-bottom: 20px;
-  font-weight: 700;
-}
-
-.search-bar-container {
-  background: white;
-  padding: 8px;
-  border-radius: 50px;
-  display: flex;
-  width: 100%;
-  max-width: 600px;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-}
-
-.search-input {
-  flex: 1;
-  border: none;
-  outline: none;
-  padding: 10px 20px;
-  font-size: 1rem;
-  border-radius: 50px;
-}
-
-.search-btn {
-  background-color: #e67e22;
-  color: white;
-  border: none;
-  padding: 10px 30px;
-  border-radius: 40px;
+  padding: 13px 40px;
+  font-size: 1.1rem;
   font-weight: bold;
   cursor: pointer;
+  border-radius: 4px;
+  transition: 0.3s;
+}
+.btn-transparent:hover { background: white; color: #333; }
+
+/* Slider Elements (Arrows & Dots) */
+.slider-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 3rem;
+  color: rgba(255,255,255,0.6);
+  cursor: pointer;
+  padding: 0 20px;
+  user-select: none;
+  z-index: 5;
+  transition: 0.3s;
+}
+.slider-arrow:hover { color: #e67e22; }
+.arrow-left { left: 10px; }
+.arrow-right { right: 10px; }
+
+.slider-dots {
+  position: absolute;
+  bottom: 30px;
+  display: flex;
+  gap: 10px;
+  z-index: 5;
+}
+.dot {
+  width: 12px;
+  height: 12px;
+  background: rgba(255,255,255,0.5);
+  border-radius: 50%;
+  cursor: pointer;
+}
+.dot.active { background: #e67e22; }
+
+/* =========================================
+   4. INFO STRIP (Shirita me Ikona)
+   ========================================= */
+.info-strip {
+  background: white;
+  padding: 50px 20px;
+  display: flex;
+  justify-content: center;
+  gap: 60px;
+  flex-wrap: wrap;
+  border-bottom: 1px solid #eee;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.03);
 }
 
-/* --- 4. CATALOG GRID (LIBRAT) --- */
-.catalog-section {
-  max-width: 1300px;
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  min-width: 200px;
+}
+
+.info-icon {
+  font-size: 2.5rem;
+  color: #e67e22;
+}
+
+.info-text h4 {
+  font-size: 1.1rem;
+  color: #333;
+  font-weight: 800;
+  margin-bottom: 5px;
+}
+.info-text p { font-size: 0.9rem; color: #777; }
+
+/* =========================================
+   5. GENERAL SECTIONS
+   ========================================= */
+.section-container {
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 20px 60px 20px;
+  padding: 80px 20px;
 }
 
 .section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-  border-bottom: 2px solid #e0e0e0;
-  padding-bottom: 10px;
+  text-align: center;
+  margin-bottom: 50px;
 }
 
-.section-header h2 { font-size: 1.8rem; color: #2c3e50; }
-.view-all { color: #e67e22; text-decoration: none; font-weight: bold; }
+.section-header h2 {
+  font-family: 'Merriweather', serif;
+  font-size: 2.2rem;
+  color: #333;
+  margin-bottom: 15px;
+}
 
-/* GRID SYSTEM */
+.header-line {
+  width: 70px;
+  height: 4px;
+  background: #e67e22;
+  margin: 0 auto;
+}
+
+/* =========================================
+   6. BOOKS GRID
+   ========================================= */
 .books-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
   gap: 30px;
 }
 
 .book-card {
   background: white;
-  border: 1px solid #eee;
-  border-radius: 8px;
+  border-radius: 6px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
   overflow: hidden;
-  transition: all 0.3s ease;
-  display: flex;
-  flex-direction: column;
+  transition: 0.3s;
+  border: 1px solid #eee;
 }
-
 .book-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.15);
   border-color: #e67e22;
 }
 
 .card-image {
-  height: 280px;
-  background-color: #f9f9f9;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 320px;
+  position: relative;
   overflow: hidden;
-  padding: 10px;
 }
 
 .card-image img {
+  width: 100%;
   height: 100%;
-  width: auto;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1); /* Hije e lehtë librit */
+  object-fit: cover;
+  transition: 0.5s;
 }
+.book-card:hover .card-image img { transform: scale(1.05); }
 
-.card-info {
-  padding: 15px;
+/* Hover Overlay Button */
+.hover-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
   display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-}
-
-.card-category { font-size: 0.75rem; color: #e67e22; font-weight: bold; text-transform: uppercase; margin-bottom: 5px; }
-.card-title { font-size: 1rem; font-weight: 700; color: #2c3e50; margin-bottom: 5px; line-height: 1.4; }
-.card-author { font-size: 0.85rem; color: #7f8c8d; margin-bottom: 15px; }
-
-.card-footer {
-  margin-top: auto;
-  padding-top: 10px;
-  border-top: 1px solid #f0f0f0;
-  display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: 0.3s;
+}
+.book-card:hover .hover-overlay { opacity: 1; }
+
+.btn-view {
+  background: #e67e22;
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  border-radius: 4px;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+.btn-view:hover { background: #d35400; }
+
+.card-info { padding: 20px; text-align: center; }
+.card-info h3 { font-size: 1.1rem; margin-bottom: 5px; color: #222; font-weight: 700; }
+.card-info p { font-size: 0.9rem; color: #666; }
+.rating { color: #f1c40f; font-size: 1rem; margin-top: 10px; }
+
+/* =========================================
+   7. VISUAL CATEGORIES (Bllokat e Mëdhenj)
+   ========================================= */
+.categories-block-section {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  height: 550px; /* Lartësia e bllokut */
+  gap: 20px;
+  padding: 0 20px 80px 20px;
 }
 
-.status-dot { font-size: 0.8rem; font-weight: bold; }
-.status-available { color: #27ae60; }
-.status-loaned { color: #c0392b; }
+.cat-block {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.cat-block.large { flex: 2; } /* Blloku i madh majtas */
+.cat-block-column { flex: 1; display: flex; flex-direction: column; gap: 20px; }
+.cat-block.small { flex: 1; } /* Bllokat e vegjel djathtas */
 
-.btn-rent {
-  background-color: #2c3e50;
+.cat-content {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 30px;
+  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+  color: white;
+  transition: 0.3s;
+}
+
+.cat-content h3 {
+  font-family: 'Merriweather', serif;
+  font-size: 1.8rem;
+  margin-bottom: 10px;
+}
+.cat-content a {
+  color: #e67e22;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.cat-block:hover .cat-content { padding-bottom: 40px; } /* Efekt i vogël levizje */
+
+/* =========================================
+   8. PARALLAX QUOTE
+   ========================================= */
+.quote-section {
+  background: url('https://images.unsplash.com/photo-1457369804613-52c61a468e7d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80') fixed center/cover;
+  height: 450px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  margin: 40px 0;
+  position: relative;
+}
+
+.quote-overlay {
+  background: rgba(0,0,0,0.7);
+  padding: 50px;
+  border: 4px solid rgba(255,255,255,0.2);
+  max-width: 800px;
+}
+
+.quote-overlay h2 {
+  font-family: 'Merriweather', serif;
+  font-size: 2.2rem;
+  font-style: italic;
+  margin-bottom: 20px;
+  line-height: 1.4;
+}
+
+/* =========================================
+   9. BLOG SECTION
+   ========================================= */
+.blog-grid {
+  display: flex;
+  gap: 30px;
+  flex-wrap: wrap;
+}
+
+.blog-card {
+  flex: 1;
+  min-width: 300px;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: 0.3s;
+}
+.blog-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+
+.blog-img { height: 220px; position: relative; }
+.blog-img img { width: 100%; height: 100%; object-fit: cover; }
+
+.blog-date {
+  position: absolute;
+  top: 15px; left: 15px;
+  background: #e67e22;
+  color: white;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  font-weight: bold;
+  border-radius: 4px;
+}
+
+.blog-info { padding: 25px; }
+.blog-info h3 { font-size: 1.3rem; margin-bottom: 10px; color: #222; font-weight: 800; }
+.blog-info p { color: #666; margin-bottom: 20px; font-size: 0.95rem; }
+
+.read-more {
+  background: transparent;
+  border: none;
+  color: #e67e22;
+  font-weight: 800;
+  cursor: pointer;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  padding: 0;
+}
+.read-more:hover { text-decoration: underline; }
+
+/* =========================================
+   10. NEWSLETTER
+   ========================================= */
+.newsletter-full {
+  background: #1a1a1a;
+  padding: 100px 20px;
+  text-align: center;
+  color: white;
+}
+
+.newsletter-container { max-width: 700px; margin: 0 auto; }
+
+.newsletter-container h2 {
+  font-family: 'Merriweather', serif;
+  font-size: 2.8rem;
+  margin-bottom: 15px;
+}
+.newsletter-container p { font-size: 1.1rem; color: #aaa; }
+
+.input-row {
+  display: flex;
+  margin-top: 40px;
+}
+.input-row input {
+  flex: 1;
+  padding: 18px;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px 0 0 4px;
+  outline: none;
+}
+.input-row button {
+  background: #e67e22;
   color: white;
   border: none;
-  padding: 6px 15px;
-  border-radius: 4px;
+  padding: 0 40px;
+  font-weight: bold;
+  border-radius: 0 4px 4px 0;
   cursor: pointer;
-  font-weight: 600;
-  transition: 0.2s;
-  font-size: 0.8rem;
+  text-transform: uppercase;
+  font-size: 1rem;
+  transition: 0.3s;
 }
-.btn-rent:hover { background-color: #e67e22; }
+.input-row button:hover { background: #d35400; }
 
-
-/* --- 5. FOOTER (I BARDHË / LIGHT) --- */
+/* =========================================
+   11. FOOTER
+   ========================================= */
 .footer-container {
-  background-color: #ffffff;
-  color: #333;
-  padding: 60px 0 0 0;
+  background: #111;
+  color: #999;
+  padding: 60px 0 0;
   margin-top: auto;
-  border-top: 1px solid #e0e0e0;
+  border-top: 5px solid #e67e22;
 }
 
 .footer-content {
-  max-width: 1300px;
+  max-width: 1200px;
   margin: 0 auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-  padding: 0 20px 40px 20px;
+  padding: 0 20px 40px;
 }
 
-.footer-section { flex: 1; min-width: 250px; margin-bottom: 20px; }
+.footer-section { flex: 1; min-width: 250px; margin-bottom: 30px; }
 
-/* Logo në Footer */
 .footer-logo {
-  font-size: 1.6rem;
-  font-weight: 800;
-  color: #2c3e50;
-  text-decoration: none;
-  margin-bottom: 15px;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: white;
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-bottom: 20px;
+  text-transform: uppercase;
 }
 .text-highlight { color: #e67e22; }
 
-.footer-section p { color: #666; line-height: 1.6; max-width: 300px; }
-
 .footer-section h3 {
-  color: #2c3e50;
+  color: white;
   font-size: 1.2rem;
-  margin-bottom: 20px;
-  border-bottom: 2px solid #e67e22;
+  margin-bottom: 25px;
+  border-bottom: 2px solid #333;
   display: inline-block;
-  padding-bottom: 5px;
+  padding-bottom: 10px;
 }
 
-.footer-section ul { list-style: none; }
-.footer-section ul li { margin-bottom: 10px; }
-.footer-section ul li a { color: #555; text-decoration: none; transition: 0.3s; }
+.footer-section ul li { margin-bottom: 12px; }
+.footer-section ul li a { color: #999; transition: 0.3s; }
 .footer-section ul li a:hover { color: #e67e22; padding-left: 5px; }
 
 .footer-bottom {
-  background-color: #f8f9fa;
   text-align: center;
-  padding: 20px;
-  color: #777;
+  padding: 25px;
+  background: #000;
+  color: #666;
   font-size: 0.9rem;
-  border-top: 1px solid #eee;
 }
 
-/* RESPONSIVE */
+/* =========================================
+   12. RESPONSIVE
+   ========================================= */
 @media (max-width: 768px) {
   .nav-menu { display: none; }
-  .footer-content { flex-direction: column; gap: 30px; }
+  .hero-content h1 { font-size: 2.2rem; }
+  .categories-block-section { flex-direction: column; height: auto; }
+  .cat-block { height: 250px; }
+  .input-row { flex-direction: column; gap: 10px; }
+  .input-row input, .input-row button { border-radius: 4px; width: 100%; }
 }
+
+
+
+
+
+
 /* --- 6. AUTH PAGE (LOGIN/REGISTER) --- */
 .auth-container {
   display: flex;
