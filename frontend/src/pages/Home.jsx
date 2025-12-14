@@ -1,8 +1,51 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 function Home() {
-  // Mock Data
+  // --- KONFIGURIMI I SLIDERIT (FOTO FESTIVE E PARA) ---
+  const heroSlides = [
+    {
+      id: 1,
+      // FOTO FESTIVE (Si te Dukagjini: Libra, drita, atmosferë e ngrohtë)
+      image: "https://images.unsplash.com/photo-1512909006721-3d6018887383?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80", 
+      title: "Holiday Season Readings",
+      subtitle: "Cozy up this winter with our magical collection of holiday stories."
+    },
+    {
+      id: 2,
+      // Foto: Person duke lexuar
+      image: "https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80",
+      title: "Discover Your Next Favorite Book",
+      subtitle: "From bestsellers to rare classics, find everything you need."
+    },
+    {
+      id: 3,
+      // Foto: Librari klasike
+      image: "https://images.unsplash.com/photo-1481627834876-b7833e8f5570?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80",
+      title: "A Community of Readers",
+      subtitle: "Join events, book clubs, and meet authors from around the world."
+    }
+  ];
+
+  const [currentSlide, setCurrentSlide] = useState(0);
+
+  // Ndërrimi Automatik (çdo 5 sekonda)
+  useEffect(() => {
+    const slideInterval = setInterval(() => {
+      setCurrentSlide((prev) => (prev === heroSlides.length - 1 ? 0 : prev + 1));
+    }, 5000);
+    return () => clearInterval(slideInterval);
+  }, [heroSlides.length]);
+
+  const nextSlide = () => {
+    setCurrentSlide(currentSlide === heroSlides.length - 1 ? 0 : currentSlide + 1);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide(currentSlide === 0 ? heroSlides.length - 1 : currentSlide - 1);
+  };
+
+  // --- MOCK DATA ---
   const trendingBooks = [
     { id: 1, title: "The Great Gatsby", author: "F. Scott Fitzgerald", img: "https://covers.openlibrary.org/b/id/7222246-L.jpg" },
     { id: 2, title: "To Kill a Mockingbird", author: "Harper Lee", img: "https://covers.openlibrary.org/b/id/1261770-L.jpg" },
@@ -11,7 +54,7 @@ function Home() {
   ];
 
   const blogPosts = [
-    { id: 1, title: "Top 10 Must-Read Classics", date: "Oct 12, 2025", img: "https://images.unsplash.com/photo-1474932430478-367dbb6832c1?auto=format&fit=crop&w=600&q=80" },
+    { id: 1, title: "Top 10 Holiday Reads", date: "Dec 14, 2025", img: "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80" },
     { id: 2, title: "Interview with J.K. Rowling", date: "Nov 05, 2025", img: "https://images.unsplash.com/photo-1512820790803-83ca734da794?auto=format&fit=crop&w=600&q=80" },
     { id: 3, title: "The Future of Digital Libraries", date: "Dec 01, 2025", img: "https://images.unsplash.com/photo-1506880018603-83d5b814b5a6?auto=format&fit=crop&w=600&q=80" },
   ];
@@ -19,37 +62,49 @@ function Home() {
   return (
     <div className="home-wrapper">
       
-      {/* 1. HERO MASSIVE */}
-      <section className="hero-section">
+      {/* 1. HERO SLIDER */}
+      <section 
+        className="hero-section" 
+        style={{ 
+          backgroundImage: `url("${heroSlides[currentSlide].image}")` 
+        }}
+      >
         <div className="hero-overlay"></div>
-        <div className="slider-arrow arrow-left">❮</div>
-        <div className="slider-arrow arrow-right">❯</div>
+        
+        <div className="slider-arrow arrow-left" onClick={prevSlide}>❮</div>
+        <div className="slider-arrow arrow-right" onClick={nextSlide}>❯</div>
         
         <div className="hero-content">
           <span className="hero-tag">WELCOME TO UNIVERSAL LIBRARY</span>
-          <h1>Access To Thousands Of Free Ebooks</h1>
-          <p>Read, Download, and Discover your next favorite book completely free.</p>
+          
+          {/* Titujt dinamikë */}
+          <h1>{heroSlides[currentSlide].title}</h1>
+          <p>{heroSlides[currentSlide].subtitle}</p>
+          
           <div className="hero-buttons">
-            <Link to="/books"><button className="btn-orange">Browse Library</button></Link>
+            <Link to="/books"><button className="btn-orange">Browse Collection</button></Link>
             <Link to="/login"><button className="btn-transparent">Join Now</button></Link>
           </div>
         </div>
         
-        {/* Slider Dots */}
         <div className="slider-dots">
-          <span className="dot active"></span>
-          <span className="dot"></span>
-          <span className="dot"></span>
+          {heroSlides.map((slide, index) => (
+            <span 
+              key={slide.id} 
+              className={`dot ${index === currentSlide ? 'active' : ''}`}
+              onClick={() => setCurrentSlide(index)}
+            ></span>
+          ))}
         </div>
       </section>
 
-      {/* 2. INFO STRIP (Karakteristikat) */}
+      {/* 2. INFO STRIP */}
       <section className="info-strip">
         <div className="info-item">
-          <span className="info-icon">📱</span>
+          <span className="info-icon">🎁</span>
           <div className="info-text">
-            <h4>Mobile Friendly</h4>
-            <p>Read on any device</p>
+            <h4>Holiday Gifts</h4>
+            <p>Books for everyone</p>
           </div>
         </div>
         <div className="info-item">
@@ -100,7 +155,7 @@ function Home() {
         </div>
       </section>
 
-      {/* 4. VISUAL CATEGORIES (BLLOKA TE MEDHENJ) */}
+      {/* 4. VISUAL CATEGORIES */}
       <section className="categories-block-section">
         <div className="cat-block large" style={{backgroundImage: "url('https://images.unsplash.com/photo-1461360370896-922624d12aa1?auto=format&fit=crop&w=800&q=80')"}}>
           <div className="cat-content">
@@ -122,7 +177,7 @@ function Home() {
         </div>
       </section>
 
-      {/* 5. PARALLAX QUOTE SECTION */}
+      {/* 5. PARALLAX QUOTE */}
       <section className="quote-section">
         <div className="quote-overlay">
           <h2>"A room without books is like a body without a soul."</h2>
