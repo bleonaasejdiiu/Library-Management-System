@@ -14,8 +14,13 @@ import About from './pages/About'; // <--- Tani kjo është aktive!
 // --- PLACEHOLDERS (Vetëm për faqet që s'i kemi bërë ende) ---
 // VËMENDJE: E kemi fshirë 'const About = ...' që të mos dalë më ajo shkrimi i thjeshtë.
 
-const Books = () => <div style={{padding: "100px", textAlign: "center"}}><h1>Books Catalog (Coming Soon)</h1></div>;
-const Authors = () => <div style={{padding: "100px", textAlign: "center"}}><h1>Authors Page (Coming Soon)</h1></div>;
+import Books from './pages/books';
+
+const Authors = () => (
+  <div style={{ padding: "100px", textAlign: "center" }}>
+    <h1>Authors Page (Coming Soon)</h1>
+  </div>
+);
 
 function App() {
   return (

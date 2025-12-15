@@ -87,6 +87,54 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
 .btn-login:hover { background: #d35400; }
 
 /* =========================================
+   3. DROPDOWN BOOKS (KATEGORI)
+   ========================================= */
+
+/* Dropdown container */
+.dropdown {
+  position: relative;
+}
+
+/* Menu e fshehur */
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background-color: #111;
+  list-style: none;
+  padding: 10px 0;
+  min-width: 200px;
+  display: none;
+  z-index: 999;
+  border-radius: 6px;
+  border-top: 3px solid #e67e22;
+}
+
+/* Item */
+.dropdown-menu li {
+  padding: 10px 20px;
+}
+
+/* Link */
+.dropdown-menu li a {
+  color: #ccc;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+/* Hover efekt */
+.dropdown-menu li a:hover {
+  color: #e67e22;
+}
+
+/* Shfaqet në hover */
+.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+/* =========================================
    3. HERO SECTION (MASSIVE SLIDER STYLE)
    ========================================= */
 .hero-section {
