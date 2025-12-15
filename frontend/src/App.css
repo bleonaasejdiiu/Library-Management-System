@@ -90,48 +90,58 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
    3. DROPDOWN BOOKS (KATEGORI)
    ========================================= */
 
-/* Dropdown container */
-.dropdown {
+/* === MEGA DROPDOWN === */
+.mega-dropdown {
   position: relative;
 }
 
-/* Menu e fshehur */
-.dropdown-menu {
+.mega-menu {
   position: absolute;
-  top: 100%;
-  left: 0;
-  background-color: #111;
-  list-style: none;
-  padding: 10px 0;
-  min-width: 200px;
-  display: none;
+  top: 120%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 850px;
+  background: #fff;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+  padding: 35px 45px;
+  border-radius: 16px;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.18);
+  opacity: 0;
+  visibility: hidden;
+  transition: 0.3s ease;
   z-index: 999;
-  border-radius: 6px;
-  border-top: 3px solid #e67e22;
 }
 
-/* Item */
-.dropdown-menu li {
-  padding: 10px 20px;
+/* SHFAQJA NË HOVER */
+.mega-dropdown:hover .mega-menu {
+  opacity: 1;
+  visibility: visible;
+  top: 100%;
 }
 
-/* Link */
-.dropdown-menu li a {
-  color: #ccc;
-  text-decoration: none;
-  font-size: 0.85rem;
-  font-weight: 600;
-  text-transform: uppercase;
+/* KOLONAT */
+.mega-column h4 {
+  font-size: 1rem;
+  margin-bottom: 14px;
+  color: #222;
+  border-bottom: 1px solid #eee;
+  padding-bottom: 6px;
 }
 
-/* Hover efekt */
-.dropdown-menu li a:hover {
-  color: #e67e22;
-}
-
-/* Shfaqet në hover */
-.dropdown:hover .dropdown-menu {
+.mega-column a {
   display: block;
+  text-decoration: none;
+  color: #555;
+  font-size: 0.95rem;
+  margin-bottom: 10px;
+  transition: 0.2s;
+}
+
+.mega-column a:hover {
+  color: #e67e22;
+  padding-left: 5px;
 }
 
 /* =========================================
