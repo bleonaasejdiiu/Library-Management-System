@@ -7,10 +7,10 @@ const BookCard = ({ book }) => {
 
   return (
     <div className="book-card">
-      {/* IMAGE */}
+     {/* IMAGE */}
       <div className="book-image">
         <img
-          src="https://images.unsplash.com/photo-1524995997946-a1c2e315a42f"
+          src={book.image}     
           alt={book.title}
         />
       </div>
