@@ -10,7 +10,7 @@
 }
 
 body {
-  background-color: #f8f8f8;
+  background-color: #fffaf0;
   font-family: 'Open Sans', sans-serif;
   color: #333;
   line-height: 1.6;
@@ -28,7 +28,7 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
    2. NAVBAR (E ZEZA SI JUNKYBOOKS)
    ========================================= */
 .navbar {
-  background-color: #111; /* E zezë */
+  background-color: #2c241b; /* E zezë */
   height: 80px;
   display: flex;
   justify-content: center;
@@ -260,36 +260,94 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
 .dot.active { background: #e67e22; }
 
 /* =========================================
-   4. INFO STRIP (Shirita me Ikona)
+   FEATURES CARDS (WARM CREAM / FESTIVE STYLE)
    ========================================= */
-.info-strip {
-  background: white;
-  padding: 50px 20px;
-  display: flex;
-  justify-content: center;
-  gap: 60px;
-  flex-wrap: wrap;
-  border-bottom: 1px solid #eee;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+
+.features-overlap {
+  position: relative;
+  z-index: 10;
+  /* I ngjisim pak sipër fotos */
+  margin-top: -60px; 
+  padding: 0 20px;
+  margin-bottom: 60px;
 }
 
-.info-item {
-  display: flex;
+.features-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+  gap: 25px; /* Hapësirë mes kartave */
+}
+
+.feature-card {
+  /* SFONDI: Krem i ngrohtë (si fletë libri/vanilje) */
+  background: #fffaf0; 
+  
+  /* Një kornizë shumë e hollë ngjyrë ari/portokalli */
+  border: 1px solid rgba(230, 126, 34, 0.2);
+  
+  padding: 25px 15px;
+  border-radius: 8px;
+  text-align: center;
+  
+  /* Hije e butë dhe e ngrohtë */
+  box-shadow: 0 10px 25px rgba(230, 126, 34, 0.1); 
+  transition: 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-8px);
+  /* Kur e prek, hija bëhet pak më e fortë */
+  box-shadow: 0 15px 35px rgba(230, 126, 34, 0.2); 
+  background: #fffaf0; /* Bëhet e bardhë e pastër kur e prek */
+  border-color: #e67e22;
+}
+
+.f-icon {
+  font-size: 1.8rem;
+  margin-bottom: 12px;
+  display: inline-flex;
   align-items: center;
-  gap: 15px;
-  min-width: 200px;
+  justify-content: center;
+  
+  /* Sfondi i ikonës: Pak më i errët se kremi */
+  background: rgba(230, 126, 34, 0.1); 
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  
+  /* Ngjyra e ikonës: Portokalli i ndezur */
+  color: #e67e22; 
 }
 
-.info-icon { font-size: 2.5rem; color: #e67e22; }
-
-.info-text h4 {
-  font-size: 1.1rem;
-  color: #333;
-  font-weight: 800;
+.feature-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  /* Titulli: E zezë e butë */
+  color: #2c3e50; 
   margin-bottom: 5px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
-.info-text p { font-size: 0.9rem; color: #777; }
 
+.feature-card p {
+  /* Përshkrimi: Gri */
+  color: #7f8c8d; 
+  font-size: 0.85rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .features-overlap {
+    margin-top: 20px; 
+  }
+  .features-container {
+    grid-template-columns: 1fr 1fr;
+  }
+}
 /* =========================================
    5. GENERAL SECTIONS
    ========================================= */
@@ -325,12 +383,12 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
 }
 
 .book-card {
-  background: white;
+  background: #fffaf0;
   border-radius: 6px;
   box-shadow: 0 5px 15px rgba(0,0,0,0.05);
   overflow: hidden;
   transition: 0.3s;
-  border: 1px solid #eee;
+  border: 1px solid #e6e0d4;
 }
 .book-card:hover {
   transform: translateY(-5px);
@@ -490,7 +548,7 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
 .blog-card {
   flex: 1;
   min-width: 300px;
-  background: white;
+  background: #fffaf0;
   border: 1px solid #eee;
   border-radius: 8px;
   overflow: hidden;
@@ -530,31 +588,60 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
 /* =========================================
    10. NEWSLETTER
    ========================================= */
+/* =========================================
+   NEWSLETTER - KREM STYLE (#fffaf0)
+   ========================================= */
+
 .newsletter-full {
-  background: #1a1a1a;
+  /* 1. Sfondi Krem */
+  background-color: #fffaf0; 
+  
   padding: 100px 20px;
   text-align: center;
-  color: white;
+  
+  /* 2. Teksti bëhet i errët (që të lexohet në sfond të hapur) */
+  color: #222; 
+  
+  /* Opsionale: Një vijë e hollë lart për ta ndarë nga pjesa tjetër */
+  border-top: 1px solid #e6e0d4; 
 }
 
-.newsletter-container { max-width: 700px; margin: 0 auto; }
+.newsletter-container { 
+  max-width: 700px; 
+  margin: 0 auto; 
+}
 
 .newsletter-container h2 {
   font-family: 'Merriweather', serif;
   font-size: 2.8rem;
   margin-bottom: 15px;
+  color: #222; /* Titulli i Zi */
 }
-.newsletter-container p { font-size: 1.1rem; color: #aaa; }
 
-.input-row { display: flex; margin-top: 40px; }
+.newsletter-container p {
+  font-size: 1.1rem;
+  color: #666; /* Paragrafi Gri */
+}
+
+.input-row { 
+  display: flex; 
+  margin-top: 40px; 
+}
+
 .input-row input {
   flex: 1;
   padding: 18px;
   font-size: 1rem;
-  border: none;
+  
+  /* 3. Inputi bëhet i bardhë me kornizë të lehtë */
+  background: #fffaf0; 
+  border: 1px solid #ddd; 
+  
   border-radius: 4px 0 0 4px;
   outline: none;
+  color: #333;
 }
+
 .input-row button {
   background: #e67e22;
   color: white;
@@ -565,64 +652,123 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
   text-transform: uppercase;
   font-size: 1rem;
   transition: 0.3s;
+  cursor: pointer;
 }
-.input-row button:hover { background: #d35400; }
 
-/* =========================================
-   11. FOOTER
-   ========================================= */
+.input-row button:hover { 
+  background: #d35400; 
+}
+
+/* ==========================================================
+   FOOTER FINAL - POZICIONIMI PERFEKT (33% - 33% - 33%)
+   ========================================================== */
+
 .footer-container {
-  background: #111;
-  color: #999;
+  background-color: #2c241b !important; /* Ngjyra Kafe e Errët */
+  color: #ccc !important;
   padding: 60px 0 0;
   margin-top: auto;
   border-top: 5px solid #e67e22;
 }
 
 .footer-content {
-  max-width: 1200px;
-  margin: 0 auto;
   display: flex;
-  flex-wrap: wrap;
   justify-content: space-between;
-  padding: 0 20px 40px;
+  align-items: flex-start;
+  max-width: 1400px; /* E zgjeruar për ekranet e mëdha */
+  margin: 0 auto;
+  padding: 0 40px 50px;
 }
 
-.footer-section { flex: 1; min-width: 250px; margin-bottom: 30px; }
+/* --------------------------------------------------------
+   1. PJESA E MAJTË (LOGO) - FIKS 33%
+   -------------------------------------------------------- */
+.footer-section:first-child {
+  flex: 1; /* Merr 1 pjesë */
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* E detyron të rrijë MAJTAS */
+}
 
 .footer-logo {
-  font-size: 1.5rem;
+  color: white !important;
+  font-size: 1.6rem;
   font-weight: 900;
-  color: white;
+  margin-bottom: 20px;
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 20px;
   text-transform: uppercase;
 }
-.text-highlight { color: #e67e22; }
+
+.footer-section p {
+  color: #bbb;
+  line-height: 1.6;
+  max-width: 350px; /* Që teksti mos të shkojë deri në mes */
+}
+
+/* --------------------------------------------------------
+   2. PJESA E MESIT (QUICK LINKS) - FIKS 33%
+   -------------------------------------------------------- */
+.footer-section:nth-child(2) {
+  flex: 1; /* Merr 1 pjesë */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* E detyron të rrijë fik në QENDËR */
+}
 
 .footer-section h3 {
-  color: white;
+  color: white !important;
   font-size: 1.2rem;
   margin-bottom: 25px;
-  border-bottom: 2px solid #333;
+  border-bottom: 2px solid #e67e22;
   display: inline-block;
   padding-bottom: 10px;
 }
 
-.footer-section ul li { margin-bottom: 12px; }
-.footer-section ul li a { color: #999; transition: 0.3s; }
-.footer-section ul li a:hover { color: #e67e22; padding-left: 5px; }
+.footer-section ul {
+  padding: 0;
+  list-style: none;
+  text-align: center; /* Teksti i linkave në qendër */
+}
 
+/* --------------------------------------------------------
+   3. PJESA E DJATHTË (CONTACT) - FIKS 33% (TEK CEPI)
+   -------------------------------------------------------- */
+.footer-section:last-child {
+  flex: 1; /* Merr 1 pjesë */
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* <--- SEKRETI: E shtyn gjithçka në cepin e DJATHTË */
+  text-align: right;
+}
+
+/* Sigurohemi që edhe titulli "Contact Info" të rrijë djathtas */
+.footer-section:last-child h3 {
+  align-self: flex-end; /* E detyron titullin të shkojë në cep */
+  text-align: right;
+}
+
+/* Rregullimi i rreshtave (Ikona + Teksti) */
+.footer-section:last-child p {
+  display: flex;
+  justify-content: flex-end; /* I shtyn elementet në fund të rreshtit */
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 15px;
+  color: #bbb;
+}
+
+/* Për Copyright poshtë */
 .footer-bottom {
   text-align: center;
   padding: 25px;
-  background: #000;
+  background-color: #231c16 !important;
   color: #666;
   font-size: 0.9rem;
 }
-
 /* =========================================
    12. LOGIN / REGISTER PAGE
    ========================================= */
@@ -631,13 +777,13 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
   justify-content: center;
   align-items: center;
   padding: 60px 20px;
-  background-color: #f0f2f5;
+  background-color: #fffaf0;
   min-height: 80vh;
 }
 
 .auth-card {
   display: flex;
-  background: white;
+  background: #fffaf0;
   width: 900px;
   border-radius: 12px;
   overflow: hidden;
@@ -654,7 +800,7 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: #fffaf0;
   padding: 40px;
   text-align: center;
 }
@@ -664,7 +810,7 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
 .input-group { margin-bottom: 20px; text-align: left; }
 .input-group label { display: block; font-size: 0.9rem; font-weight: 600; color: #555; margin-bottom: 8px; }
 .input-group input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 6px; }
-.btn-auth { width: 100%; padding: 14px; background-color: #e67e22; color: white; border: none; border-radius: 6px; font-weight: bold; margin-top: 10px; }
+.btn-auth { width: 100%; padding: 14px; background-color: #e67e22; color: #fffaf0; border: none; border-radius: 6px; font-weight: bold; margin-top: 10px; }
 .auth-footer { margin-top: 20px; text-align: center; font-size: 0.9rem; }
 .toggle-auth { color: #e67e22; font-weight: bold; cursor: pointer; }
 
@@ -737,209 +883,145 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
   transform: none;
 }
 /* =========================================
-   14. SEARCH BAR (STILI DUKAGJINI)
+   SEARCH BAR - VERSIONI PREMIUM (I GJATË & INTERESANT)
    ========================================= */
+
 .search-header-container {
   display: flex;
   justify-content: center;
-  margin-bottom: 40px; /* Hapësira midis search-it dhe librave */
+  margin-bottom: 60px; /* Më shumë ajër poshtë */
   padding: 0 20px;
+  position: relative;
+  z-index: 20; /* Që të dalë mbi elementet e tjera */
 }
 
 .main-search-bar {
   display: flex;
-  background: white;
+  align-items: center;
+  background: color ffaf 0;; 
+  
+  /* 1. E ZGJATËM: Nga 800px në 1000px */
   width: 100%;
-  max-width: 850px; /* Gjerësia maksimale e search-it */
-  border-radius: 4px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.08); /* Hije e lehtë */
-  border: 1px solid #e0e0e0;
-  overflow: hidden;
+  max-width: 1000px; 
+  height: 70px; /* E bëjmë pak më të lartë */
+  
+  /* Forma Ovale Perfekte */
+  border-radius: 60px; 
+  
+  /* Hije e bukur "Glow" */
+  box-shadow: 0 10px 40px rgba(0,0,0,0.08); 
+  border: 2px solid #f0f0f0; /* Kornizë e lehtë */
+  padding: 5px; /* Hapësirë që butoni mos të prekë anët */
+  transition: all 0.3s ease;
 }
 
+/* EFEKT: Kur klikon brenda, korniza bëhet portokalli */
+.main-search-bar:focus-within {
+  border-color: #e67e22;
+  box-shadow: 0 15px 50px rgba(230, 126, 34, 0.15); /* Hije me ngjyrë portokalli */
+  transform: translateY(-2px);
+}
+
+/* Pjesa e Select (Title, Author...) */
 .search-select {
   border: none;
-  background-color: #f9f9f9;
-  padding: 15px 20px;
-  font-weight: 600;
-  color: #555;
+  background-color: #fffaf0; /* Sfond i lehtë krem për ndarje */
+  padding: 0 30px;
+  height: 100%;
+  font-weight: 700;
+  color: #444;
   outline: none;
   cursor: pointer;
-  border-right: 1px solid #e0e0e0;
-  font-size: 0.95rem;
-  min-width: 120px;
+  font-size: 1rem;
+  border-radius: 50px 0 0 50px; 
+  border-right: 1px solid #fcefdc;
+  transition: 0.3s;
 }
 
+.search-select:hover {
+  background-color: #fcefdc; /* Ndryshon pak ngjyrë në hover */
+}
+
+/* Inputi ku shkruan */
 .search-input {
   flex: 1;
   border: none;
-  padding: 15px 25px;
-  font-size: 1rem;
+  background-color: transparent;
+  padding: 0 25px;
+  font-size: 1.1rem; /* Tekst më i madh */
   outline: none;
   color: #333;
+  font-weight: 500;
 }
+
 .search-input::placeholder {
   color: #aaa;
+  font-weight: 400;
 }
 
+/* BUTONI - I BUZËQESHUR :) */
 .search-btn {
-  background: #e67e22;
+  background: linear-gradient(135deg, #e67e22, #d35400); /* Gradient për thellësi */
   border: none;
-  padding: 0 35px;
+  width: 60px;  
+  height: 60px; 
+  border-radius: 50%; /* Rreth perfekt */
   cursor: pointer;
   color: white;
-  transition: 0.3s;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-shadow: 0 4px 15px rgba(230, 126, 34, 0.4); /* Hije e butonit */
+  transition: 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Animacion "Bouncy" */
 }
+
 .search-btn:hover {
-  background: #d35400;
+  transform: scale(1.1) rotate(10deg); /* Zmadhohet dhe rrotullohet pak */
+  box-shadow: 0 8px 20px rgba(230, 126, 34, 0.6);
 }
 
-.no-results {
-  text-align: center;
-  padding: 40px;
-  color: #777;
-  font-size: 1.2rem;
-  width: 100%;
-}
-.modal-backdrop {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.75); /* Sfond i errët */
-  z-index: 2000;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 20px;
-  backdrop-filter: blur(5px); /* Efekt blur mbrapa */
+/* Ikona e Search */
+.search-btn span {
+  font-size: 1.4rem;
 }
 
-.modal-content-box {
-  background: white;
-  width: 900px;
-  max-width: 100%;
-  border-radius: 8px;
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 25px 50px rgba(0,0,0,0.5);
-  animation: slideUp 0.3s ease-out;
-}
-
-@keyframes slideUp {
-  from { transform: translateY(50px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-.close-btn {
-  position: absolute;
-  top: 15px;
-  right: 20px;
-  font-size: 2.2rem;
-  font-weight: 700;
-  color: #333;
-  cursor: pointer;
-  z-index: 10;
-  line-height: 1;
-  transition: 0.2s;
-}
-.close-btn:hover { color: #e67e22; }
-
-.modal-body {
-  display: flex;
-  max-height: 90vh; /* Që të mos jetë më e gjatë se ekrani */
-  overflow-y: auto;
-}
-
-.modal-img {
-  flex: 1;
-  background: #f4f4f4;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 40px;
-}
-
-.modal-img img {
-  max-width: 100%;
-  max-height: 450px;
-  box-shadow: 0 15px 30px rgba(0,0,0,0.2);
-  border-radius: 4px;
-}
-
-.modal-info {
-  flex: 1.5;
-  padding: 50px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.modal-info h2 {
-  font-family: 'Merriweather', serif;
-  font-size: 2.2rem;
-  margin-bottom: 5px;
-  color: #222;
-  line-height: 1.2;
-}
-
-.modal-info .text-highlight {
-  font-size: 1.1rem;
-  color: #e67e22;
-  font-weight: 700;
-  margin-bottom: 25px;
-  display: block;
-}
-
-.modal-desc {
-  color: #555;
-  line-height: 1.8;
-  margin-bottom: 30px;
-  font-size: 1rem;
-}
-
-.modal-meta {
-  background: #f9f9f9;
-  padding: 20px;
-  border-radius: 6px;
-  margin-bottom: 30px;
-  border: 1px solid #eee;
-}
-
-.modal-meta p {
-  margin-bottom: 8px;
-  color: #444;
-  font-size: 0.95rem;
-}
-.modal-meta p:last-child { margin-bottom: 0; }
-
-.modal-actions {
-  display: flex;
-  gap: 15px;
-}
-
-/* RESPONSIVE PER MODAL & SEARCH */
+/* RESPONSIVE */
 @media (max-width: 768px) {
-  .modal-body { flex-direction: column; }
-  .modal-img { padding: 30px; min-height: 300px; }
-  .modal-img img { max-height: 250px; }
-  .modal-info { padding: 30px; }
+  .main-search-bar {
+    flex-direction: column;
+    height: auto;
+    border-radius: 20px;
+    padding: 15px;
+    gap: 15px;
+  }
   
-  .main-search-bar { flex-direction: column; }
-  .search-select { width: 100%; border-right: none; border-bottom: 1px solid #eee; }
-  .search-btn { padding: 15px; }
-}
+  .search-select {
+    width: 100%;
+    height: 50px;
+    border-radius: 10px;
+    border-right: none;
+    border: 1px solid #eee;
+  }
+  
+  .search-input {
+    width: 100%;
+    height: 50px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+  }
 
+  .search-btn {
+    width: 100%;
+    height: 50px;
+    border-radius: 12px; /* Buton i gjerë në celular */
+  }
+}
 /* =========================================
    NEW PROFESSIONAL ABOUT PAGE (TEXT FOCUSED)
    ========================================= */
 
 .about-page-professional {
-  background-color: white;
+  background-color: #fffaf0;
   min-height: 80vh;
   padding-bottom: 80px;
 }
@@ -1047,7 +1129,7 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
    ========================================= */
 
 .about-page-library {
-  background-color: white;
+  background-color: #fffaf0;
   min-height: 100vh;
 }
 
@@ -1163,13 +1245,13 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
    ========================================= */
 
 .about-page-extended {
-  background-color: white;
+  background-color: #fffaf0;
   min-height: 100vh;
 }
 
 /* 1. HERO HEADER (Minimalist & Clean) */
 .about-hero-clean {
-  background-color: #f9f9f9;
+  background-color: #fffaf0;
   padding: 100px 20px 80px;
   text-align: center;
   border-bottom: 1px solid #eee;
@@ -1263,7 +1345,7 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
 
 /* 2. MISSION & VISION (Ikonat e rritura & Hapësira OK) */
 .mv-section-library {
-  background-color: white;
+  background-color: #fffaf0;
   padding: 100px 20px;
   overflow: hidden;
 }
@@ -1463,3 +1545,340 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
     grid-template-columns: 1fr;
   }
 }
+/* =========================================
+   FIX: MODAL Z-INDEX (Që të dalë mbi gjithçka)
+   ========================================= */
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  
+  /* NDRYSHIMI KRYESOR: E bëjmë 3000 që të dalë mbi Navbar */
+  z-index: 3000; 
+  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  backdrop-filter: blur(5px);
+}
+
+/* Stili për butonin e ri "View All Books" */
+.view-all-container {
+  text-align: center;
+  margin-top: 50px;
+  padding-bottom: 20px;
+}
+
+.btn-view-all {
+  padding: 15px 50px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  background: transparent;
+  color: #333;
+  border: 2px solid #333;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-view-all:hover {
+  background: #e67e22;
+  border-color: #e67e22;
+  color: white;
+}
+/* =========================================
+   MODAL - KREM & KLIKUESHËM (FIXED)
+   ========================================= */
+
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8); /* Sfond i errët */
+  z-index: 3000;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  backdrop-filter: blur(8px);
+}
+
+.modal-content-box {
+  /* NDRYSHIMI: Sfondi Krem */
+  background-color: #fffaf0; 
+  
+  width: 900px;
+  max-width: 100%;
+  max-height: 90vh;
+  border-radius: 12px;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+  animation: slideUp 0.3s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.close-btn {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 2.5rem;
+  font-weight: 300;
+  color: #555;
+  cursor: pointer; /* E bën të duket si dorë */
+  z-index: 10;
+  line-height: 1;
+  transition: 0.2s;
+}
+.close-btn:hover { color: #e67e22; transform: scale(1.1); }
+
+.modal-body {
+  display: flex;
+  width: 100%;
+}
+
+/* ANA E MAJTË: IMAZHI */
+.modal-img {
+  flex: 1;
+  /* Sfond pak më i bardhë që të dallohet libri */
+  background-color: #fff8f5; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  border-right: 1px solid #efebe0;
+}
+
+.modal-img img {
+  max-width: 100%;
+  max-height: 400px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+  border-radius: 4px;
+  object-fit: contain;
+}
+
+/* ANA E DJATHTË: INFORMACIONI */
+.modal-info {
+  flex: 1.5;
+  padding: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+  overflow-y: auto;
+  background-color: #fffaf0; /* Sigurohemi që është krem */
+}
+
+.modal-info h2 {
+  font-family: 'Merriweather', serif;
+  font-size: 2.2rem;
+  margin-bottom: 5px;
+  color: #222;
+  line-height: 1.2;
+}
+
+.modal-info .text-highlight {
+  font-size: 1.1rem;
+  color: #e67e22;
+  font-weight: 700;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.modal-desc {
+  color: #555;
+  line-height: 1.8;
+  margin-bottom: 30px;
+  font-size: 1rem;
+}
+
+/* Kuti e bardhë për detajet teknike */
+.modal-meta {
+  background: #ffffff; /* E bardhë për kontrast me sfondin krem */
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  border: 1px solid #e0d8cc; /* Kornizë e lehtë */
+}
+
+.modal-meta p {
+  margin-bottom: 8px;
+  color: #444;
+  font-size: 0.95rem;
+}
+
+/* --- BUTONAT (Të klikueshëm) --- */
+.modal-actions {
+  display: flex;
+  gap: 15px;
+}
+
+/* Butoni Portokalli */
+.modal-actions .btn-orange {
+  padding: 14px 30px;
+  font-size: 1rem;
+  cursor: pointer; /* E bën dorë */
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 10px rgba(230, 126, 34, 0.3);
+}
+
+.modal-actions .btn-orange:hover {
+  background-color: #d35400;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(230, 126, 34, 0.4);
+}
+
+/* Butoni Transparent (Preview) */
+.modal-actions .btn-transparent {
+  padding: 14px 30px;
+  font-size: 1rem;
+  cursor: pointer; /* E bën dorë */
+  transition: all 0.3s ease;
+  border: 2px solid #333;
+  color: #333;
+  background: transparent;
+}
+
+.modal-actions .btn-transparent:hover {
+  background: #fffaf0;
+  color: #fffaf0; /* Bëhet krem kur e prek */
+  transform: translateY(-2px);
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .modal-content-box {
+    flex-direction: column;
+    width: 95%;
+    max-height: 85vh;
+    overflow-y: scroll;
+  }
+  .modal-body { flex-direction: column; }
+  .modal-img { padding: 20px; min-height: auto; border-right: none; border-bottom: 1px solid #efebe0; }
+  .modal-img img { max-height: 250px; }
+  .modal-info { padding: 25px; }
+  .modal-actions { flex-direction: column; }
+  .close-btn { top: 10px; right: 15px; }
+
+
+}
+
+.book-card {
+  /* E bëjmë pak më krem që të dallohet nga e bardha */
+  background-color: #fdf5e6 !important; 
+  
+  border: 1px solid #e6dccf; /* Kornizë që shkon me kremin */
+  border-radius: 6px;
+  overflow: hidden;
+  transition: 0.3s;
+}
+
+.book-card:hover {
+  transform: translateY(-5px);
+  border-color: #e67e22;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+  background-color: #fff !important; /* Kur e prek bëhet e bardhë për efekt */
+}
+
+
+
+
+
+/* ======================================================
+   ZGJIDHJA "UNIVERSALE" PËR ABOUT US (TË GJITHA KREM)
+   ====================================================== */
+
+/* 1. I kapim të gjitha pjesët kryesore të About Us dhe i bëjmë Krem */
+.about-page-extended,
+.about-page-library,
+.about-page-professional,
+.mv-section-library,      /* Pjesa e Misionit */
+.testimonials-section,    /* Pjesa e Sfondit të Testimonials */
+.testimonial-card,        /* Kutitë e komenteve */
+.about-header-clean,
+.about-cta-simple {
+    background-color: #fffaf0 !important;
+}
+
+/* 2. Meqë kartat tani kanë të njëjtën ngjyrë si sfondi, 
+      i shtojmë një kornizë të lehtë që të dallohen */
+.testimonial-card {
+    border: 1px solid #e6dccf !important;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.05); /* Hije e lehtë */
+}
+
+/* 3. Sigurohemi që butonat të MOS ndikohen (të mbesin portokalli ose transparent) */
+.btn-orange, 
+.btn-transparent,
+.btn-outline {
+    background-color: inherit; /* Ose ngjyra e tyre origjinale */
+}
+
+/* Rregullimi për butonin "Browse Collection" në ballinë */
+.hero-buttons .btn-orange {
+  border: 2px solid white; /* Kjo shton vijën e bardhë */
+}
+
+/* Opsionale: Kur e prek me mouse, të hiqet vija ose të ndryshojë */
+.hero-buttons .btn-orange:hover {
+  border-color: #d35400; /* Ose mund ta lësh white */
+}
+
+/* ========================================================
+   FIX: PJESA "START YOUR JOURNEY" (Të bëhet KREM)
+   ======================================================== */
+
+.about-cta-final {
+  background-color: #fffaf0 !important;  /* U bë KREM */
+  color: #222 !important;                /* Teksti u bë i ZI */
+  padding: 100px 20px;
+  text-align: center;
+  border-top: 1px solid #e6dccf;         /* Një vijë e hollë ndarëse */
+}
+
+/* Titulli "Start Your Journey Today" */
+.about-cta-final h2 {
+  color: #222 !important; /* E bëjmë të zi që të lexohet */
+}
+
+/* Paragrafi poshtë titullit */
+.about-cta-final p {
+  color: #555 !important; /* E bëjmë gri të errët */
+}
+
+/* --- RREGULLIMI I BUTONAVE --- */
+
+/* Butoni i majtë "Browse Library" (që të duket korniza) */
+.about-cta-final .btn-outline { /* Ose .btn-transparent varet çfarë klase ke përdorur */
+  border: 2px solid #333 !important;
+  color: #333 !important;
+}
+
+/* Kur e prek butonin e majtë */
+.about-cta-final .btn-outline:hover {
+  background-color: #333 !important;
+  color: white !important;
+}
+
+/* Butoni "Join Now" */
+.about-cta-final .btn-orange, 
+.about-cta-final .btn-white { /* Nëse e ke pasur btn-white */
+  background-color: #e67e22 !important; /* E bëjmë portokalli që të dallohet */
+  color: white !important;
+  border: none !important;
+}
+
