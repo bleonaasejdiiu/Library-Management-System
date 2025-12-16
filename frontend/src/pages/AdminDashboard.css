@@ -202,15 +202,19 @@ tbody tr:hover {
     font-size: 14px;
 }
 
-.form-group input {
+.form-group input, 
+.form-group select {  /* <--- SHTOVA KËTË */
     padding: 10px;
     border: 1px solid #d7ccc8;
     border-radius: 5px;
     background-color: #fff;
     outline: none;
+    font-size: 14px;
+    color: #4b3621;
 }
 
-.form-group input:focus {
+.form-group input:focus,
+.form-group select:focus { /* <--- EDHE KËTU */
     border-color: #8d6e63;
     box-shadow: 0 0 5px rgba(141, 110, 99, 0.2);
 }

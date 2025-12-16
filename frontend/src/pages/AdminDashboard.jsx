@@ -1,32 +1,84 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './AdminDashboard.css'; // <--- KËTU ISHTE GABIMI (E RREGULLOVA)
+import './AdminDashboard.css';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
+  
+  // --- STATE PËR NAVIGIM ---
   const [activeTab, setActiveTab] = useState('books'); 
   
-  // 1. STATE PËR SHFAQJEN E FORMËS
+  // --- STATE PËR SHFAQJEN E FORMËS ---
   const [showAddForm, setShowAddForm] = useState(false);
 
-  // 2. STATE PËR TË DHËNAT E FORMËS
+  // --- LISTA E KATEGORIVE (Për Dropdown) ---
+  const categoriesList = [
+    "Fiction", 
+    "Science", 
+    "Technology", 
+    "History", 
+    "Biography", 
+    "Art", 
+    "Children", 
+    "Business", 
+    "Classic",
+    "Romance",
+    "Mystery"
+  ];
+
+  // --- STATE PËR TË DHËNAT E LIBRIT (Sipas UML Diagramit) ---
   const [newBook, setNewBook] = useState({
-    title: '', author: '', category: '', quantity: 1
+    isbn: '',
+    title: '',
+    author: '',
+    publicationYear: '',
+    category: '',
+    publisher: '',
+    quantity: 1
   });
 
-  // Të dhëna statike sa për testim (Librat)
+  // --- DUMMY DATA (Librat fillestarë sa për pamje) ---
   const [books, setBooks] = useState([
-    { id: 1, title: 'Harry Potter', author: 'J.K. Rowling', category: 'Fiction', quantity: 5 },
-    { id: 2, title: 'Clean Code', author: 'Robert Martin', category: 'Tech', quantity: 3 },
-    { id: 3, title: 'The Great Gatsby', author: 'F. Scott Fitzgerald', category: 'Classic', quantity: 2 },
+    { 
+      id: 1, 
+      isbn: '978-3-16-148410-0', 
+      title: 'Harry Potter', 
+      author: 'J.K. Rowling', 
+      publicationYear: 1997, 
+      category: 'Fiction', 
+      publisher: 'Bloomsbury', 
+      quantity: 5 
+    },
+    { 
+      id: 2, 
+      isbn: '978-0-13-235088-4', 
+      title: 'Clean Code', 
+      author: 'Robert Martin', 
+      publicationYear: 2008, 
+      category: 'Technology', 
+      publisher: 'Prentice Hall', 
+      quantity: 3 
+    },
+    { 
+      id: 3, 
+      isbn: '978-0-7432-7356-5', 
+      title: 'The Great Gatsby', 
+      author: 'F. Scott Fitzgerald', 
+      publicationYear: 1925, 
+      category: 'Classic', 
+      publisher: 'Scribner', 
+      quantity: 2 
+    },
   ]);
 
-  // Të dhëna statike (Userat)
+  // --- DUMMY DATA (Userat) ---
   const [users, setUsers] = useState([
     { id: 101, name: 'Filan Fisteku', email: 'filan@example.com', role: 'Member' },
     { id: 102, name: 'Ana Prifti', email: 'ana@example.com', role: 'Member' },
+    { id: 103, name: 'Besa Gashi', email: 'besa@example.com', role: 'Member' },
   ]);
 
+  // --- KONTROLLI I SIGURISË (A është Admin?) ---
   useEffect(() => {
     const role = localStorage.getItem('role');
     if (role !== 'admin') {
@@ -34,30 +86,42 @@ const AdminDashboard = () => {
     }
   }, [navigate]);
 
-  // --- LOGJIKA VIZUALE (PA DB AKOMA) ---
-
-  // Shto Libër (Vetëm në listën lokale)
+  // --- LOGJIKA E SHTIMIT TË LIBRIT ---
   const handleSaveBook = (e) => {
-    e.preventDefault(); // Mos bëj refresh faqes
+    e.preventDefault();
     
+    // Validim i thjeshtë: Nëse s'ka zgjedhur kategori
+    if (!newBook.category) {
+        alert("Ju lutem zgjidhni një kategori!");
+        return;
+    }
+
+    // Krijojmë objektin e ri të librit
     const tempBook = {
-        id: books.length + 1, // Krijojmë një ID false
+        id: books.length + 1, // ID e përkohshme
         ...newBook
     };
 
-    setBooks([...books, tempBook]); // E shtojmë në listë
+    setBooks([...books, tempBook]); // Shtojmë në listë
     setShowAddForm(false); // Mbyllim formën
-    setNewBook({ title: '', author: '', category: '', quantity: 1 }); // Pastrojmë fushat
-    alert("Libri u shtua vizualisht!"); 
+    
+    // Pastrojmë fushat
+    setNewBook({ 
+      isbn: '', title: '', author: '', publicationYear: '', 
+      category: '', publisher: '', quantity: 1 
+    });
+    
+    alert("Libri u shtua me sukses!"); 
   };
 
-  // Fshi Libër
+  // --- LOGJIKA E FSHIRJES ---
   const handleDeleteBook = (id) => {
-    if(window.confirm('A jeni i sigurt?')) {
+    if(window.confirm('A jeni i sigurt që doni ta fshini këtë libër?')) {
         setBooks(books.filter(b => b.id !== id));
     }
   };
 
+  // --- LOGJIKA E DALJES (LOGOUT) ---
   const handleLogout = () => {
     localStorage.clear();
     navigate('/login');
@@ -66,7 +130,7 @@ const AdminDashboard = () => {
   return (
     <div className="dashboard-layout">
       
-      {/* --- SIDEBAR --- */}
+      {/* ================= SIDEBAR (Majtas) ================= */}
       <aside className="sidebar">
         <h2>🛡️ Admin Panel</h2>
         <ul>
@@ -85,15 +149,14 @@ const AdminDashboard = () => {
         </div>
       </aside>
 
-      {/* --- CONTENT --- */}
+      {/* ================= CONTENT (Djathtas) ================= */}
       <main className="dashboard-content">
         
-        {/* === TABI: LIBRAT === */}
+        {/* ================= TABI 1: LIBRAT ================= */}
         {activeTab === 'books' && (
           <div className="fade-in">
             <div className="content-header">
               <h1>📚 Inventari i Librave</h1>
-              {/* BUTONI QË HAP/MBYLL FORMËN */}
               <button 
                 className="btn-add" 
                 onClick={() => setShowAddForm(!showAddForm)}
@@ -106,48 +169,82 @@ const AdminDashboard = () => {
             {/* --- FORMA PËR SHTIMIN E LIBRIT --- */}
             {showAddForm && (
                 <div className="form-container fade-in">
-                    <h3>Shto Libër të Ri</h3>
+                    <h3>Shto Libër të Ri (Sipas UML)</h3>
                     <form onSubmit={handleSaveBook} className="add-book-form">
+                        
+                        <div className="form-group">
+                            <label>ISBN</label>
+                            <input type="text" placeholder="978-..." required 
+                                value={newBook.isbn} onChange={(e)=>setNewBook({...newBook, isbn: e.target.value})} 
+                            />
+                        </div>
+
                         <div className="form-group">
                             <label>Titulli</label>
-                            <input 
-                                type="text" placeholder="psh. Harry Potter" required 
+                            <input type="text" placeholder="Titulli i librit" required 
                                 value={newBook.title} onChange={(e)=>setNewBook({...newBook, title: e.target.value})} 
                             />
                         </div>
+
                         <div className="form-group">
                             <label>Autori</label>
-                            <input 
-                                type="text" placeholder="psh. J.K. Rowling" required 
+                            <input type="text" placeholder="Emri i autorit" required 
                                 value={newBook.author} onChange={(e)=>setNewBook({...newBook, author: e.target.value})} 
                             />
                         </div>
+
                         <div className="form-group">
-                            <label>Kategoria</label>
-                            <input 
-                                type="text" placeholder="psh. Fiction" required 
-                                value={newBook.category} onChange={(e)=>setNewBook({...newBook, category: e.target.value})} 
+                            <label>Viti i Publikimit</label>
+                            <input type="number" placeholder="2024" required 
+                                value={newBook.publicationYear} onChange={(e)=>setNewBook({...newBook, publicationYear: e.target.value})} 
                             />
                         </div>
+
+                        {/* --- DROPDOWN PËR KATEGORITË --- */}
                         <div className="form-group">
-                            <label>Sasia</label>
-                            <input 
-                                type="number" min="1" required 
+                            <label>Kategoria</label>
+                            <select 
+                                required 
+                                value={newBook.category} 
+                                onChange={(e)=>setNewBook({...newBook, category: e.target.value})}
+                            >
+                                <option value="">-- Zgjidh Kategorinë --</option>
+                                {categoriesList.map((cat, index) => (
+                                    <option key={index} value={cat}>{cat}</option>
+                                ))}
+                            </select>
+                        </div>
+
+                        <div className="form-group">
+                            <label>Botuesi (Publisher)</label>
+                            <input type="text" placeholder="Emri i shtëpisë botuese" required 
+                                value={newBook.publisher} onChange={(e)=>setNewBook({...newBook, publisher: e.target.value})} 
+                            />
+                        </div>
+
+                        <div className="form-group">
+                            <label>Sasia (Kopje)</label>
+                            <input type="number" min="1" required 
                                 value={newBook.quantity} onChange={(e)=>setNewBook({...newBook, quantity: e.target.value})} 
                             />
                         </div>
-                        <button type="submit" className="btn-add" style={{marginTop: '10px', width: '100%'}}>Ruaj në Listë</button>
+
+                        <button type="submit" className="btn-add" style={{marginTop: '10px', width: '100%', gridColumn: 'span 2'}}>
+                            Ruaj Librin
+                        </button>
                     </form>
                 </div>
             )}
             
+            {/* --- TABELA E LIBRAVE --- */}
             <div className="table-container">
               <table>
                 <thead>
                   <tr>
-                    <th>ID</th>
+                    <th>ISBN</th>
                     <th>Titulli</th>
                     <th>Autori</th>
+                    <th>Viti</th>
                     <th>Kategoria</th>
                     <th>Sasia</th>
                     <th>Veprime</th>
@@ -156,11 +253,16 @@ const AdminDashboard = () => {
                 <tbody>
                   {books.map(book => (
                     <tr key={book.id}>
-                      <td>#{book.id}</td>
+                      <td style={{fontSize:'13px', color:'#7f8c8d'}}>{book.isbn}</td>
                       <td><strong>{book.title}</strong></td>
                       <td>{book.author}</td>
-                      <td>{book.category}</td>
-                      <td>{book.quantity}</td>
+                      <td>{book.publicationYear}</td>
+                      <td>
+                        <span style={{padding:'4px 8px', backgroundColor:'#efebe9', borderRadius:'4px', fontSize:'13px', color:'#5d4037'}}>
+                            {book.category}
+                        </span>
+                      </td>
+                      <td style={{textAlign:'center', fontWeight:'bold'}}>{book.quantity}</td>
                       <td>
                         <button className="btn-action btn-edit">Edit</button>
                         <button className="btn-action btn-delete" onClick={() => handleDeleteBook(book.id)}>Fshi</button>
@@ -173,7 +275,7 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        {/* === TABI: PËRDORUESIT === */}
+        {/* ================= TABI 2: PËRDORUESIT ================= */}
         {activeTab === 'users' && (
           <div className="fade-in">
              <div className="content-header">
@@ -196,7 +298,11 @@ const AdminDashboard = () => {
                       <td>#{user.id}</td>
                       <td>{user.name}</td>
                       <td>{user.email}</td>
-                      <td><span style={{padding:'5px 10px', backgroundColor:'#e0f2f1', borderRadius:'15px', color:'#00695c'}}>{user.role}</span></td>
+                      <td>
+                        <span style={{padding:'5px 10px', backgroundColor:'#e0f2f1', borderRadius:'15px', color:'#00695c', fontWeight:'bold'}}>
+                            {user.role}
+                        </span>
+                      </td>
                       <td>
                         <button className="btn-action btn-delete">Blloko</button>
                       </td>
@@ -208,7 +314,7 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        {/* === TABI: HUAZIMET === */}
+        {/* ================= TABI 3: HUAZIMET ================= */}
         {activeTab === 'loans' && (
           <div className="fade-in">
              <div className="content-header">
@@ -232,6 +338,13 @@ const AdminDashboard = () => {
                         <td>Filan Fisteku</td>
                         <td>25/12/2025</td>
                         <td style={{color: '#d35400', fontWeight:'bold'}}>Pa kthyer</td>
+                    </tr>
+                    <tr>
+                        <td>#56</td>
+                        <td>Clean Code</td>
+                        <td>Ana Prifti</td>
+                        <td>20/12/2025</td>
+                        <td style={{color: 'green', fontWeight:'bold'}}>Kthyer</td>
                     </tr>
                 </tbody>
               </table>
