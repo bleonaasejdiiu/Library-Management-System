@@ -28,27 +28,27 @@ function Header() {
   <div className="mega-menu">
     
     <div className="mega-column">
-      <h4>Letërsi</h4>
+      <h4>Literature</h4>
       <NavLink to="/books?category=art">Art</NavLink>
-      <NavLink to="/books?category=romance">Romancë</NavLink>
-      <NavLink to="/books?category=adolescence">Adoleshent</NavLink>
-      <NavLink to="/books?category=language">Gjuhësi</NavLink>
+      <NavLink to="/books?category=romance">Romance</NavLink>
+      <NavLink to="/books?category=adolescence">Adolescence</NavLink>
+      <NavLink to="/books?category=language">Language & Linguistics</NavLink>
     </div>
 
     <div className="mega-column">
-      <h4>Shkencë & Biznes</h4>
-      <NavLink to="/books?category=science">Shkencë</NavLink>
-      <NavLink to="/books?category=business">Biznes</NavLink>
+      <h4>Science & Business</h4>
+      <NavLink to="/books?category=science">Science</NavLink>
+      <NavLink to="/books?category=business">Business</NavLink>
       <NavLink to="/books?category=leadership">Leadership</NavLink>
-      <NavLink to="/books?category=law">Drejtësi</NavLink>
+      <NavLink to="/books?category=law">Law</NavLink>
     </div>
 
     <div className="mega-column">
-      <h4>Të veçanta</h4>
-      <NavLink to="/books?category=history">Histori</NavLink>
-      <NavLink to="/books?category=psychology">Psikologji</NavLink>
-      <NavLink to="/books?category=children">Për fëmijë</NavLink>
-      <NavLink to="/books">Të gjitha →</NavLink>
+      <h4>Special collections</h4>
+      <NavLink to="/books?category=history">History</NavLink>
+      <NavLink to="/books?category=psychology">Psychology</NavLink>
+      <NavLink to="/books?category=children">Technology</NavLink>
+      <NavLink to="/books">All Categories →</NavLink>
     </div>
 
   </div>
