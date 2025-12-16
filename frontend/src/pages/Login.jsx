@@ -1,8 +1,75 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function Login() {
   const [isLogin, setIsLogin] = useState(true); // State për të ndërruar Login/Register
+  const navigate = useNavigate(); // Për të kaluar te faqja Home pas loginit
+
+  // Ruajmë të dhënat e formës
+  const [formData, setFormData] = useState({
+    name: '',
+    lastname: '',
+    phoneNumber: '',
+    email: '',
+    password: ''
+  });
+
+  // Kur shkruan në inpute, përditëso state-in
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  // Kur klikon butonin Login ose Register
+  const handleSubmit = async (e) => {
+    e.preventDefault(); // Mos bëj refresh faqes
+
+    // --- LOGJIKA E LOGIN ---
+    if (isLogin) {
+      try {
+        const response = await axios.post('http://localhost:5000/api/auth/login', {
+          email: formData.email,
+          password: formData.password
+        });
+
+        if (response.data.success) {
+          // 1. Ruaj Tokenin dhe Userin në LocalStorage
+          localStorage.setItem('token', response.data.token);
+          localStorage.setItem('user', JSON.stringify(response.data.user));
+          
+          alert(`✅ Mirësevini ${response.data.user.name}!`);
+          
+          // 2. Shko te faqja kryesore
+          navigate('/'); 
+        }
+      } catch (error) {
+        console.error("Login Error:", error);
+        alert("❌ " + (error.response?.data?.error || "Email ose Password i gabuar!"));
+      }
+    } 
+    // --- LOGJIKA E REGJISTRIMIT ---
+    else {
+      try {
+        const response = await axios.post('http://localhost:5000/api/auth/register', {
+          name: formData.name,
+          lastname: formData.lastname,
+          phoneNumber: formData.phoneNumber,
+          email: formData.email,
+          password: formData.password
+        });
+
+        if (response.data.success) {
+          alert("✅ Regjistrimi u krye me sukses! Tani ju lutem bëni Login.");
+          setIsLogin(true); // Ktheje automatikisht te forma Login
+          // Pastrojmë fushat
+          setFormData({ ...formData, password: '' });
+        }
+      } catch (error) {
+        console.error("Register Error:", error);
+        alert("❌ Gabim: " + (error.response?.data?.error || "Diçka shkoi keq gjatë regjistrimit."));
+      }
+    }
+  };
 
   return (
     <div className="auth-container">
@@ -26,22 +93,71 @@ function Login() {
             <p>Please enter your details</p>
           </div>
 
-          <form className="auth-form">
+          <form className="auth-form" onSubmit={handleSubmit}>
+            
+            {/* Fushat shtesë shfaqen vetëm kur je duke bërë Register (!isLogin) */}
             {!isLogin && (
-              <div className="input-group">
-                <label>Full Name</label>
-                <input type="text" placeholder="John Doe" />
-              </div>
+              <>
+                <div className="input-group">
+                  <label>First Name</label>
+                  <input 
+                    type="text" 
+                    name="name" 
+                    placeholder="Emri" 
+                    value={formData.name}
+                    onChange={handleChange}
+                    required 
+                  />
+                </div>
+                
+                <div className="input-group">
+                  <label>Last Name</label>
+                  <input 
+                    type="text" 
+                    name="lastname" 
+                    placeholder="Mbiemri" 
+                    value={formData.lastname}
+                    onChange={handleChange}
+                    required 
+                  />
+                </div>
+
+                <div className="input-group">
+                  <label>Phone Number</label>
+                  <input 
+                    type="text" 
+                    name="phoneNumber" 
+                    placeholder="+383..." 
+                    value={formData.phoneNumber}
+                    onChange={handleChange}
+                  />
+                </div>
+              </>
             )}
             
+            {/* Fushat për Email dhe Password janë gjithmonë aty */}
             <div className="input-group">
               <label>Email Address</label>
-              <input type="email" placeholder="example@uni-library.com" />
+              <input 
+                type="email" 
+                name="email"
+                placeholder="example@uni-library.com" 
+                value={formData.email}
+                onChange={handleChange}
+                required
+              />
             </div>
 
             <div className="input-group">
               <label>Password</label>
-              <input type="password" placeholder="********" />
+              <input 
+                type="password" 
+                name="password"
+                placeholder="********" 
+                value={formData.password}
+                onChange={handleChange}
+                required
+              />
             </div>
 
             <button type="submit" className="btn-auth">
