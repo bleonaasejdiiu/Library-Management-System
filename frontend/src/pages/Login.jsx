@@ -1,44 +1,73 @@
 import React, { useState } from 'react';
-import axios from 'axios'; // Importojmë axios për lidhjen me Backend
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function Login() {
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState(true); // State për të ndërruar Login/Register
+  const navigate = useNavigate(); // Për të kaluar te faqja Home pas loginit
 
-  // Këtu ruajmë të dhënat që shkruan përdoruesi
+  // Ruajmë të dhënat e formës
   const [formData, setFormData] = useState({
     name: '',
     lastname: '',
+    phoneNumber: '',
     email: '',
-    password: '',
-    phoneNumber: ''
+    password: ''
   });
 
-  // Funksioni që ndryshon vlerat kur shkruan në input
+  // Kur shkruan në inpute, përditëso state-in
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Funksioni kur klikon butonin Submit
+  // Kur klikon butonin Login ose Register
   const handleSubmit = async (e) => {
     e.preventDefault(); // Mos bëj refresh faqes
 
-    if (!isLogin) {
-      // --- LOGJIKA E REGJISTRIMIT ---
+    // --- LOGJIKA E LOGIN ---
+    if (isLogin) {
       try {
-        // Dërgojmë të dhënat te Backend (Port 5000)
-        const response = await axios.post('http://localhost:5000/api/auth/register', formData);
-        
+        const response = await axios.post('http://localhost:5000/api/auth/login', {
+          email: formData.email,
+          password: formData.password
+        });
+
         if (response.data.success) {
-          alert("✅ Regjistrimi u krye me sukses! Tani mund të hyni.");
-          setIsLogin(true); // E kthejmë te forma Login
+          // 1. Ruaj Tokenin dhe Userin në LocalStorage
+          localStorage.setItem('token', response.data.token);
+          localStorage.setItem('user', JSON.stringify(response.data.user));
+          
+          alert(`✅ Mirësevini ${response.data.user.name}!`);
+          
+          // 2. Shko te faqja kryesore
+          navigate('/'); 
         }
       } catch (error) {
-        console.error("Gabim:", error);
-        alert("❌ Gabim gjatë regjistrimit: " + (error.response?.data?.error || "Diçka shkoi keq."));
+        console.error("Login Error:", error);
+        alert("❌ " + (error.response?.data?.error || "Email ose Password i gabuar!"));
       }
-    } else {
-      // --- LOGJIKA E LOGIN (Do ta bëjmë më vonë) ---
-      alert("Login ende nuk është implementuar në Backend, por Regjistrimi punon!");
+    } 
+    // --- LOGJIKA E REGJISTRIMIT ---
+    else {
+      try {
+        const response = await axios.post('http://localhost:5000/api/auth/register', {
+          name: formData.name,
+          lastname: formData.lastname,
+          phoneNumber: formData.phoneNumber,
+          email: formData.email,
+          password: formData.password
+        });
+
+        if (response.data.success) {
+          alert("✅ Regjistrimi u krye me sukses! Tani ju lutem bëni Login.");
+          setIsLogin(true); // Ktheje automatikisht te forma Login
+          // Pastrojmë fushat
+          setFormData({ ...formData, password: '' });
+        }
+      } catch (error) {
+        console.error("Register Error:", error);
+        alert("❌ Gabim: " + (error.response?.data?.error || "Diçka shkoi keq gjatë regjistrimit."));
+      }
     }
   };
 
@@ -66,7 +95,7 @@ function Login() {
 
           <form className="auth-form" onSubmit={handleSubmit}>
             
-            {/* Fushat shtesë për Regjistrim (Sipas Databazës) */}
+            {/* Fushat shtesë shfaqen vetëm kur je duke bërë Register (!isLogin) */}
             {!isLogin && (
               <>
                 <div className="input-group">
@@ -80,6 +109,7 @@ function Login() {
                     required 
                   />
                 </div>
+                
                 <div className="input-group">
                   <label>Last Name</label>
                   <input 
@@ -91,12 +121,13 @@ function Login() {
                     required 
                   />
                 </div>
+
                 <div className="input-group">
                   <label>Phone Number</label>
                   <input 
                     type="text" 
                     name="phoneNumber" 
-                    placeholder="+383 44 ..." 
+                    placeholder="+383..." 
                     value={formData.phoneNumber}
                     onChange={handleChange}
                   />
@@ -104,6 +135,7 @@ function Login() {
               </>
             )}
             
+            {/* Fushat për Email dhe Password janë gjithmonë aty */}
             <div className="input-group">
               <label>Email Address</label>
               <input 
