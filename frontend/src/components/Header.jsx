@@ -47,7 +47,7 @@ function Header() {
       <h4>Special collections</h4>
       <NavLink to="/books?category=history">History</NavLink>
       <NavLink to="/books?category=psychology">Psychology</NavLink>
-      <NavLink to="/books?category=children">Technology</NavLink>
+      <NavLink to="/books?category=technology">Technology</NavLink>
       <NavLink to="/books">All Categories →</NavLink>
     </div>
 
