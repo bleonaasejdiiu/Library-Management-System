@@ -7,6 +7,9 @@
   transition: 0.3s;
   display: flex;
   flex-direction: column;
+   width: 100%;
+  max-width: 260px;   /* MADHËSI FIXE */
+  margin: 0 auto;
 }
 
 .book-card:hover {
