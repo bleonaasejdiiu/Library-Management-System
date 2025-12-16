@@ -1,9 +1,12 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import BookCard from "../components/bookCard1";
 import "./books.css";
 
 const Books = () => {
-  /* ================= SEARCH STATE ================= */
+  const location = useLocation();
+
+  /* ================= SEARCH & CATEGORY STATE ================= */
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("All");
 
@@ -37,21 +40,33 @@ const Books = () => {
     { id: 26, title: "Code ", author: "C. Petzold", category: "Technology", image: "/images/img27.jpg" },
   ];
 
-  const categories = ["All", "Art", "Psychology", "Business", "Leadership", "Law", "Science", "Romance", "Language"];
+  /* ================= READ CATEGORY FROM URL ================= */
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const categoryFromUrl = params.get("category");
+
+    if (categoryFromUrl) {
+      // e kthen p.sh. "romance" → "Romance"
+      const formatted =
+        categoryFromUrl.charAt(0).toUpperCase() +
+        categoryFromUrl.slice(1).toLowerCase();
+
+      setSelectedCategory(formatted);
+    } else {
+      setSelectedCategory("All");
+    }
+  }, [location.search]);
 
   /* ================= FILTERED BOOKS ================= */
   const filteredBooks = useMemo(() => {
-    const normalizedSearch = searchTerm.trim().toLowerCase();
+    const normalizedSearch = searchTerm.toLowerCase();
 
-    let result = books.filter(book =>
+    return books.filter(book =>
       (book.title.toLowerCase().includes(normalizedSearch) ||
-      book.author.toLowerCase().includes(normalizedSearch) ||
-      book.category.toLowerCase().includes(normalizedSearch))
-      && (selectedCategory === "All" || book.category === selectedCategory)
+        book.author.toLowerCase().includes(normalizedSearch)) &&
+      (selectedCategory === "All" || book.category === selectedCategory)
     );
-
-    return result;
-  }, [searchTerm, selectedCategory, books]);
+  }, [searchTerm, selectedCategory]);
 
   return (
     <div className="books-page">
@@ -59,13 +74,16 @@ const Books = () => {
       {/* ================= HERO ================= */}
       <div className="books-hero">
         <h1>Books Collection</h1>
-        <p>Explore our library and find your next favorite read</p>
+        <p>
+          {selectedCategory === "All"
+            ? "Explore our library and find your next favorite read"
+            : `Category: ${selectedCategory}`}
+        </p>
 
-        {/* 🔍 SEARCH BAR */}
         <div className="hero-search">
           <input
             type="text"
-            placeholder="Search by title, author or category..."
+            placeholder="Search by title or author..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
           />
@@ -82,7 +100,6 @@ const Books = () => {
           <p className="no-results">No books found</p>
         )}
       </div>
-
     </div>
   );
 };
