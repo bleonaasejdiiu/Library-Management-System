@@ -1,65 +1,124 @@
 .book-card {
+  position: relative;
+  overflow: hidden;
   background: white;
   border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.12);
   transition: 0.3s;
   display: flex;
   flex-direction: column;
 }
 
 .book-card:hover {
-  transform: translateY(-6px);
+  transform: translateY(-5px);
 }
 
-/* IMAGE */
+/* ================= IMAGE ================= */
+.book-image {
+  width: 100%;
+  height: 240px; /* zvogëluar lartësia */
+  overflow: hidden;
+}
+
 .book-image img {
   width: 100%;
-  height: 220px;
+  height: 100%;
   object-fit: cover;
+  transition: transform 0.3s;
 }
 
-/* INFO */
-.book-info {
-  padding: 20px;
-  text-align: center;
+.book-card:hover .book-image img {
+  transform: scale(1.05);
 }
 
-.book-info h3 {
-  font-size: 1.05rem;
-  margin-bottom: 8px;
-}
-
-.author {
-  font-size: 0.9rem;
-  color: #777;
-  margin-bottom: 8px;
-}
-
-.category {
-  display: inline-block;
-  background: #111;
-  color: #fff;
-  padding: 5px 12px;
-  font-size: 0.75rem;
-  border-radius: 20px;
-  margin-bottom: 15px;
-}
-
-/* BUTTON */
-.details-btn {
+/* ================= OVERLAY me buton ================= */
+.book-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  padding: 10px;
+  height: 100%;
+  background: rgba(0,0,0,0.3);
+  opacity: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: 0.3s;
+}
+
+.book-card:hover .book-overlay {
+  opacity: 1;
+}
+
+.details-btn {
+  padding: 10px 20px;
   background: #e67e22;
-  border: none;
   color: white;
+  border: none;
+  border-radius: 6px;
   font-weight: bold;
-  text-transform: uppercase;
-  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.85rem;
   transition: 0.3s;
 }
 
 .details-btn:hover {
   background: #d35400;
+  transform: scale(1.05);
 }
+
+/* ================= BOOK INFO ================= */
+.book-info {
+  padding: 12px 15px;
+  text-align: center;
+}
+
+.book-info h3 {
+  font-size: 1rem;
+  margin-bottom: 4px;
+  font-weight: 600;
+  color: #333;
+}
+
+.author {
+  font-size: 0.8rem;
+  color: #555;
+  margin-bottom: 4px;
+}
+
+.category {
+  display: inline-block;
+  background: #f0f0f0;
+  color: #555;
+  padding: 4px 10px;
+  font-size: 0.7rem;
+  border-radius: 15px;
+  margin-bottom: 6px;
+  font-weight: 500;
+  text-transform: uppercase;
+  transition: background 0.3s, color 0.3s;
+}
+
+.category:hover {
+  background: #e67e22;
+  color: white;
+}
+
+/* ================= YJET ================= */
+.rating {
+  margin-top: 4px;
+}
+
+.star {
+  font-size: 1rem; /* pak më i madh se normal */
+  color: #ccc;
+  font-weight: bold;
+  margin-right: 2px;
+}
+
+.star.filled {
+  color: #f1c40f;
+}
+
+
 

@@ -53,19 +53,6 @@ const Books = () => {
             onChange={(e) => setSearchTerm(e.target.value)}
           />
         </div>
-
-        {/* ================= CATEGORY FILTER ================= */}
-        <div className="category-filter">
-          {categories.map(cat => (
-            <button
-              key={cat}
-              className={selectedCategory === cat ? "category-chip active" : "category-chip"}
-              onClick={() => setSelectedCategory(cat)}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
       </div>
 
       {/* ================= BOOKS GRID ================= */}
