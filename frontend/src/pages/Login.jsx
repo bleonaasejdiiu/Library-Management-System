@@ -21,10 +21,11 @@ function Login() {
   };
 
   // Kur klikon butonin Login ose Register
-  const handleSubmit = async (e) => {
-    e.preventDefault(); // Mos bëj refresh faqes
+  // Brenda Login.jsx
 
-    // --- LOGJIKA E LOGIN ---
+const handleSubmit = async (e) => {
+    e.preventDefault();
+
     if (isLogin) {
       try {
         const response = await axios.post('http://localhost:5000/api/auth/login', {
@@ -33,18 +34,25 @@ function Login() {
         });
 
         if (response.data.success) {
-          // 1. Ruaj Tokenin dhe Userin në LocalStorage
+          // 1. Ruajmë të dhënat
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('user', JSON.stringify(response.data.user));
-          
-          alert(`✅ Mirësevini ${response.data.user.name}!`);
-          
-          // 2. Shko te faqja kryesore
-          navigate('/'); 
+          localStorage.setItem('role', response.data.user.role); // Roli vjen nga Backendi
+
+          // 2. NDARJA STRIKTE E FAQEVE
+          const role = response.data.user.role;
+
+          if (role === 'admin') {
+              // Admini shkon direkt te Paneli i Kontrollit
+              navigate('/admin-dashboard');
+          } else {
+              // Useri shkon te Profili i tij (ose Home)
+              navigate('/user-dashboard'); 
+          }
         }
       } catch (error) {
-        console.error("Login Error:", error);
-        alert("❌ " + (error.response?.data?.error || "Email ose Password i gabuar!"));
+        console.error("Login error", error);
+        alert("Gabim në Login! " + (error.response?.data?.error || ""));
       }
     } 
     // --- LOGJIKA E REGJISTRIMIT ---

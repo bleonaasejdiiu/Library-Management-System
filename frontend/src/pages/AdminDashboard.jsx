@@ -1,101 +1,247 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import './books.css'; // Mund të përdorësh stilin ekzistues ose të krijosh admin.css
+import './AdminDashboard.css'; // <--- KËTU ISHTE GABIMI (E RREGULLOVA)
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
-  const [adminName, setAdminName] = useState('');
+  const [activeTab, setActiveTab] = useState('books'); 
+  
+  // 1. STATE PËR SHFAQJEN E FORMËS
+  const [showAddForm, setShowAddForm] = useState(false);
+
+  // 2. STATE PËR TË DHËNAT E FORMËS
+  const [newBook, setNewBook] = useState({
+    title: '', author: '', category: '', quantity: 1
+  });
+
+  // Të dhëna statike sa për testim (Librat)
+  const [books, setBooks] = useState([
+    { id: 1, title: 'Harry Potter', author: 'J.K. Rowling', category: 'Fiction', quantity: 5 },
+    { id: 2, title: 'Clean Code', author: 'Robert Martin', category: 'Tech', quantity: 3 },
+    { id: 3, title: 'The Great Gatsby', author: 'F. Scott Fitzgerald', category: 'Classic', quantity: 2 },
+  ]);
+
+  // Të dhëna statike (Userat)
+  const [users, setUsers] = useState([
+    { id: 101, name: 'Filan Fisteku', email: 'filan@example.com', role: 'Member' },
+    { id: 102, name: 'Ana Prifti', email: 'ana@example.com', role: 'Member' },
+  ]);
 
   useEffect(() => {
-    // Marrim të dhënat e userit nga LocalStorage
-    const user = JSON.parse(localStorage.getItem('user'));
-    
-    // Siguri shtesë: Nëse s'ka user ose nuk është admin, ktheje mbrapsht
     const role = localStorage.getItem('role');
-    if (!user || role !== 'admin') {
-      navigate('/login');
-    } else {
-      setAdminName(user.name);
+    if (role !== 'admin') {
+      navigate('/login'); 
     }
   }, [navigate]);
 
+  // --- LOGJIKA VIZUALE (PA DB AKOMA) ---
+
+  // Shto Libër (Vetëm në listën lokale)
+  const handleSaveBook = (e) => {
+    e.preventDefault(); // Mos bëj refresh faqes
+    
+    const tempBook = {
+        id: books.length + 1, // Krijojmë një ID false
+        ...newBook
+    };
+
+    setBooks([...books, tempBook]); // E shtojmë në listë
+    setShowAddForm(false); // Mbyllim formën
+    setNewBook({ title: '', author: '', category: '', quantity: 1 }); // Pastrojmë fushat
+    alert("Libri u shtua vizualisht!"); 
+  };
+
+  // Fshi Libër
+  const handleDeleteBook = (id) => {
+    if(window.confirm('A jeni i sigurt?')) {
+        setBooks(books.filter(b => b.id !== id));
+    }
+  };
+
   const handleLogout = () => {
-    // Pastrojmë të gjitha të dhënat
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    localStorage.removeItem('role');
+    localStorage.clear();
     navigate('/login');
   };
 
   return (
-    <div className="dashboard-container" style={{ display: 'flex', height: '100vh' }}>
+    <div className="dashboard-layout">
       
-      {/* --- SIDEBAR (Majtas) --- */}
-      <div className="sidebar" style={{ width: '250px', backgroundColor: '#2c3e50', color: 'white', padding: '20px' }}>
-        <h2>📚 Library Admin</h2>
-        <ul style={{ listStyle: 'none', padding: 0, marginTop: '30px' }}>
-          <li style={liStyle} onClick={() => console.log('Shko te Librat')}>📖 Menaxho Librat</li>
-          <li style={liStyle} onClick={() => console.log('Shko te Anëtarët')}>busts👥 Menaxho Anëtarët</li>
-          <li style={liStyle} onClick={() => console.log('Shko te Huazimet')}>📅 Huazimet & Kthimet</li>
-          <li style={liStyle} onClick={() => console.log('Shko te Statistikat')}>📊 Statistikat</li>
+      {/* --- SIDEBAR --- */}
+      <aside className="sidebar">
+        <h2>🛡️ Admin Panel</h2>
+        <ul>
+          <li className={activeTab === 'books' ? 'active' : ''} onClick={() => setActiveTab('books')}>
+            📚 Menaxho Librat
+          </li>
+          <li className={activeTab === 'users' ? 'active' : ''} onClick={() => setActiveTab('users')}>
+            👥 Menaxho Përdoruesit
+          </li>
+          <li className={activeTab === 'loans' ? 'active' : ''} onClick={() => setActiveTab('loans')}>
+            📅 Huazimet
+          </li>
         </ul>
+        <div style={{marginTop: 'auto', padding: '20px'}}>
+             <button onClick={handleLogout} className="btn-delete" style={{width: '100%'}}>LOGOUT</button>
+        </div>
+      </aside>
+
+      {/* --- CONTENT --- */}
+      <main className="dashboard-content">
         
-        <button 
-          onClick={handleLogout} 
-          style={{ marginTop: '50px', backgroundColor: '#e74c3c', color: 'white', border: 'none', padding: '10px 20px', cursor: 'pointer', width: '100%' }}
-        >
-          Dil (Logout)
-        </button>
-      </div>
+        {/* === TABI: LIBRAT === */}
+        {activeTab === 'books' && (
+          <div className="fade-in">
+            <div className="content-header">
+              <h1>📚 Inventari i Librave</h1>
+              {/* BUTONI QË HAP/MBYLL FORMËN */}
+              <button 
+                className="btn-add" 
+                onClick={() => setShowAddForm(!showAddForm)}
+                style={{ backgroundColor: showAddForm ? '#7f8c8d' : '#8d6e63' }}
+              >
+                {showAddForm ? '❌ Mbyll Formën' : '+ Shto Libër'}
+              </button>
+            </div>
 
-      {/* --- CONTENT (Djathtas) --- */}
-      <div className="content" style={{ flex: 1, padding: '30px', backgroundColor: '#f4f6f9' }}>
-        <div className="header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '30px' }}>
-          <h1>Paneli i Administratorit</h1>
-          <div className="admin-profile">
-            <span>Mirësevini, <strong>{adminName}</strong> (Admin)</span>
+            {/* --- FORMA PËR SHTIMIN E LIBRIT --- */}
+            {showAddForm && (
+                <div className="form-container fade-in">
+                    <h3>Shto Libër të Ri</h3>
+                    <form onSubmit={handleSaveBook} className="add-book-form">
+                        <div className="form-group">
+                            <label>Titulli</label>
+                            <input 
+                                type="text" placeholder="psh. Harry Potter" required 
+                                value={newBook.title} onChange={(e)=>setNewBook({...newBook, title: e.target.value})} 
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Autori</label>
+                            <input 
+                                type="text" placeholder="psh. J.K. Rowling" required 
+                                value={newBook.author} onChange={(e)=>setNewBook({...newBook, author: e.target.value})} 
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Kategoria</label>
+                            <input 
+                                type="text" placeholder="psh. Fiction" required 
+                                value={newBook.category} onChange={(e)=>setNewBook({...newBook, category: e.target.value})} 
+                            />
+                        </div>
+                        <div className="form-group">
+                            <label>Sasia</label>
+                            <input 
+                                type="number" min="1" required 
+                                value={newBook.quantity} onChange={(e)=>setNewBook({...newBook, quantity: e.target.value})} 
+                            />
+                        </div>
+                        <button type="submit" className="btn-add" style={{marginTop: '10px', width: '100%'}}>Ruaj në Listë</button>
+                    </form>
+                </div>
+            )}
+            
+            <div className="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Titulli</th>
+                    <th>Autori</th>
+                    <th>Kategoria</th>
+                    <th>Sasia</th>
+                    <th>Veprime</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {books.map(book => (
+                    <tr key={book.id}>
+                      <td>#{book.id}</td>
+                      <td><strong>{book.title}</strong></td>
+                      <td>{book.author}</td>
+                      <td>{book.category}</td>
+                      <td>{book.quantity}</td>
+                      <td>
+                        <button className="btn-action btn-edit">Edit</button>
+                        <button className="btn-action btn-delete" onClick={() => handleDeleteBook(book.id)}>Fshi</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        </div>
+        )}
 
-        {/* Këtu do të jenë "Cards" për statistika të shpejta */}
-        <div className="stats-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
-          <div style={cardStyle}>
-            <h3>📖 Total Libra</h3>
-            <p style={{ fontSize: '24px', fontWeight: 'bold' }}>120</p>
+        {/* === TABI: PËRDORUESIT === */}
+        {activeTab === 'users' && (
+          <div className="fade-in">
+             <div className="content-header">
+              <h1>👥 Lista e Anëtarëve</h1>
+            </div>
+            <div className="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Emri i plotë</th>
+                    <th>Email</th>
+                    <th>Roli</th>
+                    <th>Veprime</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users.map(user => (
+                    <tr key={user.id}>
+                      <td>#{user.id}</td>
+                      <td>{user.name}</td>
+                      <td>{user.email}</td>
+                      <td><span style={{padding:'5px 10px', backgroundColor:'#e0f2f1', borderRadius:'15px', color:'#00695c'}}>{user.role}</span></td>
+                      <td>
+                        <button className="btn-action btn-delete">Blloko</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-          <div style={cardStyle}>
-            <h3>👥 Total Anëtarë</h3>
-            <p style={{ fontSize: '24px', fontWeight: 'bold' }}>45</p>
-          </div>
-          <div style={cardStyle}>
-            <h3>📅 Libra të Huazuar</h3>
-            <p style={{ fontSize: '24px', fontWeight: 'bold' }}>12</p>
-          </div>
-        </div>
+        )}
 
-        <div style={{ marginTop: '40px', padding: '20px', backgroundColor: 'white', borderRadius: '8px', boxShadow: '0 2px 4px rgba(0,0,0,0.1)' }}>
-          <h3>Veprimet e Fundit</h3>
-          <p>Këtu do të shfaqen huazimet e fundit ose librat e shtuar së fundmi...</p>
-        </div>
-      </div>
+        {/* === TABI: HUAZIMET === */}
+        {activeTab === 'loans' && (
+          <div className="fade-in">
+             <div className="content-header">
+              <h1>📅 Huazimet Aktive</h1>
+            </div>
+            <div className="table-container">
+                <table>
+                <thead>
+                  <tr>
+                    <th>ID Huazimi</th>
+                    <th>Libri</th>
+                    <th>Huazuesi</th>
+                    <th>Data e Kthimit</th>
+                    <th>Statusi</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#55</td>
+                        <td>Harry Potter</td>
+                        <td>Filan Fisteku</td>
+                        <td>25/12/2025</td>
+                        <td style={{color: '#d35400', fontWeight:'bold'}}>Pa kthyer</td>
+                    </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        )}
+
+      </main>
     </div>
   );
-};
-
-// Stile të thjeshta JS për të mos krijuar CSS file tani
-const liStyle = {
-  padding: '15px 10px',
-  cursor: 'pointer',
-  borderBottom: '1px solid #34495e',
-  fontSize: '16px'
-};
-
-const cardStyle = {
-  backgroundColor: 'white',
-  padding: '20px',
-  borderRadius: '8px',
-  boxShadow: '0 2px 5px rgba(0,0,0,0.1)',
-  textAlign: 'center'
 };
 
 export default AdminDashboard;
