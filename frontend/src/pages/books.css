@@ -1,0 +1,91 @@
+.books-page {
+  padding-bottom: 80px;
+  background: #f8f8f8;
+}
+
+/* ================= HERO ================= */
+.books-hero {
+  background: linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+              url("https://images.unsplash.com/photo-1512820790803-83ca734da794");
+  background-size: cover;
+  background-position: center;
+  padding: 120px 20px 180px;
+  text-align: center;
+  color: white;
+}
+
+.books-hero h1 {
+  font-size: 3rem;
+  margin-bottom: 10px;
+  font-family: "Merriweather", serif;
+}
+
+.books-hero p {
+  font-size: 1.2rem;
+  color: #ddd;
+  margin-bottom: 30px;
+}
+
+/* ================= SEARCH BAR ================= */
+.hero-search {
+  max-width: 520px;
+  margin: 0 auto 20px;
+}
+
+.hero-search input {
+  width: 100%;
+  padding: 16px 20px;
+  border-radius: 40px;
+  border: none;
+  font-size: 1rem;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+}
+
+.hero-search input:focus {
+  outline: none;
+}
+
+/* ================= CATEGORY FILTER ================= */
+.category-filter {
+  margin-top: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+
+.category-chip {
+  padding: 8px 18px;
+  border-radius: 25px;
+  border: 1px solid #ddd;
+  background: #f6f6f6;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: 0.25s;
+}
+
+.category-chip:hover {
+  background: #eee;
+}
+
+.category-chip.active {
+  background: #e67e22;
+  color: white;
+  border-color: #e67e22;
+}
+
+/* ================= BOOKS GRID ================= */
+.books-grid {
+  padding: 60px 40px 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 30px;
+}
+
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: #777;
+  font-size: 1.1rem;
+}
+
