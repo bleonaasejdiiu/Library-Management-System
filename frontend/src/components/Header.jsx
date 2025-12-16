@@ -49,26 +49,6 @@ function Header() {
                 <NavLink to="/books?category=language">Language & Linguistics</NavLink>
               </div>
 
-<<<<<<< HEAD
-    <div className="mega-column">
-      <h4>Science & Business</h4>
-      <NavLink to="/books?category=science">Science</NavLink>
-      <NavLink to="/books?category=business">Business</NavLink>
-      <NavLink to="/books?category=leadership">Leadership</NavLink>
-      <NavLink to="/books?category=law">Law</NavLink>
-    </div>
-
-    <div className="mega-column">
-      <h4>Special collections</h4>
-      <NavLink to="/books?category=history">History</NavLink>
-      <NavLink to="/books?category=psychology">Psychology</NavLink>
-      <NavLink to="/books?category=technology">Technology</NavLink>
-      <NavLink to="/books">All Categories →</NavLink>
-    </div>
-
-  </div>
-</li>
-=======
               <div className="mega-column">
                 <h4>Science & Business</h4>
                 <NavLink to="/books?category=science">Science</NavLink>
@@ -76,13 +56,12 @@ function Header() {
                 <NavLink to="/books?category=leadership">Leadership</NavLink>
                 <NavLink to="/books?category=law">Law</NavLink>
               </div>
->>>>>>> 6c0a90f1a7bfb762bf1629419201ef443299254d
 
               <div className="mega-column">
                 <h4>Special collections</h4>
                 <NavLink to="/books?category=history">History</NavLink>
                 <NavLink to="/books?category=psychology">Psychology</NavLink>
-                <NavLink to="/books?category=children">Technology</NavLink>
+                <NavLink to="/books?category=technology">Technology</NavLink>
                 <NavLink to="/books">All Categories →</NavLink>
               </div>
             </div>
