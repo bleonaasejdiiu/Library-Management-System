@@ -13,23 +13,27 @@
   transform: translateY(-5px);
 }
 
-/* ================= IMAGE ================= */
+/* ================= IMAGE (BOOK COVER) ================= */
 .book-image {
   width: 100%;
-  height: 240px; /* zvogëluar lartësia */
+  aspect-ratio: 2 / 3;  /* LIBËR REAL */
   overflow: hidden;
 }
+
 
 .book-image img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s;
+  object-fit: cover;        
+  object-position: center;
+  display: block;
+  transition: transform 0.35s ease;
 }
 
 .book-card:hover .book-image img {
-  transform: scale(1.05);
+  transform: scale(1.08);
 }
+
 
 /* ================= OVERLAY me buton ================= */
 .book-overlay {
