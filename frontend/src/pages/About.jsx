@@ -150,24 +150,59 @@ function About() {
       </section>
 
       {/* 3. STATS (STRIP) */}
-      <section className="stats-strip-modern">
-        <div className="stat-modern">
-          <h3>50k+</h3>
-          <p>Books</p>
-        </div>
-        <div className="stat-modern">
-          <h3>15k+</h3>
-          <p>Members</p>
-        </div>
-        <div className="stat-modern">
-          <h3>30</h3>
-          <p>Years</p>
-        </div>
-        <div className="stat-modern">
-          <h3>100%</h3>
-          <p>Free</p>
-        </div>
-      </section>
+      {/* 3. TESTIMONIALS (Zëvendësimi i Stats Strip) */}
+        <section className="testimonials-section">
+          <div className="mv-container">
+            <div className="section-header">
+              <h2>What Our Community Says</h2>
+              <div className="header-line"></div>
+            </div>
+            
+            <div className="testimonials-grid">
+              {/* Card 1 */}
+              <div className="testimonial-card">
+                <div className="quote-icon">“</div>
+                <p>
+                  "Universal Library has completely transformed the way I study. 
+                  The environment is inspiring, and the collection is unmatched. 
+                  It's not just a library; it's a second home."
+                </p>
+                <div className="user-info">
+                  <h5>Sarah Jenkins</h5>
+                  <span>Literature Student</span>
+                </div>
+              </div>
+
+              {/* Card 2 */}
+              <div className="testimonial-card">
+                <div className="quote-icon">“</div>
+                <p>
+                  "Finding rare editions used to be a struggle until I joined here. 
+                  The digital archive is seamless, and the staff is incredibly helpful.
+                  Highly recommended for researchers."
+                </p>
+                <div className="user-info">
+                  <h5>David Miller</h5>
+                  <span>Historian</span>
+                </div>
+              </div>
+
+              {/* Card 3 */}
+              <div className="testimonial-card">
+                <div className="quote-icon">“</div>
+                <p>
+                  "I love the community events and the quiet reading corners. 
+                  It's the perfect escape from the city noise. A true sanctuary 
+                  for book lovers."
+                </p>
+                <div className="user-info">
+                  <h5>Emily Carter</h5>
+                  <span>Avid Reader</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>  
 
       {/* 4. CTA FINAL */}
       <section className="about-cta-final">

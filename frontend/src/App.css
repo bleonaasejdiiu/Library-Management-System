@@ -1082,7 +1082,7 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
   margin: 0 auto;
 }
 
-/* 2. MISSION & VISION (LAYOUT-I I SHIGJETES) */
+
 .mv-section-library {
   background-color: white;
   padding: 100px 20px;
@@ -1105,9 +1105,9 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
   display: flex;
   align-items: center;
   justify-content: space-between; /* I shtyn në skaje */
-  margin-bottom: 140px;
+  margin-bottom: 200px;
   /* Gap nuk ka më rëndësi këtu se do përdorim width, por e lëmë për siguri */
-  gap: 50px; 
+  gap: 200px; 
 }
 .mv-row:last-child { margin-bottom: 0; }
 
@@ -1133,8 +1133,8 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
 
 /* 5. IKONA - E bëjmë fiks 200px (e vogël dhe e pastër) */
 .graphic-icon-lib {
-  width: 200px; 
-  height: 200px;
+  width: 250px; 
+  height: 250px;
   color: #e67e22; 
   opacity: 0.15;
   transition: transform 0.6s ease, opacity 0.3s;
@@ -1206,309 +1206,116 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
   margin: 0 auto;
 }
 
-/* 2. MISSION & VISION (SHIGJETA STYLE LAYOUT) */
-.mv-section-library {
-  background-color: white;
-  padding: 120px 20px;
-  overflow: hidden;
-}
 
-.mv-container {
-  max-width: 1100px;
-  margin: 0 auto;
-}
-
-.mv-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 140px;
-  gap: 60px;
-}
-.mv-row:last-child { margin-bottom: 0; }
-
-/* Zig-Zag Logic */
-.mv-row.reverse {
-  flex-direction: row-reverse;
-}
-
-/* Teksti */
-.mv-text { flex: 1; }
-
-.mv-label {
-  color: #bbb;
-  font-size: 0.9rem;
-  font-weight: 800;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 15px;
-}
-
-.mv-title {
-  font-family: 'Merriweather', serif;
-  font-size: 3rem;
-  font-weight: 900;
-  color: #333;
-  margin-bottom: 25px;
-  line-height: 1.1;
-}
-
-.mv-text p {
-  font-size: 1.2rem;
-  line-height: 1.8;
-  color: #555;
-  max-width: 520px;
-}
-
-/* Grafika/Ikona */
-.mv-graphic {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.graphic-icon-lib {
-  width: 400px; /* Ikona të mëdha */
-  height: 400px;
-  color: #e67e22; /* Portokalli i librarisë */
-  opacity: 0.1; /* Transparencë e lehtë për elegancë */
-  transition: transform 0.6s ease, opacity 0.3s;
-}
-
-/* Efekti Hover */
-.mv-row:hover .graphic-icon-lib {
-  transform: scale(1.05) rotate(3deg);
-  opacity: 0.8; /* Bëhet e plotë kur e prek */
-}
-
-/* 3. VALUES (GRID) */
-.values-section-extended {
-  padding: 100px 20px;
-  background-color: #f4f4f4;
-}
-
-.section-header-small { text-align: center; margin-bottom: 60px; }
-.section-header-small h2 { font-family: 'Merriweather', serif; font-size: 2.5rem; margin-bottom: 15px; color: #333; }
-.line-small { width: 50px; height: 3px; background: #e67e22; margin: 0 auto; }
-
-.values-grid-extended {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 30px;
-}
-
-.value-box {
-  background: white;
-  padding: 40px 30px;
-  border-radius: 6px;
-  text-align: center;
-  box-shadow: 0 5px 20px rgba(0,0,0,0.03);
-  transition: 0.3s;
-  border-bottom: 3px solid transparent;
-}
-
-.value-box:hover {
-  transform: translateY(-8px);
-  border-bottom: 3px solid #e67e22;
-  box-shadow: 0 15px 40px rgba(0,0,0,0.08);
-}
-
-.v-icon { font-size: 3rem; display: block; margin-bottom: 20px; }
-.value-box h3 { font-size: 1.3rem; margin-bottom: 10px; color: #222; }
-.value-box p { color: #666; font-size: 1rem; }
-
-/* 4. STATS STRIP */
-.stats-strip-modern {
-  background: #e67e22;
-  padding: 60px 20px;
-  display: flex;
-  justify-content: center;
-  gap: 80px;
-  flex-wrap: wrap;
-}
-
-.stat-modern { text-align: center; color: white; }
-.stat-modern h3 { font-family: 'Merriweather', serif; font-size: 3.5rem; margin-bottom: 0; }
-.stat-modern p { font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 1rem; opacity: 0.9; }
-
-/* 5. HISTORY SECTION */
-.history-section {
-  padding: 100px 20px;
-  background: white;
-  text-align: center;
-}
-.history-content { max-width: 800px; margin: 0 auto; }
-.history-content h2 { font-family: 'Merriweather', serif; font-size: 2.5rem; color: #222; margin-bottom: 30px; }
-.history-content p { font-size: 1.2rem; color: #555; line-height: 1.8; margin-bottom: 20px; }
-
-/* 6. CTA FINAL */
-.about-cta-final {
-  padding: 100px 20px;
-  text-align: center;
-  background: #222; /* Sfond i errët për kontrast në fund */
-  color: white;
-}
-.about-cta-final h2 {
-  font-family: 'Merriweather', serif;
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-}
-.about-cta-final p {
-  font-size: 1.2rem;
-  color: #ccc;
-  margin-bottom: 40px;
-}
-
-/* Button outline for CTA */
-.btn-outline {
-  background: transparent;
-  border: 2px solid white;
-  padding: 13px 40px;
-  font-weight: bold;
-  font-size: 1.1rem;
-  color: white;
-  border-radius: 4px;
-  transition: 0.3s;
-}
-.btn-outline:hover {
-  background: white;
-  color: #222;
-}
-
-/* RESPONSIVE */
-@media (max-width: 900px) {
-  .mv-row, .mv-row.reverse {
-    flex-direction: column;
-    text-align: center;
-    gap: 50px;
-  }
-  .mv-text p { margin: 0 auto; }
-  .graphic-icon-lib { width: 250px; height: 250px; }
-  .about-hero-clean h1 { font-size: 2.5rem; }
-}
-/* =========================================
-   EXTENDED ABOUT PAGE STYLES (ZIG-ZAG)
-   ========================================= */
+/* =================================================================
+   ZGJIDHJA PERFUNDIMTARE E PASTËR 
+   (Kopjoje këtë dhe zëvendësoje pjesën e FUNDIT të App.css)
+   ================================================================= */
 
 .about-page-extended {
   background-color: white;
   min-height: 100vh;
 }
 
-/* 1. HERO HEADER (Minimalist) */
-.about-hero-clean {
-  background-color: #f9f9f9;
-  padding: 100px 20px 80px;
+/* 1. HERO HEADER (Stili Dukagjini - Foto) */
+.about-hero-image {
+  background-image: url('https://images.unsplash.com/photo-1521587760476-6c12a4b040da?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  height: 600px; 
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  border-bottom: 1px solid #eee;
+  color: white; 
+  margin-bottom: 80px; 
 }
 
-.about-hero-clean .subtitle {
-  color: #e67e22;
-  font-weight: 800;
-  letter-spacing: 3px;
-  font-size: 0.9rem;
-  display: block;
-  margin-bottom: 15px;
+.about-hero-overlay {
+  position: absolute;
+  top: 0; left: 0; width: 100%; height: 100%;
+  background: rgba(0, 0, 0, 0.65);
+  z-index: 1;
 }
 
-.about-hero-clean h1 {
-  font-family: 'Merriweather', serif;
-  font-size: 3.5rem;
-  color: #222;
-  margin-bottom: 20px;
-  font-weight: 900;
+.relative-content { position: relative; z-index: 2; padding: 0 20px; }
+
+.subtitle-hero {
+  color: #e67e22; font-weight: 800; letter-spacing: 4px; font-size: 0.9rem;
+  display: block; margin-bottom: 20px; text-transform: uppercase;
 }
 
-.about-hero-clean p {
-  font-size: 1.3rem;
-  color: #666;
-  max-width: 700px;
-  margin: 0 auto 30px;
+.about-hero-image h1 {
+  font-family: 'Merriweather', serif; font-size: 3.8rem; margin-bottom: 25px;
+  font-weight: 900; text-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
-.header-line-center {
-  width: 80px;
-  height: 5px;
-  background: #e67e22;
-  margin: 0 auto;
+.about-hero-image p {
+  font-size: 1.4rem; color: #f1f1f1; max-width: 750px;
+  margin: 0 auto 35px; line-height: 1.7;
 }
 
-/* 2. MISSION, VISION, VALUES, STORY... (LAYOUT I SHIGJETES) */
+.header-line-center.orange-line {
+  background-color: #e67e22; width: 100px; height: 5px;
+  border-radius: 2px; margin: 0 auto;
+}
+
+/* 2. MISSION & VISION (Ikonat e rritura & Hapësira OK) */
 .mv-section-library {
   background-color: white;
-  padding: 120px 20px;
+  padding: 100px 20px;
   overflow: hidden;
 }
 
 .mv-container {
-  max-width: 1100px;
+  max-width: 1400px; /* E gjerë */
   margin: 0 auto;
+  padding: 0 40px;
 }
 
 .mv-row {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 140px;
-  gap: 60px;
+  margin-bottom: 150px;
+  gap: 200px; /* Distancë e sigurt */
 }
 .mv-row:last-child { margin-bottom: 0; }
 
-/* Zig-Zag Logic */
-.mv-row.reverse {
-  flex-direction: row-reverse;
+.mv-row.reverse { flex-direction: row-reverse; }
+
+/* TEKSTI: Merr gjysmën e majtë */
+.mv-text {
+  width: 50%;
+  flex: none; 
 }
 
-/* Teksti */
-.mv-text { flex: 1; }
+.mv-label { color: #bbb; font-size: 0.9rem; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 15px; }
+.mv-title { font-family: 'Merriweather', serif; font-size: 3rem; font-weight: 900; color: #333; margin-bottom: 25px; line-height: 1.1; }
+.mv-text p { font-size: 1.2rem; line-height: 1.8; color: #555; max-width: 100%; }
 
-.mv-label {
-  color: #bbb;
-  font-size: 0.9rem;
-  font-weight: 800;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 15px;
-}
-
-.mv-title {
-  font-family: 'Merriweather', serif;
-  font-size: 3rem;
-  font-weight: 900;
-  color: #333;
-  margin-bottom: 25px;
-  line-height: 1.1;
-}
-
-.mv-text p {
-  font-size: 1.2rem;
-  line-height: 1.8;
-  color: #555;
-  max-width: 520px;
-}
-
-/* Grafika/Ikona */
+/* GRAFIKA: Merr pjesën tjetër */
 .mv-graphic {
-  flex: 1;
+  width: 45%;
+  flex: none;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
+/* --- IKONA (E ZMADHUAR SIÇ KERKOVE) --- */
 .graphic-icon-lib {
-  width: 400px; /* Ikona të mëdha */
-  height: 400px;
-  color: #e67e22; /* Portokalli i librarisë */
-  opacity: 0.1; /* Transparencë e lehtë për elegancë */
+  width: 300px; /* E bëra më të madhe (ishte 200px) */
+  height: 300px;
+  color: #e67e22; 
+  opacity: 0.15; 
   transition: transform 0.6s ease, opacity 0.3s;
 }
 
-/* Efekti Hover */
 .mv-row:hover .graphic-icon-lib {
   transform: scale(1.05) rotate(3deg);
-  opacity: 0.8; /* Bëhet e plotë kur e prek */
+  opacity: 0.8;
 }
 
 /* 3. STATS STRIP */
@@ -1520,30 +1327,39 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
   gap: 80px;
   flex-wrap: wrap;
 }
-
 .stat-modern { text-align: center; color: white; }
 .stat-modern h3 { font-family: 'Merriweather', serif; font-size: 3.5rem; margin-bottom: 0; }
 .stat-modern p { font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 1rem; opacity: 0.9; }
 
-/* 4. CTA FINAL */
+/* 4. CTA FINAL (RREGULLIMI I PJESES SE POSHTME) */
 .about-cta-final {
+  background-color: #1a1a1a; /* Sfond i zi qe te duket si pjese e footerit */
+  color: white; /* Tekst i bardhe */
   padding: 100px 20px;
   text-align: center;
-  background: #222; /* Sfond i errët për kontrast në fund */
-  color: white;
+  margin-top: 0;
 }
+
 .about-cta-final h2 {
   font-family: 'Merriweather', serif;
-  font-size: 2.5rem;
+  font-size: 2.8rem;
   margin-bottom: 20px;
+  color: white;
 }
+
 .about-cta-final p {
   font-size: 1.2rem;
   color: #ccc;
   margin-bottom: 40px;
 }
 
-/* Button outline for CTA */
+.cta-group {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+/* Butonat */
 .btn-outline {
   background: transparent;
   border: 2px solid white;
@@ -1561,91 +1377,89 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
 
 /* RESPONSIVE */
 @media (max-width: 900px) {
+  .about-hero-image { height: 400px; }
+  .about-hero-image h1 { font-size: 2.5rem; }
+  
   .mv-row, .mv-row.reverse {
     flex-direction: column;
     text-align: center;
-    gap: 50px;
+    gap: 60px;
   }
-  .mv-text p { margin: 0 auto; }
-  .graphic-icon-lib { width: 250px; height: 250px; }
-  .about-hero-clean h1 { font-size: 2.5rem; }
+  .mv-text { width: 100%; }
+  .mv-graphic { width: 100%; order: -1; margin-bottom: 20px; }
+  
+  .graphic-icon-lib { width: 220px; height: 220px; }
 }
+
+/* ndryshimi i pjeses ne fund te about us*/
 /* =========================================
-   ABOUT HERO - DUKAGJINI STYLE
+   TESTIMONIALS SECTION (Zëvendësimi i Stats)
    ========================================= */
 
-.about-hero-image {
-  /* Foto librarie profesionale (Warm/Cozy) */
-  background-image: url('https://images.unsplash.com/photo-1521587760476-6c12a4b040da?ixlib=rb-1.2.1&auto=format&fit=crop&w=1920&q=80');
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  height: 600px; /* Lartësia e baner-it */
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.testimonials-section {
+  padding: 100px 20px;
+  background-color: #f9f9f9; /* Sfond gri shumë i hapur për kontrast */
+}
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 40px;
+  margin-top: 50px;
+}
+
+.testimonial-card {
+  background: white;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.05); /* Hije e butë moderne */
   text-align: center;
-  color: white; /* Teksti bëhet i bardhë */
-  margin-bottom: 80px; /* Hapësirë poshtë fotos */
-}
-
-/* Shtresa e zezë sipër fotos (Overlay) */
-.about-hero-overlay {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: rgba(0, 0, 0, 0.65); /* 65% e zezë që të lexohet teksti */
-  z-index: 1;
-}
-
-/* Përmbajtja (Teksti) të jetë sipër shtresës së zezë */
-.relative-content {
   position: relative;
-  z-index: 2;
-  padding: 0 20px;
+  transition: 0.3s ease;
+  border-bottom: 3px solid transparent;
 }
 
-/* Stili i teksteve */
-.subtitle-hero {
-  color: #e67e22; /* Portokalli */
-  font-weight: 800;
-  letter-spacing: 4px;
-  font-size: 0.9rem;
-  display: block;
-  margin-bottom: 20px;
-  text-transform: uppercase;
+.testimonial-card:hover {
+  transform: translateY(-10px);
+  border-bottom: 3px solid #e67e22; /* Vijë portokalli kur e prek */
 }
 
-.about-hero-image h1 {
+.quote-icon {
   font-family: 'Merriweather', serif;
-  font-size: 3.8rem; /* Titull i madh */
-  margin-bottom: 25px;
-  font-weight: 900;
-  text-shadow: 0 4px 10px rgba(0,0,0,0.3); /* Hije teksti për dukje 3D */
+  font-size: 4rem;
+  color: #e67e22;
+  opacity: 0.3;
+  line-height: 1;
+  margin-bottom: 20px;
 }
 
-.about-hero-image p {
-  font-size: 1.4rem;
-  color: #f1f1f1; /* E bardhë e zbutur */
-  max-width: 750px;
-  margin: 0 auto 35px;
-  line-height: 1.7;
+.testimonial-card p {
+  font-family: 'Open Sans', sans-serif;
+  font-size: 1.1rem;
+  color: #555;
+  font-style: italic;
+  margin-bottom: 30px;
+  line-height: 1.8;
 }
 
-/* Vija Portokalli */
-.header-line-center.orange-line {
-  background-color: #e67e22;
-  width: 100px;
-  height: 5px;
-  border-radius: 2px;
-  margin: 0 auto;
+.user-info h5 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #222;
+  margin-bottom: 5px;
 }
 
-/* RESPONSIVE */
+.user-info span {
+  font-size: 0.9rem;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+}
+
+/* Responsive */
 @media (max-width: 768px) {
-  .about-hero-image { height: 400px; }
-  .about-hero-image h1 { font-size: 2.5rem; }
-  .about-hero-image p { font-size: 1.1rem; }
+  .testimonials-grid {
+    grid-template-columns: 1fr;
+  }
 }
