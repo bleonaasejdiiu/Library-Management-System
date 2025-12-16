@@ -38,6 +38,10 @@ const Books = () => {
     { id: 24, title: "Zero to One", author: "P.Thiel", category: "Technology", image: "/images/IMG25.jpg" },
     { id: 25, title: "The Innovators ", author: "W.Isaacson", category: "Technology", image: "/images/img26.jpg" },
     { id: 26, title: "Code ", author: "C. Petzold", category: "Technology", image: "/images/img27.jpg" },
+    { id: 27, title: "Good to Great ", author: "J. Collins", category: "Business", image: "/images/img28.png" },
+    { id: 28, title: "The Silk Roads: A New History ", author: "P.Frankopan", category: "History", image: "/images/img29.jpg" },
+    { id: 29, title: "The Elements of Journalism", author: "B. Kovach & T.Rosenstiel", category: "News&Articles", image: "/images/img30.jpg" },
+    { id: 30, title: "Start With Why ", author: "S.Sinek", category: "Leadership", image: "/images/img31.jpg" }
   ];
 
   /* ================= READ CATEGORY FROM URL ================= */
