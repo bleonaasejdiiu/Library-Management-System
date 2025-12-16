@@ -4,7 +4,7 @@ const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
 class AuthService {
-    // --- REGJISTRIMI (E ke pasur) ---
+    // --- REGJISTRIMI (I pandryshuar) ---
     async register(data) {
         const existingUser = await userRepository.findByEmail(data.email);
         if (existingUser) {
@@ -15,7 +15,7 @@ class AuthService {
         return await userRepository.createMember(newMemberData);
     }
 
-    // --- LOGIN (E RE) ---
+    // --- LOGIN (Me logjikën e Roleve e shtuar) ---
     async login(email, password) {
         // 1. Gjej userin
         const user = await userRepository.findByEmail(email);
@@ -29,21 +29,28 @@ class AuthService {
             throw new Error('Email ose Password i gabuar!');
         }
 
+        // --- PJESA E RE: Përcaktojmë rolin ---
+        // Supozojmë se kolona ID në tabelën Person quhet 'personId'.
+        // Nëse në databazë kolona Primary Key e Person quhet vetëm 'id', ndrysho 'user.personId' në 'user.id'
+        const role = await userRepository.getRole(user.personId);
+
         // 3. Krijo Token (Leja e hyrjes)
+        // Tani roli nuk është fiks 'member', por vjen nga databaza ('admin' ose 'member')
         const token = jwt.sign(
-            { id: user.personId, role: 'member' }, // Të dhënat që ruhen në token
-            process.env.JWT_SECRET || 'sekret_i_perkohshem', // Çelësi sekret
-            { expiresIn: '1h' } // Skadon pas 1 ore
+            { id: user.personId, role: role }, 
+            process.env.JWT_SECRET || 'sekret_i_perkohshem', 
+            { expiresIn: '1h' } 
         );
 
-        // Kthejmë userin (pa password) dhe tokenin
+        // Kthejmë userin, tokenin DHE rolin për Frontend-in
         return {
             token,
             user: {
                 id: user.personId,
                 name: user.name,
                 lastname: user.lastname,
-                email: user.email
+                email: user.email,
+                role: role // E rëndësishme që Frontend-i të dijë ku të bëjë redirect
             }
         };
     }

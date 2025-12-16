@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import Home from './pages/Home';
 import Login from './pages/Login'; 
 import About from './pages/About'; // <--- Tani kjo është aktive!
+import AdminDashboard from './pages/AdminDashboard'; // <--- IMPORTOJE KËTU
 
 // --- PLACEHOLDERS (Vetëm për faqet që s'i kemi bërë ende) ---
 // VËMENDJE: E kemi fshirë 'const About = ...' që të mos dalë më ajo shkrimi i thjeshtë.
@@ -35,6 +36,8 @@ function App() {
             <Route path="/books" element={<Books />} />
             <Route path="/authors" element={<Authors />} />
             <Route path="/login" element={<Login />} />
+            <Route path="/admin-dashboard" element={<AdminDashboard />} />
+
           </Routes>
         </div>
 

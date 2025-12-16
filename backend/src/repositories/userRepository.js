@@ -2,10 +2,24 @@ const db = require('../config/db');
 
 class UserRepository {
     
-    // Për të gjetur userin me email (për Login më vonë)
+    // Për të gjetur userin me email (për Login)
     async findByEmail(email) {
         const [rows] = await db.execute('SELECT * FROM Person WHERE email = ?', [email]);
         return rows[0];
+    }
+
+    // --- PJESA E RE: Kontrollojmë rolin ---
+    async getRole(personId) {
+        // Kontrollojmë nëse ky personId ekziston në tabelën Librarian.
+        // E RËNDËSISHME: Sigurohu që kolona në tabelën Librarian quhet 'personId'. 
+        // Nëse në databazë e ke 'person_id', ndryshoje këtu poshtë.
+        const [admins] = await db.execute('SELECT * FROM Librarian WHERE personId = ?', [personId]);
+        
+        if (admins.length > 0) {
+            return 'admin'; // U gjet te Librarian -> është Admin
+        }
+        
+        return 'member'; // Nëse s'u gjet te Librarian -> është Member
     }
 
     // Për të krijuar një Member të ri (Regjistrimi)
