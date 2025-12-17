@@ -6,15 +6,15 @@ function Header() {
 
   // 1. Marrim të dhënat e përdoruesit dhe ROLIN nga kujtesa
   const user = JSON.parse(localStorage.getItem('user'));
-  const role = localStorage.getItem('role'); // <--- KJO NA DUHEJ
+  const role = localStorage.getItem('role'); 
 
-  // 2. Funksioni për të dalë (Logout)
+  // 2. Përcaktojmë nëse është Admin (pranojmë edhe 'Admin' edhe 'admin')
+  const isAdmin = user && (role === 'Admin' || role === 'admin');
+
+  // 3. Funksioni për të dalë (Logout)
   const handleLogout = () => {
-    localStorage.removeItem('token'); 
-    localStorage.removeItem('user');  
-    localStorage.removeItem('role'); // Fshijmë edhe rolin
+    localStorage.clear(); // Fshin gjithçka (token, user, role)
     navigate('/login'); 
-    window.location.reload(); 
   };
 
   return (
@@ -22,7 +22,8 @@ function Header() {
       <div className="navbar-container">
         
         {/* --- LOGOJA --- */}
-        <Link to="/" className="navbar-logo">
+        {/* Nëse je Admin të çon te Paneli, përndryshe te Home */}
+        <Link to={isAdmin ? "/admin-dashboard" : "/"} className="navbar-logo">
           <img 
             src="https://cdn-icons-png.flaticon.com/512/3389/3389081.png" 
             alt="Logo" 
@@ -33,48 +34,53 @@ function Header() {
 
         {/* --- MENUJA KRYESORE --- */}
         <ul className="nav-menu">
-          <li><NavLink to="/" className="nav-links">HOME</NavLink></li>
-          <li><NavLink to="/about" className="nav-links">ABOUT US</NavLink></li>
           
-          {/* PJESA E LIBRAVE (MEGA DROPDOWN) */}
-          <li className="dropdown mega-dropdown">
-            <NavLink to="/books" className="nav-links">BOOKS</NavLink>
-            <div className="mega-menu">
-              <div className="mega-column">
-                <h4>Literature</h4>
-                <NavLink to="/books?category=art">Art</NavLink>
-                <NavLink to="/books?category=romance">Romance</NavLink>
-                <NavLink to="/books?category=adolescence">Adolescence</NavLink>
-              </div>
-              <div className="mega-column">
-                <h4>Science & Business</h4>
-                <NavLink to="/books?category=science">Science</NavLink>
-                <NavLink to="/books?category=business">Business</NavLink>
-              </div>
-              <div className="mega-column">
-                <h4>Special collections</h4>
-                <NavLink to="/books?category=history">History</NavLink>
-                <NavLink to="/books?category=technology">Technology</NavLink>
-                <NavLink to="/books">All Categories →</NavLink>
-              </div>
-            </div>
-          </li>
-
-          <li><NavLink to="/authors" className="nav-links">AUTHORS</NavLink></li>
-
-          {/* --- MENUTË SIPAS ROLIT (PJESA E RE) --- */}
+          {/* 
+             LOGJIKA E FSHEHJES:
+             Këto linqe shfaqen VETËM nëse NUK je Admin (!isAdmin).
+          */}
+          {!isAdmin && (
+            <>
+              <li><NavLink to="/" className="nav-links">HOME</NavLink></li>
+              <li><NavLink to="/about" className="nav-links">ABOUT US</NavLink></li>
+              <li className="dropdown mega-dropdown">
+                <NavLink to="/books" className="nav-links">BOOKS</NavLink>
+                <div className="mega-menu">
+                  <div className="mega-column">
+                    <h4>Literature</h4>
+                    <NavLink to="/books?category=art">Art</NavLink>
+                    <NavLink to="/books?category=romance">Romance</NavLink>
+                    <NavLink to="/books?category=adolescence">Adolescence</NavLink>
+                  </div>
+                  <div className="mega-column">
+                    <h4>Science & Business</h4>
+                    <NavLink to="/books?category=science">Science</NavLink>
+                    <NavLink to="/books?category=business">Business</NavLink>
+                  </div>
+                  <div className="mega-column">
+                    <h4>Special collections</h4>
+                    <NavLink to="/books?category=history">History</NavLink>
+                    <NavLink to="/books?category=technology">Technology</NavLink>
+                    <NavLink to="/books">All Categories →</NavLink>
+                  </div>
+                </div>
+              </li>
+              <li><NavLink to="/authors" className="nav-links">AUTHORS</NavLink></li>
+            </>
+          )}
+          {/* --- MENUTË SIPAS ROLIT --- */}
           
-          {/* Nëse është ADMIN, shfaq butonin Dashboard */}
-          {user && role === 'admin' && (
+          {/* RASTI 1: Nëse është ADMIN, shfaq VETËM butonin Admin Panel */}
+          {isAdmin && (
              <li>
-               <NavLink to="/admin-dashboard" className="nav-links" style={{ color: '#f1c40f', fontWeight: 'bold' }}>
-                 ADMIN PANEL
+               <NavLink to="/admin-dashboard" className="nav-links" style={{ color: '#f1c40f', fontWeight: 'bold', fontSize: '1.1rem', borderBottom: '2px solid #f1c40f' }}>
+                 🛡️ ADMIN PANEL
                </NavLink>
              </li>
           )}
 
-          {/* Nëse është MEMBER, shfaq butonin My Profile */}
-          {user && role === 'member' && (
+          {/* RASTI 2: Nëse është MEMBER (jo admin), shfaq My Loans */}
+          {user && !isAdmin && (
              <li>
                <NavLink to="/user-dashboard" className="nav-links" style={{ color: '#3498db', fontWeight: 'bold' }}>
                  MY LOANS

@@ -5,6 +5,8 @@ class Member extends Person {
         super(id, name, lastname, email, password, phoneNumber); // Thirr prindin
         this.memberId = memberId;
         this.memberStatus = memberStatus || 'Active';
+                this.role = role; 
+
     }
 }
 

@@ -7,7 +7,7 @@ class Librarian extends Person {
         super(id, name, lastname, email, password, phoneNumber); // Thirr prindin
         this.librarianId = librarianId;
         this.hireDate = hireDate;
-        this.role = role; // 'Admin' ose 'Staff'
+        this.role = role; 
     }
 }
 
