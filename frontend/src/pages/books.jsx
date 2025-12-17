@@ -12,7 +12,7 @@ const Books = () => {
 
   /* ================= BOOKS DATA ================= */
   const books = [
-    { id: 1, title: "The Story of Art", author: "E. H. Gombrich", category: "Art" , image: "/images/img1.jpg" },
+    { id: 1, title: "The General of the Dead Army", author: "I. Kadare", category: "History" , image: "/images/img1.jpg" },
     { id: 2, title: "The Diary of a Young Girl", author: "A. Frank", category: "Art", image: "/images/img2.jpg"},
     { id: 3, title: "The Letters of Vincent van Gogh", author: "V. v. Gogh", category: "Art", image: "/images/img3.jpg"},
     { id: 4, title: "Ways of Seeing", author: "J. Berger", category: "Art", image: "/images/img4.jpg"},
@@ -39,9 +39,10 @@ const Books = () => {
     { id: 25, title: "The Innovators ", author: "W.Isaacson", category: "Technology", image: "/images/img26.jpg" },
     { id: 26, title: "Code ", author: "C. Petzold", category: "Technology", image: "/images/img27.jpg" },
     { id: 27, title: "Good to Great ", author: "J. Collins", category: "Business", image: "/images/img28.png" },
-    { id: 28, title: "The Silk Roads: A New History ", author: "P.Frankopan", category: "History", image: "/images/img29.jpg" },
-    { id: 29, title: "The Elements of Journalism", author: "B. Kovach & T.Rosenstiel", category: "News&Articles", image: "/images/img30.jpg" },
-    { id: 30, title: "Start With Why ", author: "S.Sinek", category: "Leadership", image: "/images/img31.jpg" }
+    { id: 28, title: "The Society of the Spectacle ", author: "G. Debord", category: "History", image: "/images/img29.jpg" },
+    { id: 29, title: "Being and Nothingness", author: "Jean-Paul Sartre", category: "News&Articles", image: "/images/img30.jpg" },
+    { id: 30, title: "The Prince ", author: "N.Machiavelli", category: "Leadership", image: "/images/img31.jpg" },
+     {id:31, title: "The Story of Art", author: "E. H. Gombrich", category: "Art" , image: "/images/img32.jpg"}
   ];
 
   /* ================= READ CATEGORY FROM URL ================= */

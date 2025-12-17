@@ -1,0 +1,163 @@
+/* HERO */
+.authors-hero {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: #ffffff;
+  min-height: 500px; /* pak më i madh hero */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* vendos tekstin në fund të imazhit */
+  align-items: center;
+  text-align: center;
+  padding: 40px 20px; /* pak hapësirë për tekstin */
+  overflow: hidden;
+}
+
+/* Overlay më i errët */
+.authors-hero::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* errësim më i dukshëm për kontrast */
+  z-index: 0;
+}
+
+.authors-hero h1 {
+  position: relative;
+  z-index: 1;
+  max-width: 600px;
+  font-size: 28px; 
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 10px;
+  color: #ffffff; /* ngjyrë e bardhë e sigurt për lexueshmëri */
+  text-align: center;
+  letter-spacing: 1px;
+  text-shadow: 2px 2px 8px rgba(0,0,0,0.7); /* shadow për dukshmëri */
+}
+
+/* DESCRIPTION */
+.authors-description {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 40px;
+padding: 80px;
+align-items: center;
+}
+
+
+.authors-description img {
+width: 100%;
+border-radius: 20px;
+}
+
+
+.authors-description h2 {
+font-size: 28px;
+margin-bottom: 16px;
+}
+.authors-description p {
+color: #475569;
+line-height: 1.7;
+}
+
+
+/* GRID SECTION */
+.authors-grid-section {
+padding: 80px;
+}
+
+
+.authors-grid-section h2 {
+text-align: center;
+margin-bottom: 40px;
+}
+
+
+.authors-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 30px;
+}
+
+
+/* CARD */
+.author-card {
+  background: #fbf8f4;
+  padding: 30px;
+  text-align: center;
+  border-radius: 18px;
+  box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.author-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.12);
+}
+
+
+.author-card img {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top; 
+  margin-bottom: 18px;
+  border: 3px solid rgba(180, 83, 9, 0.25); 
+  background-color: #f3efe9;
+}
+
+.author-card:hover img {
+  transform: scale(1.05);
+  transition: transform 0.3s ease;
+}
+
+.author-card h3 {
+  color: #3b2f23;
+}
+
+.author-card p {
+  color: #6b5e4b;
+}
+
+.author-card span {
+display: block;
+margin-top: 8px;
+font-weight: bold;
+ color: #b45309;
+}
+
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+.authors-description {
+grid-template-columns: 1fr;
+}
+
+
+.authors-grid {
+grid-template-columns: repeat(2, 1fr);
+}
+}
+
+
+@media (max-width: 600px) {
+.authors-grid {
+grid-template-columns: 1fr;
+}
+}
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

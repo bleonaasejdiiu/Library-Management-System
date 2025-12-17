@@ -17,11 +17,12 @@ import AdminDashboard from './pages/AdminDashboard'; // <--- IMPORTOJE KËTU
 
 import Books from './pages/books';
 
-const Authors = () => (
-  <div style={{ padding: "100px", textAlign: "center" }}>
-    <h1>Authors Page (Coming Soon)</h1>
-  </div>
-);
+
+
+import Authors from './pages/Authors';
+
+
+<Route path="/authors" element={<Authors />} />
 
 function App() {
   return (
