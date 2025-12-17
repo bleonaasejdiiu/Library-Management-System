@@ -1,15 +1,46 @@
 const db = require('../config/db');
 
 class UserRepository {
-    async findAll() {
-        const sql = `SELECT * FROM person`;
-        const [rows] = await db.execute(sql);
-        return rows;
+    
+    // Për të gjetur userin me email (për Login)
+    async findByEmail(email) {
+        const [rows] = await db.execute('SELECT * FROM Person WHERE email = ?', [email]);
+        return rows[0];
     }
 
-    async delete(id) {
-        const sql = `DELETE FROM person WHERE personId = ?`;
-        await db.execute(sql, [id]);
+    // --- PJESA E RE: Kontrollojmë rolin ---
+    async getRole(personId) {
+        // Kontrollojmë nëse ky personId ekziston në tabelën Librarian.
+        // E RËNDËSISHME: Sigurohu që kolona në tabelën Librarian quhet 'personId'. 
+        // Nëse në databazë e ke 'person_id', ndryshoje këtu poshtë.
+        const [admins] = await db.execute('SELECT * FROM Librarian WHERE personId = ?', [personId]);
+        
+        if (admins.length > 0) {
+            return 'admin'; // U gjet te Librarian -> është Admin
+        }
+        
+        return 'member'; // Nëse s'u gjet te Librarian -> është Member
+    }
+
+    // Për të krijuar një Member të ri (Regjistrimi)
+    async createMember(personData) {
+        // 1. Shto në tabelën Person
+        const sqlPerson = `INSERT INTO Person (name, lastname, email, password, phoneNumber) VALUES (?, ?, ?, ?, ?)`;
+        const [result] = await db.execute(sqlPerson, [
+            personData.name, 
+            personData.lastname, 
+            personData.email, 
+            personData.password, 
+            personData.phoneNumber
+        ]);
+
+        const newPersonId = result.insertId; // Marrim ID-në e sapokrijuar
+
+        // 2. Shto në tabelën Member duke përdorur ID e Personit
+        const sqlMember = `INSERT INTO Member (personId, memberStatus) VALUES (?, 'Active')`;
+        await db.execute(sqlMember, [newPersonId]);
+
+        return newPersonId;
     }
 }
 
