@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './AdminDashboard.css';
 
 const AdminDashboard = () => {
@@ -7,26 +8,19 @@ const AdminDashboard = () => {
   
   // --- STATE PËR NAVIGIM ---
   const [activeTab, setActiveTab] = useState('books'); 
+  const [loading, setLoading] = useState(false);
   
   // --- STATE PËR SHFAQJEN E FORMËS ---
   const [showAddForm, setShowAddForm] = useState(false);
 
-  // --- LISTA E KATEGORIVE (Për Dropdown) ---
+  // --- LISTA E KATEGORIVE (Dropdown) ---
   const categoriesList = [
-    "Fiction", 
-    "Science", 
-    "Technology", 
-    "History", 
-    "Biography", 
-    "Art", 
-    "Children", 
-    "Business", 
-    "Classic",
-    "Romance",
-    "Mystery"
+    "Fiction", "Science", "Technology", "History", 
+    "Biography", "Art", "Children", "Business", 
+    "Classic", "Romance", "Mystery", "Thriller"
   ];
 
-  // --- STATE PËR TË DHËNAT E LIBRIT (Sipas UML Diagramit) ---
+  // --- FORM STATE (Të dhënat e librit të ri) ---
   const [newBook, setNewBook] = useState({
     isbn: '',
     title: '',
@@ -37,91 +31,81 @@ const AdminDashboard = () => {
     quantity: 1
   });
 
-  // --- DUMMY DATA (Librat fillestarë sa për pamje) ---
-  const [books, setBooks] = useState([
-    { 
-      id: 1, 
-      isbn: '978-3-16-148410-0', 
-      title: 'Harry Potter', 
-      author: 'J.K. Rowling', 
-      publicationYear: 1997, 
-      category: 'Fiction', 
-      publisher: 'Bloomsbury', 
-      quantity: 5 
-    },
-    { 
-      id: 2, 
-      isbn: '978-0-13-235088-4', 
-      title: 'Clean Code', 
-      author: 'Robert Martin', 
-      publicationYear: 2008, 
-      category: 'Technology', 
-      publisher: 'Prentice Hall', 
-      quantity: 3 
-    },
-    { 
-      id: 3, 
-      isbn: '978-0-7432-7356-5', 
-      title: 'The Great Gatsby', 
-      author: 'F. Scott Fitzgerald', 
-      publicationYear: 1925, 
-      category: 'Classic', 
-      publisher: 'Scribner', 
-      quantity: 2 
-    },
-  ]);
+  // --- DATA STATE (Të dhënat nga Databaza) ---
+  const [books, setBooks] = useState([]); 
+  const [users, setUsers] = useState([]); 
 
-  // --- DUMMY DATA (Userat) ---
-  const [users, setUsers] = useState([
-    { id: 101, name: 'Filan Fisteku', email: 'filan@example.com', role: 'Member' },
-    { id: 102, name: 'Ana Prifti', email: 'ana@example.com', role: 'Member' },
-    { id: 103, name: 'Besa Gashi', email: 'besa@example.com', role: 'Member' },
-  ]);
-
-  // --- KONTROLLI I SIGURISË (A është Admin?) ---
+  // --- 1. KONTROLLI I SIGURISË (A është Admin?) ---
   useEffect(() => {
     const role = localStorage.getItem('role');
     if (role !== 'admin') {
       navigate('/login'); 
+    } else {
+      fetchBooks(); // Marrim librat sapo hapet faqja
     }
   }, [navigate]);
 
-  // --- LOGJIKA E SHTIMIT TË LIBRIT ---
-  const handleSaveBook = (e) => {
+  // --- 2. FUNKSIONI PËR TË LEXUAR LIBRAT (GET) ---
+  const fetchBooks = async () => {
+    setLoading(true);
+    try {
+      // Sigurohu që porta është 5000 (Backend API)
+      const response = await axios.get('http://localhost:5000/api/books');
+      setBooks(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Gabim gjatë marrjes së librave:", error);
+      setLoading(false);
+    }
+  };
+
+  // --- 3. FUNKSIONI PËR TË SHTUAR LIBËR (POST) ---
+  const handleSaveBook = async (e) => {
     e.preventDefault();
     
-    // Validim i thjeshtë: Nëse s'ka zgjedhur kategori
+    // Validim: A është zgjedhur kategoria?
     if (!newBook.category) {
         alert("Ju lutem zgjidhni një kategori!");
         return;
     }
 
-    // Krijojmë objektin e ri të librit
-    const tempBook = {
-        id: books.length + 1, // ID e përkohshme
-        ...newBook
-    };
+    try {
+        // Dërgojmë të dhënat në Backend
+        await axios.post('http://localhost:5000/api/books', newBook);
+        
+        alert("✅ Libri u ruajt me sukses në Databazë!");
+        setShowAddForm(false);
+        
+        // Pastrojmë fushat
+        setNewBook({ 
+          isbn: '', title: '', author: '', publicationYear: '', 
+          category: '', publisher: '', quantity: 1 
+        });
 
-    setBooks([...books, tempBook]); // Shtojmë në listë
-    setShowAddForm(false); // Mbyllim formën
-    
-    // Pastrojmë fushat
-    setNewBook({ 
-      isbn: '', title: '', author: '', publicationYear: '', 
-      category: '', publisher: '', quantity: 1 
-    });
-    
-    alert("Libri u shtua me sukses!"); 
-  };
+        // Rifreskojmë tabelën automatikisht
+        fetchBooks();
 
-  // --- LOGJIKA E FSHIRJES ---
-  const handleDeleteBook = (id) => {
-    if(window.confirm('A jeni i sigurt që doni ta fshini këtë libër?')) {
-        setBooks(books.filter(b => b.id !== id));
+    } catch (error) {
+        console.error("Gabim gjatë shtimit:", error);
+        alert("❌ Gabim! Sigurohu që serveri Backend është ndezur.");
     }
   };
 
-  // --- LOGJIKA E DALJES (LOGOUT) ---
+  // --- 4. FUNKSIONI PËR TË FSHIRË LIBËR (DELETE) ---
+  const handleDeleteBook = async (id) => {
+    if(window.confirm('A jeni i sigurt që doni ta fshini këtë libër përgjithmonë?')) {
+        try {
+            await axios.delete(`http://localhost:5000/api/books/${id}`);
+            // Rifreskojmë listën pas fshirjes
+            fetchBooks();
+        } catch (error) {
+            console.error("Gabim gjatë fshirjes:", error);
+            alert("❌ Nuk u fshi dot libri.");
+        }
+    }
+  };
+
+  // --- LOGOUT ---
   const handleLogout = () => {
     localStorage.clear();
     navigate('/login');
@@ -166,10 +150,10 @@ const AdminDashboard = () => {
               </button>
             </div>
 
-            {/* --- FORMA PËR SHTIMIN E LIBRIT --- */}
+            {/* --- FORMA E SHTIMIT --- */}
             {showAddForm && (
                 <div className="form-container fade-in">
-                    <h3>Shto Libër të Ri (Sipas UML)</h3>
+                    <h3>Shto Libër në Databazë</h3>
                     <form onSubmit={handleSaveBook} className="add-book-form">
                         
                         <div className="form-group">
@@ -200,7 +184,7 @@ const AdminDashboard = () => {
                             />
                         </div>
 
-                        {/* --- DROPDOWN PËR KATEGORITË --- */}
+                        {/* Dropdown për Kategorinë */}
                         <div className="form-group">
                             <label>Kategoria</label>
                             <select 
@@ -217,7 +201,7 @@ const AdminDashboard = () => {
 
                         <div className="form-group">
                             <label>Botuesi (Publisher)</label>
-                            <input type="text" placeholder="Emri i shtëpisë botuese" required 
+                            <input type="text" placeholder="Shtëpia botuese" required 
                                 value={newBook.publisher} onChange={(e)=>setNewBook({...newBook, publisher: e.target.value})} 
                             />
                         </div>
@@ -238,6 +222,7 @@ const AdminDashboard = () => {
             
             {/* --- TABELA E LIBRAVE --- */}
             <div className="table-container">
+              {loading ? <p style={{padding:'20px'}}>Duke marrë të dhënat nga serveri...</p> : (
               <table>
                 <thead>
                   <tr>
@@ -246,31 +231,47 @@ const AdminDashboard = () => {
                     <th>Autori</th>
                     <th>Viti</th>
                     <th>Kategoria</th>
+                    <th>Botuesi</th>
                     <th>Sasia</th>
                     <th>Veprime</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {books.map(book => (
-                    <tr key={book.id}>
-                      <td style={{fontSize:'13px', color:'#7f8c8d'}}>{book.isbn}</td>
+                  {books.length > 0 ? books.map(book => (
+                    // Përdorim bookId ose id (varet si vjen nga backend)
+                    <tr key={book.bookId || book.id}>
+                      <td style={{fontSize:'13px', color:'#7f8c8d'}}>{book.ISBN || book.isbn}</td>
                       <td><strong>{book.title}</strong></td>
                       <td>{book.author}</td>
                       <td>{book.publicationYear}</td>
                       <td>
                         <span style={{padding:'4px 8px', backgroundColor:'#efebe9', borderRadius:'4px', fontSize:'13px', color:'#5d4037'}}>
-                            {book.category}
+                            {/* Nëse backend kthen categoryName e shfaqim, përndryshe category */}
+                            {book.categoryName || book.category || 'N/A'}
                         </span>
                       </td>
+                      <td style={{fontSize:'13px'}}>{book.publisherName || book.publisher || '-'}</td>
                       <td style={{textAlign:'center', fontWeight:'bold'}}>{book.quantity}</td>
                       <td>
                         <button className="btn-action btn-edit">Edit</button>
-                        <button className="btn-action btn-delete" onClick={() => handleDeleteBook(book.id)}>Fshi</button>
+                        <button 
+                            className="btn-action btn-delete" 
+                            onClick={() => handleDeleteBook(book.bookId || book.id)}
+                        >
+                            Fshi
+                        </button>
                       </td>
                     </tr>
-                  ))}
+                  )) : (
+                    <tr>
+                        <td colSpan="8" style={{textAlign:'center', padding:'30px', color:'#888'}}>
+                            Nuk u gjet asnjë libër në databazë. Shto të parin!
+                        </td>
+                    </tr>
+                  )}
                 </tbody>
               </table>
+              )}
             </div>
           </div>
         )}
@@ -278,77 +279,16 @@ const AdminDashboard = () => {
         {/* ================= TABI 2: PËRDORUESIT ================= */}
         {activeTab === 'users' && (
           <div className="fade-in">
-             <div className="content-header">
-              <h1>👥 Lista e Anëtarëve</h1>
-            </div>
-            <div className="table-container">
-              <table>
-                <thead>
-                  <tr>
-                    <th>ID</th>
-                    <th>Emri i plotë</th>
-                    <th>Email</th>
-                    <th>Roli</th>
-                    <th>Veprime</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {users.map(user => (
-                    <tr key={user.id}>
-                      <td>#{user.id}</td>
-                      <td>{user.name}</td>
-                      <td>{user.email}</td>
-                      <td>
-                        <span style={{padding:'5px 10px', backgroundColor:'#e0f2f1', borderRadius:'15px', color:'#00695c', fontWeight:'bold'}}>
-                            {user.role}
-                        </span>
-                      </td>
-                      <td>
-                        <button className="btn-action btn-delete">Blloko</button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+             <div className="content-header"><h1>👥 Lista e Anëtarëve</h1></div>
+             <p style={{padding:'20px'}}>Së shpejti do lidhet me databazën e userave...</p>
           </div>
         )}
 
         {/* ================= TABI 3: HUAZIMET ================= */}
         {activeTab === 'loans' && (
           <div className="fade-in">
-             <div className="content-header">
-              <h1>📅 Huazimet Aktive</h1>
-            </div>
-            <div className="table-container">
-                <table>
-                <thead>
-                  <tr>
-                    <th>ID Huazimi</th>
-                    <th>Libri</th>
-                    <th>Huazuesi</th>
-                    <th>Data e Kthimit</th>
-                    <th>Statusi</th>
-                  </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>#55</td>
-                        <td>Harry Potter</td>
-                        <td>Filan Fisteku</td>
-                        <td>25/12/2025</td>
-                        <td style={{color: '#d35400', fontWeight:'bold'}}>Pa kthyer</td>
-                    </tr>
-                    <tr>
-                        <td>#56</td>
-                        <td>Clean Code</td>
-                        <td>Ana Prifti</td>
-                        <td>20/12/2025</td>
-                        <td style={{color: 'green', fontWeight:'bold'}}>Kthyer</td>
-                    </tr>
-                </tbody>
-              </table>
-            </div>
+             <div className="content-header"><h1>📅 Huazimet Aktive</h1></div>
+             <p style={{padding:'20px'}}>Së shpejti do lidhet me databazën e huazimeve...</p>
           </div>
         )}
 
