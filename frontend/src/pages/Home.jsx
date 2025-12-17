@@ -27,8 +27,7 @@ function Home() {
   const [currentSlide, setCurrentSlide] = useState(0);
 
   // --- 2. STATE ---
-  const [searchTerm, setSearchTerm] = useState("");
-  const [searchCategory, setSearchCategory] = useState("title");
+  // Search state u hoq sepse nuk nevojitet me
   const [selectedBook, setSelectedBook] = useState(null); // Për Modalin
 
   // --- 3. MOCK DATA (12 LIBRA) ---
@@ -185,17 +184,6 @@ function Home() {
   const nextSlide = () => setCurrentSlide(currentSlide === heroSlides.length - 1 ? 0 : currentSlide + 1);
   const prevSlide = () => setCurrentSlide(currentSlide === 0 ? heroSlides.length - 1 : currentSlide - 1);
 
-  // Filter Logic
-  const filteredBooks = allBooks.filter(book => {
-    if (searchTerm === "") return true;
-    const term = searchTerm.toLowerCase();
-    if (searchCategory === "title") return book.title.toLowerCase().includes(term);
-    if (searchCategory === "author") return book.author.toLowerCase().includes(term);
-    if (searchCategory === "isbn") return book.isbn.includes(term);
-    if (searchCategory === "category") return book.category.toLowerCase().includes(term);
-    return false;
-  });
-
   // Open Modal Logic
   const openDetails = (book) => {
     setSelectedBook(book);
@@ -240,49 +228,38 @@ function Home() {
       {/* BOOKS SECTION */}
       <section className="section-container" style={{paddingTop: '20px'}}>
         
-        {/* SEARCH BAR */}
-        <div className="search-header-container">
-           <div className="main-search-bar">
-            <select className="search-select" value={searchCategory} onChange={(e) => setSearchCategory(e.target.value)}>
-              <option value="title">Title</option>
-              <option value="author">Author</option>
-              <option value="isbn">ISBN</option>
-              <option value="category">Category</option>
-            </select>
-            <input type="text" className="search-input" placeholder={`Search books by ${searchCategory}...`} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)}/>
-            <button className="search-btn"><span>🔍</span></button>
-          </div>
+        {/* --- KËTU ËSHTË NDRYSHIMI: Search Bar u zëvendësua me Titullin --- */}
+        <div className="section-header" style={{ textAlign: 'center', marginBottom: '40px', marginTop: '40px' }}>
+          <h2 style={{ fontSize: '2.5rem', color: '#2c3e50', marginBottom: '10px' }}>Most Popular Books</h2>
+          <div className="header-line" style={{ margin: '0 auto 15px auto', width: '60px', height: '3px', backgroundColor: '#e67e22' }}></div>
+          <p style={{ color: '#666', fontSize: '1.1rem' }}>Discover our top reads for this week</p>
         </div>
         
-        {/* BOOKS GRID */}
-        {filteredBooks.length > 0 ? (
-          <div className="books-grid">
-            {filteredBooks.map(book => (
-              // Kur klikon kudo te karta, hapet modali
-              <div key={book.id} className="book-card" onClick={() => openDetails(book)}>
-                <div className="card-image">
-                  <img src={book.img} alt={book.title} />
-                  <div className="hover-overlay">
-                    {/* BUTTON CLICK FIX - e.stopPropagation() e ndalon klikimin e dyfishte */}
-                    <button className="btn-view" onClick={(e) => { 
-                      e.stopPropagation(); 
-                      openDetails(book); 
-                    }}>
-                      View Details
-                    </button>
-                  </div>
-                </div>
-                <div className="card-info">
-                  <h3>{book.title}</h3>
-                  <p>{book.author}</p>
-                  <div className="rating">⭐⭐⭐⭐☆</div>
+        {/* BOOKS GRID - Direkt allBooks (pa filter) */}
+        <div className="books-grid">
+          {allBooks.map(book => (
+            // Kur klikon kudo te karta, hapet modali
+            <div key={book.id} className="book-card" onClick={() => openDetails(book)}>
+              <div className="card-image">
+                <img src={book.img} alt={book.title} />
+                <div className="hover-overlay">
+                  {/* BUTTON CLICK FIX - e.stopPropagation() e ndalon klikimin e dyfishte */}
+                  <button className="btn-view" onClick={(e) => { 
+                    e.stopPropagation(); 
+                    openDetails(book); 
+                  }}>
+                    View Details
+                  </button>
                 </div>
               </div>
-            ))}
-          </div>
-        ) : (
-          <div className="no-results"><p>No books found matching "{searchTerm}".</p></div>
-        )}
+              <div className="card-info">
+                <h3>{book.title}</h3>
+                <p>{book.author}</p>
+                <div className="rating">⭐⭐⭐⭐☆</div>
+              </div>
+            </div>
+          ))}
+        </div>
 
         {/* --- BUTTON "VIEW ALL BOOKS" --- */}
         <div className="view-all-container">
