@@ -55,6 +55,24 @@ class BookRepository {
         const [result] = await db.execute('INSERT INTO Publisher (name) VALUES (?)', [name]);
         return result.insertId;
     }
+    // ... funksionet e tjera ...
+
+    async update(id, book) {
+        const sql = `
+            UPDATE Book 
+            SET isbn=?, title=?, author=?, publicationYear=?, categoryId=?, publisherId=?
+            WHERE bookId = ?
+        `;
+        await db.execute(sql, [
+            book.isbn,
+            book.title,
+            book.author,
+            book.publicationYear,
+            book.categoryId,
+            book.publisherId,
+            id
+        ]);
+    }
 }
 
 module.exports = new BookRepository();

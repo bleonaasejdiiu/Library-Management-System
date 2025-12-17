@@ -11,4 +11,6 @@ router.post('/', bookController.addBook);
 // 3. FSHI LIBËR (Edhe këtë e ke harruar!)
 router.delete('/:id', bookController.deleteBook);
 
+router.put('/:id', bookController.updateBook);
+
 module.exports = router;

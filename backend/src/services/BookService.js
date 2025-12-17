@@ -46,6 +46,34 @@ class BookService {
     async deleteBook(id) {
         return await bookRepository.delete(id);
     }
+    // ... funksionet e tjera ...
+
+    async updateBook(id, data) {
+        // 1. Gjej ose Krijo Kategorinë (njësoj si te add)
+        let categoryId;
+        const existingCat = await bookRepository.findCategoryByName(data.category);
+        if (existingCat) categoryId = existingCat.categoryId;
+        else categoryId = await bookRepository.createCategory(data.category);
+
+        // 2. Gjej ose Krijo Publisher (njësoj si te add)
+        let publisherId;
+        const existingPub = await bookRepository.findPublisherByName(data.publisher);
+        if (existingPub) publisherId = existingPub.publisherId;
+        else publisherId = await bookRepository.createPublisher(data.publisher);
+
+        // 3. Përgatit objektin
+        const bookToUpdate = {
+            isbn: data.isbn,
+            title: data.title,
+            author: data.author,
+            publicationYear: data.publicationYear,
+            categoryId: categoryId,
+            publisherId: publisherId
+        };
+
+        // 4. Thirr Repository
+        return await bookRepository.update(id, bookToUpdate);
+    }
 }
 
 module.exports = new BookService();

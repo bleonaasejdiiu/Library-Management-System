@@ -32,6 +32,18 @@ class BookController {
             res.status(500).json({ error: error.message });
         }
     }
+    // ... funksionet e tjera ...
+
+    async updateBook(req, res) {
+        try {
+            const { id } = req.params;
+            await bookService.updateBook(id, req.body);
+            res.json({ message: 'Libri u përditësua me sukses!' });
+        } catch (error) {
+            console.error("UPDATE Error:", error);
+            res.status(500).json({ error: error.message });
+        }
+    }
 }
 
 module.exports = new BookController();

@@ -12,15 +12,19 @@ const AdminDashboard = () => {
   
   // --- STATE PËR SHFAQJEN E FORMËS ---
   const [showAddForm, setShowAddForm] = useState(false);
+  
+  // --- STATE PËR EDITIM (Këtu ruan ID e librit që po editon) ---
+  const [editMode, setEditMode] = useState(false);
+  const [bookIdToEdit, setBookIdToEdit] = useState(null);
 
-  // --- LISTA E KATEGORIVE (Dropdown) ---
+  // --- LISTA E KATEGORIVE ---
   const categoriesList = [
     "Fiction", "Science", "Technology", "History", 
     "Biography", "Art", "Children", "Business", 
     "Classic", "Romance", "Mystery", "Thriller"
   ];
 
-  // --- FORM STATE (Të dhënat e librit të ri) ---
+  // --- FORM STATE ---
   const [newBook, setNewBook] = useState({
     isbn: '',
     title: '',
@@ -31,25 +35,23 @@ const AdminDashboard = () => {
     quantity: 1
   });
 
-  // --- DATA STATE (Të dhënat nga Databaza) ---
+  // --- DATA STATE ---
   const [books, setBooks] = useState([]); 
-  const [users, setUsers] = useState([]); 
 
-  // --- 1. KONTROLLI I SIGURISË (A është Admin?) ---
+  // --- 1. KONTROLLI I SIGURISË ---
   useEffect(() => {
     const role = localStorage.getItem('role');
     if (role !== 'admin') {
       navigate('/login'); 
     } else {
-      fetchBooks(); // Marrim librat sapo hapet faqja
+      fetchBooks();
     }
   }, [navigate]);
 
-  // --- 2. FUNKSIONI PËR TË LEXUAR LIBRAT (GET) ---
+  // --- 2. GET BOOKS ---
   const fetchBooks = async () => {
     setLoading(true);
     try {
-      // Sigurohu që porta është 5000 (Backend API)
       const response = await axios.get('http://localhost:5000/api/books');
       setBooks(response.data);
       setLoading(false);
@@ -59,44 +61,72 @@ const AdminDashboard = () => {
     }
   };
 
-  // --- 3. FUNKSIONI PËR TË SHTUAR LIBËR (POST) ---
+  // --- 3. PËRGATIT EDITIMIN (Kur klikon butonin Edit) ---
+  const handleEditClick = (book) => {
+    setEditMode(true);
+    // Sigurohemi që po marrim ID e saktë (bookId nga DB)
+    setBookIdToEdit(book.bookId || book.id); 
+
+    // Mbushim formën me të dhënat e librit
+    setNewBook({
+      isbn: book.isbn || book.ISBN,
+      title: book.title,
+      author: book.author,
+      publicationYear: book.publicationYear,
+      category: book.categoryName || book.category || '',
+      publisher: book.publisherName || book.publisher || '',
+      quantity: book.quantity || 1
+    });
+
+    setShowAddForm(true); // Hapim formën
+    window.scrollTo(0, 0); // Shkojmë në fillim të faqes
+  };
+
+  // --- 4. PASTRO FORMËN ---
+  const resetForm = () => {
+    setNewBook({ 
+        isbn: '', title: '', author: '', publicationYear: '', 
+        category: '', publisher: '', quantity: 1 
+      });
+      setShowAddForm(false);
+      setEditMode(false);
+      setBookIdToEdit(null);
+  };
+
+  // --- 5. RUAJ (SHTO ose UPDATE) ---
   const handleSaveBook = async (e) => {
     e.preventDefault();
     
-    // Validim: A është zgjedhur kategoria?
     if (!newBook.category) {
         alert("Ju lutem zgjidhni një kategori!");
         return;
     }
 
     try {
-        // Dërgojmë të dhënat në Backend
-        await axios.post('http://localhost:5000/api/books', newBook);
+        if (editMode) {
+            // --- EDITIM (PUT) ---
+            await axios.put(`http://localhost:5000/api/books/${bookIdToEdit}`, newBook);
+            alert("✅ Libri u përditësua me sukses!");
+        } else {
+            // --- SHTIM (POST) ---
+            await axios.post('http://localhost:5000/api/books', newBook);
+            alert("✅ Libri u shtua me sukses!");
+        }
         
-        alert("✅ Libri u ruajt me sukses në Databazë!");
-        setShowAddForm(false);
-        
-        // Pastrojmë fushat
-        setNewBook({ 
-          isbn: '', title: '', author: '', publicationYear: '', 
-          category: '', publisher: '', quantity: 1 
-        });
-
-        // Rifreskojmë tabelën automatikisht
-        fetchBooks();
+        resetForm();
+        fetchBooks(); // Rifresko tabelën
 
     } catch (error) {
-        console.error("Gabim gjatë shtimit:", error);
-        alert("❌ Gabim! Sigurohu që serveri Backend është ndezur.");
+        console.error("Gabim gjatë ruajtjes:", error);
+        alert("❌ Gabim! Kontrollo nëse serveri është ndezur.");
     }
   };
 
-  // --- 4. FUNKSIONI PËR TË FSHIRË LIBËR (DELETE) ---
+  // --- 6. DELETE BOOK ---
   const handleDeleteBook = async (id) => {
-    if(window.confirm('A jeni i sigurt që doni ta fshini këtë libër përgjithmonë?')) {
+    if(window.confirm('A jeni i sigurt që doni ta fshini këtë libër?')) {
         try {
             await axios.delete(`http://localhost:5000/api/books/${id}`);
-            // Rifreskojmë listën pas fshirjes
             fetchBooks();
         } catch (error) {
             console.error("Gabim gjatë fshirjes:", error);
@@ -114,7 +144,7 @@ const AdminDashboard = () => {
   return (
     <div className="dashboard-layout">
       
-      {/* ================= SIDEBAR (Majtas) ================= */}
+      {/* SIDEBAR */}
       <aside className="sidebar">
         <h2>🛡️ Admin Panel</h2>
         <ul>
@@ -133,65 +163,59 @@ const AdminDashboard = () => {
         </div>
       </aside>
 
-      {/* ================= CONTENT (Djathtas) ================= */}
+      {/* CONTENT */}
       <main className="dashboard-content">
         
-        {/* ================= TABI 1: LIBRAT ================= */}
         {activeTab === 'books' && (
           <div className="fade-in">
             <div className="content-header">
               <h1>📚 Inventari i Librave</h1>
               <button 
                 className="btn-add" 
-                onClick={() => setShowAddForm(!showAddForm)}
+                onClick={() => {
+                    if (showAddForm) resetForm();
+                    else setShowAddForm(true);
+                }}
                 style={{ backgroundColor: showAddForm ? '#7f8c8d' : '#8d6e63' }}
               >
                 {showAddForm ? '❌ Mbyll Formën' : '+ Shto Libër'}
               </button>
             </div>
 
-            {/* --- FORMA E SHTIMIT --- */}
+            {/* FORMA */}
             {showAddForm && (
                 <div className="form-container fade-in">
-                    <h3>Shto Libër në Databazë</h3>
+                    <h3>{editMode ? '✏️ Ndrysho Libër' : '➕ Shto Libër të Ri'}</h3>
                     <form onSubmit={handleSaveBook} className="add-book-form">
                         
                         <div className="form-group">
                             <label>ISBN</label>
-                            <input type="text" placeholder="978-..." required 
-                                value={newBook.isbn} onChange={(e)=>setNewBook({...newBook, isbn: e.target.value})} 
-                            />
+                            <input type="text" required value={newBook.isbn} 
+                                onChange={(e)=>setNewBook({...newBook, isbn: e.target.value})} />
                         </div>
 
                         <div className="form-group">
                             <label>Titulli</label>
-                            <input type="text" placeholder="Titulli i librit" required 
-                                value={newBook.title} onChange={(e)=>setNewBook({...newBook, title: e.target.value})} 
-                            />
+                            <input type="text" required value={newBook.title} 
+                                onChange={(e)=>setNewBook({...newBook, title: e.target.value})} />
                         </div>
 
                         <div className="form-group">
                             <label>Autori</label>
-                            <input type="text" placeholder="Emri i autorit" required 
-                                value={newBook.author} onChange={(e)=>setNewBook({...newBook, author: e.target.value})} 
-                            />
+                            <input type="text" required value={newBook.author} 
+                                onChange={(e)=>setNewBook({...newBook, author: e.target.value})} />
                         </div>
 
                         <div className="form-group">
-                            <label>Viti i Publikimit</label>
-                            <input type="number" placeholder="2024" required 
-                                value={newBook.publicationYear} onChange={(e)=>setNewBook({...newBook, publicationYear: e.target.value})} 
-                            />
+                            <label>Viti</label>
+                            <input type="number" required value={newBook.publicationYear} 
+                                onChange={(e)=>setNewBook({...newBook, publicationYear: e.target.value})} />
                         </div>
 
-                        {/* Dropdown për Kategorinë */}
                         <div className="form-group">
                             <label>Kategoria</label>
-                            <select 
-                                required 
-                                value={newBook.category} 
-                                onChange={(e)=>setNewBook({...newBook, category: e.target.value})}
-                            >
+                            <select required value={newBook.category} 
+                                onChange={(e)=>setNewBook({...newBook, category: e.target.value})}>
                                 <option value="">-- Zgjidh Kategorinë --</option>
                                 {categoriesList.map((cat, index) => (
                                     <option key={index} value={cat}>{cat}</option>
@@ -200,29 +224,27 @@ const AdminDashboard = () => {
                         </div>
 
                         <div className="form-group">
-                            <label>Botuesi (Publisher)</label>
-                            <input type="text" placeholder="Shtëpia botuese" required 
-                                value={newBook.publisher} onChange={(e)=>setNewBook({...newBook, publisher: e.target.value})} 
-                            />
+                            <label>Botuesi</label>
+                            <input type="text" required value={newBook.publisher} 
+                                onChange={(e)=>setNewBook({...newBook, publisher: e.target.value})} />
                         </div>
 
                         <div className="form-group">
-                            <label>Sasia (Kopje)</label>
-                            <input type="number" min="1" required 
-                                value={newBook.quantity} onChange={(e)=>setNewBook({...newBook, quantity: e.target.value})} 
-                            />
+                            <label>Sasia</label>
+                            <input type="number" min="1" required value={newBook.quantity} 
+                                onChange={(e)=>setNewBook({...newBook, quantity: e.target.value})} />
                         </div>
 
                         <button type="submit" className="btn-add" style={{marginTop: '10px', width: '100%', gridColumn: 'span 2'}}>
-                            Ruaj Librin
+                            {editMode ? '💾 Përditëso' : '💾 Ruaj'}
                         </button>
                     </form>
                 </div>
             )}
             
-            {/* --- TABELA E LIBRAVE --- */}
+            {/* TABELA */}
             <div className="table-container">
-              {loading ? <p style={{padding:'20px'}}>Duke marrë të dhënat nga serveri...</p> : (
+              {loading ? <p>Loading...</p> : (
               <table>
                 <thead>
                   <tr>
@@ -237,38 +259,21 @@ const AdminDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {books.length > 0 ? books.map(book => (
-                    // Përdorim bookId ose id (varet si vjen nga backend)
+                  {books.map(book => (
                     <tr key={book.bookId || book.id}>
-                      <td style={{fontSize:'13px', color:'#7f8c8d'}}>{book.ISBN || book.isbn}</td>
+                      <td style={{color:'#7f8c8d'}}>{book.ISBN || book.isbn}</td>
                       <td><strong>{book.title}</strong></td>
                       <td>{book.author}</td>
                       <td>{book.publicationYear}</td>
+                      <td><span className="badge">{book.categoryName || book.category}</span></td>
+                      <td>{book.publisherName || book.publisher}</td>
+                      <td style={{textAlign:'center'}}>{book.quantity}</td>
                       <td>
-                        <span style={{padding:'4px 8px', backgroundColor:'#efebe9', borderRadius:'4px', fontSize:'13px', color:'#5d4037'}}>
-                            {/* Nëse backend kthen categoryName e shfaqim, përndryshe category */}
-                            {book.categoryName || book.category || 'N/A'}
-                        </span>
-                      </td>
-                      <td style={{fontSize:'13px'}}>{book.publisherName || book.publisher || '-'}</td>
-                      <td style={{textAlign:'center', fontWeight:'bold'}}>{book.quantity}</td>
-                      <td>
-                        <button className="btn-action btn-edit">Edit</button>
-                        <button 
-                            className="btn-action btn-delete" 
-                            onClick={() => handleDeleteBook(book.bookId || book.id)}
-                        >
-                            Fshi
-                        </button>
+                        <button className="btn-action btn-edit" onClick={() => handleEditClick(book)}>Edit</button>
+                        <button className="btn-action btn-delete" onClick={() => handleDeleteBook(book.bookId || book.id)}>Fshi</button>
                       </td>
                     </tr>
-                  )) : (
-                    <tr>
-                        <td colSpan="8" style={{textAlign:'center', padding:'30px', color:'#888'}}>
-                            Nuk u gjet asnjë libër në databazë. Shto të parin!
-                        </td>
-                    </tr>
-                  )}
+                  ))}
                 </tbody>
               </table>
               )}
@@ -276,22 +281,8 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        {/* ================= TABI 2: PËRDORUESIT ================= */}
-        {activeTab === 'users' && (
-          <div className="fade-in">
-             <div className="content-header"><h1>👥 Lista e Anëtarëve</h1></div>
-             <p style={{padding:'20px'}}>Së shpejti do lidhet me databazën e userave...</p>
-          </div>
-        )}
-
-        {/* ================= TABI 3: HUAZIMET ================= */}
-        {activeTab === 'loans' && (
-          <div className="fade-in">
-             <div className="content-header"><h1>📅 Huazimet Aktive</h1></div>
-             <p style={{padding:'20px'}}>Së shpejti do lidhet me databazën e huazimeve...</p>
-          </div>
-        )}
-
+        {activeTab === 'users' && <div><h1>Lista e Userave</h1><p>Së shpejti...</p></div>}
+        {activeTab === 'loans' && <div><h1>Huazimet</h1><p>Së shpejti...</p></div>}
       </main>
     </div>
   );
