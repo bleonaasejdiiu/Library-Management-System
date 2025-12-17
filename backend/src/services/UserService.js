@@ -1,4 +1,5 @@
-const userRepository = require('../repositories/userRepository');
+// Ndrysho 'u' në 'U' te emri i file-it
+const userRepository = require('../repositories/UserRepository'); 
 
 class UserService {
     async getAllUsers() {

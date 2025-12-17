@@ -37,16 +37,18 @@ const handleSubmit = async (e) => {
           // 1. Ruajmë të dhënat
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('user', JSON.stringify(response.data.user));
-          localStorage.setItem('role', response.data.user.role); // Roli vjen nga Backendi
+          
+          // Sigurohemi që po ruajmë rolin e saktë
+          const role = response.data.user.role; 
+          localStorage.setItem('role', role); 
 
           // 2. NDARJA STRIKTE E FAQEVE
-          const role = response.data.user.role;
-
-          if (role === 'admin') {
-              // Admini shkon direkt te Paneli i Kontrollit
+          // ZGJIDHJA: Kontrollojmë edhe 'admin' (kod) edhe 'Admin' (databazë)
+          if (role === 'admin' || role === 'Admin') {
+              console.log("Redirecting to Admin Dashboard..."); // Për testim
               navigate('/admin-dashboard');
           } else {
-              // Useri shkon te Profili i tij (ose Home)
+              console.log("Redirecting to User Dashboard..."); // Për testim
               navigate('/user-dashboard'); 
           }
         }
@@ -68,8 +70,7 @@ const handleSubmit = async (e) => {
 
         if (response.data.success) {
           alert("✅ Regjistrimi u krye me sukses! Tani ju lutem bëni Login.");
-          setIsLogin(true); // Ktheje automatikisht te forma Login
-          // Pastrojmë fushat
+          setIsLogin(true); 
           setFormData({ ...formData, password: '' });
         }
       } catch (error) {
@@ -78,7 +79,6 @@ const handleSubmit = async (e) => {
       }
     }
   };
-
   return (
     <div className="auth-container">
       <div className="auth-card">
