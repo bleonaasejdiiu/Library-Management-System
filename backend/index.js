@@ -6,6 +6,8 @@ const db = require('./src/config/db');
 // Importimi i Rrugëve (Routes)
 const authRoutes = require('./src/routes/authRoutes'); 
 const bookRoutes = require('./src/routes/bookRoutes'); // <--- E SHTOVA KËTË (SHUMË E RËNDËSISHME)
+const userRoutes = require('./src/routes/UserRoutes'); // <--- SHTO KËTË
+const loanRoutes = require('./src/routes/loanRoutes'); // <--- SHTO KËTË
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -17,7 +19,8 @@ app.use(express.json());
 // Përdorimi i Rrugëve (API Endpoints)
 app.use('/api/auth', authRoutes);
 app.use('/api/books', bookRoutes); // <--- PA KËTË NUK PUNON ADMIN PANELI
-
+app.use('/api/users', userRoutes); // <--- TANI SERVERI I NJEH USERAT
+app.use('/api/loans', loanRoutes); 
 // Test Route
 app.get('/', (req, res) => {
   res.send('Backend is running and connected to DB!');

@@ -208,22 +208,27 @@ const AdminDashboard = () => {
                <table>
                  <thead><tr><th>ID</th><th>Emri</th><th>Mbiemri</th><th>Email</th><th>Roli</th><th>Veprime</th></tr></thead>
                  <tbody>
-                   {users.map(u => (
-                     <tr key={u.personId}>
-                       <td>{u.personId}</td><td><strong>{u.name}</strong></td><td>{u.lastname}</td><td>{u.email}</td>
-                       <td>
-                        <span style={{
-                            padding:'4px 8px', borderRadius:'4px', fontWeight:'bold',
-                            backgroundColor: u.role === 'Admin' ? '#ffebee' : '#e8f5e9',
-                            color: u.role === 'Admin' ? '#c62828' : '#2e7d32'
-                        }}>
-                            {u.role || 'member'}
-                        </span>
-                       </td>
-                       <td><button className="btn-action btn-delete" onClick={() => handleDeleteUser(u.personId)}>Fshi</button></td>
-                     </tr>
-                   ))}
-                 </tbody>
+  {users
+    .filter(u => u.role !== 'Admin' && u.role !== 'admin') // <--- KJO ESHTE E REJA: Heq Adminin nga lista
+    .map(u => (
+      <tr key={u.personId}>
+        <td>{u.personId}</td>
+        <td><strong>{u.name}</strong></td>
+        <td>{u.lastname}</td>
+        <td>{u.email}</td>
+        <td>
+           <span style={{
+               padding:'4px 8px', borderRadius:'4px', fontWeight:'bold',
+               backgroundColor: '#e8f5e9',
+               color: '#2e7d32'
+           }}>
+               {u.role || 'member'}
+           </span>
+        </td>
+        <td><button className="btn-action btn-delete" onClick={() => handleDeleteUser(u.personId)}>Fshi</button></td>
+      </tr>
+  ))}
+</tbody>
                </table>
                )}
              </div>
