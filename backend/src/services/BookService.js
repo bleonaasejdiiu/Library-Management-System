@@ -6,73 +6,59 @@ class BookService {
     }
 
     async addBook(data) {
-        // 1. KATEGORIA
-        let categoryId;
-        // Nëse vjen bosh, mos e lër të kalojë
         if(!data.category) throw new Error("Kategoria është e detyrueshme");
-
-        const existingCat = await bookRepository.findCategoryByName(data.category);
-        if (existingCat) {
-            categoryId = existingCat.categoryId;
-        } else {
-            categoryId = await bookRepository.createCategory(data.category);
-        }
-
-        // 2. PUBLISHER
-        let publisherId;
-        // Nëse vjen bosh
-        if(!data.publisher) throw new Error("Publisher është i detyrueshëm");
-
-        const existingPub = await bookRepository.findPublisherByName(data.publisher);
-        if (existingPub) {
-            publisherId = existingPub.publisherId;
-        } else {
-            publisherId = await bookRepository.createPublisher(data.publisher);
-        }
-
-        // 3. RUAJ LIBRIN ME ID
-        const bookToSave = {
-            isbn: data.isbn,
-            title: data.title,
-            author: data.author,
-            publicationYear: data.publicationYear,
-            categoryId: categoryId, // Numër
-            publisherId: publisherId // Numër
-        };
-
-        return await bookRepository.create(bookToSave);
-    }
-
-    async deleteBook(id) {
-        return await bookRepository.delete(id);
-    }
-    // ... funksionet e tjera ...
-
-    async updateBook(id, data) {
-        // 1. Gjej ose Krijo Kategorinë (njësoj si te add)
         let categoryId;
         const existingCat = await bookRepository.findCategoryByName(data.category);
         if (existingCat) categoryId = existingCat.categoryId;
         else categoryId = await bookRepository.createCategory(data.category);
 
-        // 2. Gjej ose Krijo Publisher (njësoj si te add)
+        if(!data.publisher) throw new Error("Publisher është i detyrueshëm");
         let publisherId;
         const existingPub = await bookRepository.findPublisherByName(data.publisher);
         if (existingPub) publisherId = existingPub.publisherId;
         else publisherId = await bookRepository.createPublisher(data.publisher);
 
-        // 3. Përgatit objektin
+        const bookToSave = {
+            isbn: data.isbn,
+            title: data.title,
+            author: data.author,
+            publicationYear: data.publicationYear,
+            quantity: data.quantity, // <--- Sasia
+            categoryId: categoryId,
+            publisherId: publisherId
+        };
+
+        return await bookRepository.create(bookToSave);
+    }
+
+    async updateBook(id, data) {
+        if(!data.category) throw new Error("Kategoria është e detyrueshme");
+        let categoryId;
+        const existingCat = await bookRepository.findCategoryByName(data.category);
+        if (existingCat) categoryId = existingCat.categoryId;
+        else categoryId = await bookRepository.createCategory(data.category);
+
+        if(!data.publisher) throw new Error("Publisher është i detyrueshëm");
+        let publisherId;
+        const existingPub = await bookRepository.findPublisherByName(data.publisher);
+        if (existingPub) publisherId = existingPub.publisherId;
+        else publisherId = await bookRepository.createPublisher(data.publisher);
+
         const bookToUpdate = {
             isbn: data.isbn,
             title: data.title,
             author: data.author,
             publicationYear: data.publicationYear,
+            quantity: data.quantity, // <--- Sasia
             categoryId: categoryId,
             publisherId: publisherId
         };
 
-        // 4. Thirr Repository
         return await bookRepository.update(id, bookToUpdate);
+    }
+
+    async deleteBook(id) {
+        return await bookRepository.delete(id);
     }
 }
 

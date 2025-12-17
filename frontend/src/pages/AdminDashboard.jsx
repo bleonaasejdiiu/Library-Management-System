@@ -6,25 +6,22 @@ import './AdminDashboard.css';
 const AdminDashboard = () => {
   const navigate = useNavigate();
   
-  // --- STATE PËR NAVIGIM ---
+  // STATE
   const [activeTab, setActiveTab] = useState('books'); 
   const [loading, setLoading] = useState(false);
-  
-  // --- STATE PËR SHFAQJEN E FORMËS ---
   const [showAddForm, setShowAddForm] = useState(false);
   
-  // --- STATE PËR EDITIM (Këtu ruan ID e librit që po editon) ---
+  // EDIT STATE
   const [editMode, setEditMode] = useState(false);
   const [bookIdToEdit, setBookIdToEdit] = useState(null);
 
-  // --- LISTA E KATEGORIVE ---
   const categoriesList = [
     "Fiction", "Science", "Technology", "History", 
     "Biography", "Art", "Children", "Business", 
     "Classic", "Romance", "Mystery", "Thriller"
   ];
 
-  // --- FORM STATE ---
+  // FORM STATE (ME SASI)
   const [newBook, setNewBook] = useState({
     isbn: '',
     title: '',
@@ -35,10 +32,8 @@ const AdminDashboard = () => {
     quantity: 1
   });
 
-  // --- DATA STATE ---
   const [books, setBooks] = useState([]); 
 
-  // --- 1. KONTROLLI I SIGURISË ---
   useEffect(() => {
     const role = localStorage.getItem('role');
     if (role !== 'admin') {
@@ -48,7 +43,6 @@ const AdminDashboard = () => {
     }
   }, [navigate]);
 
-  // --- 2. GET BOOKS ---
   const fetchBooks = async () => {
     setLoading(true);
     try {
@@ -61,13 +55,10 @@ const AdminDashboard = () => {
     }
   };
 
-  // --- 3. PËRGATIT EDITIMIN (Kur klikon butonin Edit) ---
   const handleEditClick = (book) => {
     setEditMode(true);
-    // Sigurohemi që po marrim ID e saktë (bookId nga DB)
     setBookIdToEdit(book.bookId || book.id); 
 
-    // Mbushim formën me të dhënat e librit
     setNewBook({
       isbn: book.isbn || book.ISBN,
       title: book.title,
@@ -75,14 +66,13 @@ const AdminDashboard = () => {
       publicationYear: book.publicationYear,
       category: book.categoryName || book.category || '',
       publisher: book.publisherName || book.publisher || '',
-      quantity: book.quantity || 1
+      quantity: book.quantity || 1 // Marrim sasinë nga DB
     });
 
-    setShowAddForm(true); // Hapim formën
-    window.scrollTo(0, 0); // Shkojmë në fillim të faqes
+    setShowAddForm(true);
+    window.scrollTo(0, 0);
   };
 
-  // --- 4. PASTRO FORMËN ---
   const resetForm = () => {
     setNewBook({ 
         isbn: '', title: '', author: '', publicationYear: '', 
@@ -93,10 +83,8 @@ const AdminDashboard = () => {
       setBookIdToEdit(null);
   };
 
-  // --- 5. RUAJ (SHTO ose UPDATE) ---
   const handleSaveBook = async (e) => {
     e.preventDefault();
-    
     if (!newBook.category) {
         alert("Ju lutem zgjidhni një kategori!");
         return;
@@ -104,25 +92,20 @@ const AdminDashboard = () => {
 
     try {
         if (editMode) {
-            // --- EDITIM (PUT) ---
             await axios.put(`http://localhost:5000/api/books/${bookIdToEdit}`, newBook);
             alert("✅ Libri u përditësua me sukses!");
         } else {
-            // --- SHTIM (POST) ---
             await axios.post('http://localhost:5000/api/books', newBook);
             alert("✅ Libri u shtua me sukses!");
         }
-        
         resetForm();
-        fetchBooks(); // Rifresko tabelën
-
+        fetchBooks();
     } catch (error) {
         console.error("Gabim gjatë ruajtjes:", error);
-        alert("❌ Gabim! Kontrollo nëse serveri është ndezur.");
+        alert("❌ Gabim! Kontrollo konsolën.");
     }
   };
 
-  // --- 6. DELETE BOOK ---
   const handleDeleteBook = async (id) => {
     if(window.confirm('A jeni i sigurt që doni ta fshini këtë libër?')) {
         try {
@@ -135,7 +118,6 @@ const AdminDashboard = () => {
     }
   };
 
-  // --- LOGOUT ---
   const handleLogout = () => {
     localStorage.clear();
     navigate('/login');
@@ -144,7 +126,6 @@ const AdminDashboard = () => {
   return (
     <div className="dashboard-layout">
       
-      {/* SIDEBAR */}
       <aside className="sidebar">
         <h2>🛡️ Admin Panel</h2>
         <ul>
@@ -163,7 +144,6 @@ const AdminDashboard = () => {
         </div>
       </aside>
 
-      {/* CONTENT */}
       <main className="dashboard-content">
         
         {activeTab === 'books' && (
@@ -182,7 +162,6 @@ const AdminDashboard = () => {
               </button>
             </div>
 
-            {/* FORMA */}
             {showAddForm && (
                 <div className="form-container fade-in">
                     <h3>{editMode ? '✏️ Ndrysho Libër' : '➕ Shto Libër të Ri'}</h3>
@@ -230,7 +209,7 @@ const AdminDashboard = () => {
                         </div>
 
                         <div className="form-group">
-                            <label>Sasia</label>
+                            <label>Sasia (Kopje)</label>
                             <input type="number" min="1" required value={newBook.quantity} 
                                 onChange={(e)=>setNewBook({...newBook, quantity: e.target.value})} />
                         </div>
@@ -242,7 +221,6 @@ const AdminDashboard = () => {
                 </div>
             )}
             
-            {/* TABELA */}
             <div className="table-container">
               {loading ? <p>Loading...</p> : (
               <table>
@@ -267,7 +245,7 @@ const AdminDashboard = () => {
                       <td>{book.publicationYear}</td>
                       <td><span className="badge">{book.categoryName || book.category}</span></td>
                       <td>{book.publisherName || book.publisher}</td>
-                      <td style={{textAlign:'center'}}>{book.quantity}</td>
+                      <td style={{textAlign:'center', fontWeight:'bold'}}>{book.quantity}</td>
                       <td>
                         <button className="btn-action btn-edit" onClick={() => handleEditClick(book)}>Edit</button>
                         <button className="btn-action btn-delete" onClick={() => handleDeleteBook(book.bookId || book.id)}>Fshi</button>
@@ -280,7 +258,7 @@ const AdminDashboard = () => {
             </div>
           </div>
         )}
-
+        
         {activeTab === 'users' && <div><h1>Lista e Userave</h1><p>Së shpejti...</p></div>}
         {activeTab === 'loans' && <div><h1>Huazimet</h1><p>Së shpejti...</p></div>}
       </main>
