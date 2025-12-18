@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"; 
+import React, { useState, useEffect } from "react";  
 import { useParams } from "react-router-dom";       
 import './books.css';                           
 
@@ -12,7 +12,7 @@ const BookDetails = () => {
   // Funksion për popup
   const showPopup = (message, type = "success") => {
     setPopup({ message, type, visible: true });
-    setTimeout(() => setPopup({ ...popup, visible: false }), 3000);
+    setTimeout(() => setPopup(prev => ({ ...prev, visible: false })), 3000);
   };
 
   // Fetch book details
@@ -34,6 +34,13 @@ const BookDetails = () => {
       });
       if (!res.ok) throw new Error("Error borrowing book");
       const data = await res.json();
+
+      // ✅ Përditëso quantity në state
+      setBook(prevBook => ({
+        ...prevBook,
+        quantity: prevBook.quantity - 1
+      }));
+
       showPopup(data.message, "success");
     } catch (err) {
       showPopup(err.message, "error");
@@ -61,20 +68,27 @@ const BookDetails = () => {
         </div>
       )}
 
-      <div className="book-details">
-        <img src={book.image} alt={book.title} />
-        <div>
-          <h2>{book.title}</h2>
-          <p>Author: {book.author}</p>
-          <p>Category: {book.categoryName}</p>
-          <p>Publisher: {book.publisherName}</p>
-          <p>Year: {book.publicationYear}</p>
-          <p>Status: {book.quantity > 0 ? "Available" : "Not Available"}</p>
-          <button onClick={handleBorrow}>Borrow</button>
-        </div>
-      </div>
+     <div className="book-details">
+  <img src={book.image} alt={book.title} />
+  <div className="book-info">
+    <h2>{book.title}</h2>
+    <p><strong>ISBN:</strong> {book.isbn}</p>
+    <p><strong>Author:</strong> {book.author}</p>
+    <p><strong>Category:</strong> {book.categoryName}</p>
+    <p><strong>Publisher:</strong> {book.publisherName}</p>
+    <p><strong>Year:</strong> {book.publicationYear}</p>
+    <p><strong>Pages:</strong> {book.pages}</p>
+    <p><strong>Quantity:</strong> {book.quantity}</p>
+    <p><strong>Status:</strong> {book.quantity > 0 ? "Available" : "Not Available"}</p>
+    <button onClick={handleBorrow} disabled={book.quantity <= 0}>
+      Borrow
+    </button>
+  </div>
+</div>
+
     </div>
   );
 };
 
 export default BookDetails;
+
