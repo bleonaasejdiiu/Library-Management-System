@@ -26,37 +26,38 @@ function Login() {
 const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (isLogin) {
-      try {
-        const response = await axios.post('http://localhost:5000/api/auth/login', {
-          email: formData.email,
-          password: formData.password
-        });
+    // Pjesa brenda handleSubmit për login
+if (isLogin) {
+  try {
+    const response = await axios.post('http://localhost:5000/api/auth/login', {
+      email: formData.email,
+      password: formData.password
+    });
 
-        if (response.data.success) {
-          // 1. Ruajmë të dhënat
-          localStorage.setItem('token', response.data.token);
-          localStorage.setItem('user', JSON.stringify(response.data.user));
-          
-          // Sigurohemi që po ruajmë rolin e saktë
-          const role = response.data.user.role; 
-          localStorage.setItem('role', role); 
+    if (response.data.success) {
+      const user = response.data.user;
 
-          // 2. NDARJA STRIKTE E FAQEVE
-          // ZGJIDHJA: Kontrollojmë edhe 'admin' (kod) edhe 'Admin' (databazë)
-          if (role === 'admin' || role === 'Admin') {
-              console.log("Redirecting to Admin Dashboard..."); // Për testim
-              navigate('/admin-dashboard');
-          } else {
-              console.log("Redirecting to User Dashboard..."); // Për testim
-              navigate('/user-dashboard'); 
-          }
-        }
-      } catch (error) {
-        console.error("Login error", error);
-        alert("Gabim në Login! " + (error.response?.data?.error || ""));
+      // Ruaj të dhënat
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('user', JSON.stringify(user));
+      localStorage.setItem('role', user.role);
+      localStorage.setItem('userId', user.memberId || user.userId || user.personId); // ⚡ Rregullim
+
+      console.log("Logged in userId:", localStorage.getItem('userId'));
+
+      // Redirect bazuar në rol
+      if (user.role === 'admin' || user.role === 'Admin') {
+          navigate('/admin-dashboard');
+      } else {
+          navigate('/user-dashboard'); 
       }
-    } 
+    }
+  } catch (error) {
+    console.error("Login error", error);
+    alert("Gabim në Login! " + (error.response?.data?.error || ""));
+  }
+}
+
     // --- LOGJIKA E REGJISTRIMIT ---
     else {
       try {

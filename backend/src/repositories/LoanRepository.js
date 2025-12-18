@@ -2,11 +2,6 @@ const db = require('../config/db');
 
 class LoanRepository {
     async findAll() {
-        // Kjo Query merr të dhënat duke lidhur tabelat:
-        // 1. loan (për datat)
-        // 2. book (për titullin)
-        // 3. member -> person (për emrin e userit)
-        
         const sql = `
             SELECT 
                 l.loanId, 
@@ -16,6 +11,7 @@ class LoanRepository {
                 l.loanDate, 
                 l.dueDate, 
                 l.returnDate,
+                l.memberId,  -- Shto memberId këtu
                 CASE 
                     WHEN l.returnDate IS NULL THEN 'Active' 
                     ELSE 'Returned' 
@@ -26,12 +22,10 @@ class LoanRepository {
             JOIN person p ON m.personId = p.personId
             ORDER BY l.loanId DESC
         `;
-        
         const [rows] = await db.execute(sql);
         return rows;
     }
 
-    // Funksioni për të kthyer librin (Plotëson datën returnDate)
     async returnBook(loanId) {
         const sql = `UPDATE loan SET returnDate = NOW() WHERE loanId = ?`;
         await db.execute(sql, [loanId]);

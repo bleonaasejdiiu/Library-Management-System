@@ -8,6 +8,8 @@ const authRoutes = require('./src/routes/authRoutes');
 const bookRoutes = require('./src/routes/bookRoutes'); // <--- E SHTOVA KËTË (SHUMË E RËNDËSISHME)
 const userRoutes = require('./src/routes/UserRoutes'); // <--- SHTO KËTË
 const loanRoutes = require('./src/routes/loanRoutes'); // <--- SHTO KËTË
+const notificationRoutes = require('./src/routes/notificationRoutes');
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -21,11 +23,12 @@ app.use('/api/auth', authRoutes);
 app.use('/api/books', bookRoutes); // <--- PA KËTË NUK PUNON ADMIN PANELI
 app.use('/api/users', userRoutes); // <--- TANI SERVERI I NJEH USERAT
 app.use('/api/loans', loanRoutes); 
+
 // Test Route
 app.get('/', (req, res) => {
   res.send('Backend is running and connected to DB!');
 });
-
+app.use('/api/notifications', notificationRoutes);
 // Ndezja e Serverit
 app.listen(PORT, async () => {
   console.log(`🚀 Server running on port ${PORT}`);
