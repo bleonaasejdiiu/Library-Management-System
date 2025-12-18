@@ -78,9 +78,18 @@ class BookRepository {
     // MERR NJË LIBËR Sipas ID
 async findById(id) {
   const sql = `
-    SELECT b.*, 
-           c.categoryName, 
-           p.name AS publisherName
+    SELECT 
+      b.bookId AS id,
+      b.ISBN AS isbn,
+      b.title,
+      b.author,
+      b.publicationYear,
+      b.quantity,
+      b.status,
+      b.image,
+      b.pages,
+      c.categoryName,
+      p.name AS publisherName
     FROM book b
     LEFT JOIN category c ON b.categoryId = c.categoryId
     LEFT JOIN publisher p ON b.publisherId = p.publisherId
@@ -89,6 +98,7 @@ async findById(id) {
   const [rows] = await db.query(sql, [id]);
   return rows[0];
 }
+
 
 
 // KRIJO NJË HUAZIM

@@ -16,12 +16,16 @@ const BookDetails = () => {
   };
 
   // Fetch book details
-  useEffect(() => {
-    fetch(`http://localhost:5000/api/books/${id}`)
-      .then(res => res.json())
-      .then(data => setBook(data))
-      .catch(err => console.error(err));
-  }, [id]);
+ useEffect(() => {
+  fetch(`http://localhost:5000/api/books/${id}`)
+    .then(res => res.json())
+    .then(data => {
+      console.log("BOOK FROM API:", data); // 🔍 për test
+      setBook(data);
+    })
+    .catch(err => console.error(err));
+}, [id]);
+
 
   // Borrow function me kontroll për login
   const handleBorrow = async () => {
