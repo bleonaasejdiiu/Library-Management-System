@@ -89,35 +89,100 @@
   font-size: 1.1rem;
 }
 
+
+.book-details-page {
+  min-height: 80vh;
+  padding: 100px 20px; /* vetëm pak më shumë lart/poshtë */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f4f6f8;
+}
 .book-details {
   display: flex;
-  gap: 20px;
-  padding: 20px;
+  gap: 30px;
+  padding: 30px;
+  background-color: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+  max-width: 900px;
 }
-
 .book-details img {
   width: 300px;
   height: auto;
-  border-radius: 10px;
+  border-radius: 14px;
   object-fit: cover;
 }
-
-.book-details div {
+.book-info {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
+  font-family: "Segoe UI", Arial, sans-serif;
 }
 
+.book-info h2 {
+  margin-bottom: 10px;
+  font-size: 26px;
+}
+
+.book-info p {
+  margin: 0;
+  font-size: 16px;
+  color: #444;
+}
 .book-details button {
-  padding: 10px 15px;
-  background-color: #e67e22;
+  margin-top: 20px;
+  padding: 12px 20px;
+  background: linear-gradient(135deg, #f39c12, #e67e22);
   color: white;
   border: none;
-  border-radius: 6px;
-  cursor: pointer;
+  border-radius: 10px;
   font-weight: bold;
+  cursor: pointer;
+  transition: all 0.25s ease;
 }
 
 .book-details button:hover {
-  background-color: #d35400;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.25);
 }
+
+.book-details button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+.popup {
+  position: fixed;
+  top: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 14px 26px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.3);
+  z-index: 9999;
+  animation: slideDown 0.4s ease;
+}
+
+.popup.success {
+  background-color: #2ecc71;
+}
+
+.popup.error {
+  background-color: #e74c3c;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translate(-50%, -20px);
+  }
+  to {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+}
+

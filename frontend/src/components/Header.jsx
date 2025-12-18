@@ -58,7 +58,7 @@ function Header() {
                     <NavLink to="/books?category=science">Science</NavLink>
                     <NavLink to="/books?category=business">Business</NavLink>
                     <NavLink to="/books?category=leadership">Leadership</NavLink>
-                     <NavLink to="/books?category=News&Articles">News&Articles</NavLink>
+                     <NavLink to="/books?category=law">Law</NavLink>
                   </div>
                   <div className="mega-column">
                     <h4>Special collections</h4>
