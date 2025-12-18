@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./bookcard.css";
 
 const BookCard = ({ book }) => {
-  const navigate = useNavigate(); // ✅ brenda komponentit
+  const navigate = useNavigate(); 
 
   const rating = Math.floor(Math.random() * 5) + 1;
 
