@@ -5,65 +5,71 @@ import './AdminDashboard.css';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
-  
+
   // --- STATES ---
   const [activeTab, setActiveTab] = useState('books'); 
   const [loading, setLoading] = useState(false);
-  
+
   // Data States
   const [books, setBooks] = useState([]); 
   const [users, setUsers] = useState([]);
-  const [loans, setLoans] = useState([]); // <--- State i Ri për Huazimet
+  const [loans, setLoans] = useState([]); 
 
   // Books Form State
   const [showAddForm, setShowAddForm] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [bookIdToEdit, setBookIdToEdit] = useState(null);
-  
+
   const categoriesList = ["Fiction", "Science", "Technology", "History", "Biography", "Art", "Children", "Business"];
 
   const [newBook, setNewBook] = useState({
     isbn: '', title: '', author: '', publicationYear: '', category: '', publisher: '', quantity: 1
   });
 
-  // --- 1. KONTROLLI I SIGURISË DHE DATA FETCHING ---
+  // --- SECURITY CHECK & DATA FETCH ---
   useEffect(() => {
     const role = localStorage.getItem('role');
     
-    // ZGJIDHJA E PROBLEMIT "INFINITE LOOP":
-    // Lejojmë hyrjen nëse roli është 'Admin' (databazë) OSE 'admin' (hardcoded diku)
     if (role !== 'Admin' && role !== 'admin') {
       navigate('/login'); 
     } else {
-      // Merr të dhënat në bazë të tabit aktiv
       if (activeTab === 'books') fetchBooks();
       if (activeTab === 'users') fetchUsers();
-      if (activeTab === 'loans') fetchLoans(); // <--- Merr Huazimet
+      if (activeTab === 'loans') fetchLoans(); 
     }
   }, [navigate, activeTab]);
 
   // --- API FETCH FUNCTIONS ---
   const fetchBooks = async () => {
     setLoading(true);
-    try { setBooks((await axios.get('http://localhost:5000/api/books')).data); setLoading(false); } 
-    catch (e) { console.error(e); setLoading(false); }
+    try { 
+      setBooks((await axios.get('http://localhost:5000/api/books')).data); 
+      setLoading(false); 
+    } catch (e) { console.error(e); setLoading(false); }
   };
 
   const fetchUsers = async () => {
     setLoading(true);
-    try { setUsers((await axios.get('http://localhost:5000/api/users')).data); setLoading(false); } 
-    catch (e) { console.error(e); setLoading(false); }
+    try { 
+      setUsers((await axios.get('http://localhost:5000/api/users')).data); 
+      setLoading(false); 
+    } catch (e) { console.error(e); setLoading(false); }
   };
 
   const fetchLoans = async () => {
     setLoading(true);
-    try { setLoans((await axios.get('http://localhost:5000/api/loans')).data); setLoading(false); } 
-    catch (e) { console.error(e); setLoading(false); }
+    try { 
+      const response = await axios.get('http://localhost:5000/api/loans');
+      console.log("Loans from backend:", response.data);
+      setLoans(response.data);
+      setLoading(false);
+    } catch (e) { 
+      console.error(e); 
+      setLoading(false); 
+    }
   };
 
   // --- ACTIONS ---
-
-  // User Actions
   const handleDeleteUser = async (id) => {
     if(window.confirm('A jeni i sigurt që doni ta fshini këtë përdorues?')) {
         try { 
@@ -75,7 +81,6 @@ const AdminDashboard = () => {
     }
   };
 
-  // Book Actions
   const handleEditClick = (book) => {
     setEditMode(true);
     setBookIdToEdit(book.bookId || book.id); 
@@ -110,12 +115,11 @@ const AdminDashboard = () => {
     }
   };
 
-  // Loan Actions (Kthimi i Librit)
   const handleReturnBook = async (loanId) => {
       if(window.confirm("Konfirmo kthimin e librit?")) {
           try {
               await axios.put(`http://localhost:5000/api/loans/${loanId}/return`);
-              fetchLoans(); // Rifresko listën
+              fetchLoans(); 
               alert("Libri u kthye me sukses!");
           } catch (error) {
               alert("Gabim gjatë kthimit të librit.");
@@ -123,9 +127,36 @@ const AdminDashboard = () => {
       }
   };
 
+  const handleNotifyUser = async (loan) => {
+    try {
+      const memberId = loan.memberId || loan.personId || loan.userId; 
+
+      if (!memberId) {
+        alert("Loan nuk ka memberId!");
+        return;
+      }
+
+      await axios.post('http://localhost:5000/api/notifications', {
+        memberId: memberId,
+        message: `⛔ E ke vonu librin "${loan.bookTitle}". Ju lutem ktheje!`
+      });
+
+      alert('✅ Useri u njoftua!');
+    } catch (e) {
+      console.error("Gabim gjatë dërgimit të njoftimit:", e.response?.data || e.message);
+      alert('❌ Gabim gjatë dërgimit të njoftimit');
+    }
+  };
+
   const handleLogout = () => {
     localStorage.clear();
     navigate('/login');
+  };
+
+  const getLoanStatus = (loan) => {
+    if (loan.status === 'Returned') return { text: '✅ Kthyer', bg: '#e0f2f1', color: '#00695c' };
+    if (new Date(loan.dueDate) < new Date()) return { text: '⛔ VONË', bg: '#ffebee', color: '#c62828' };
+    return { text: '⏳ Në Përdorim', bg: '#fff3e0', color: '#ef6c00' };
   };
 
   return (
@@ -145,8 +176,8 @@ const AdminDashboard = () => {
 
       {/* CONTENT */}
       <main className="dashboard-content">
-        
-        {/* === TABI 1: LIBRAT === */}
+
+        {/* TAB: BOOKS */}
         {activeTab === 'books' && (
           <div className="fade-in">
             <div className="content-header">
@@ -156,7 +187,7 @@ const AdminDashboard = () => {
                 {showAddForm ? '❌ Mbyll Formën' : '+ Shto Libër'}
               </button>
             </div>
-            
+
             {showAddForm && (
                 <div className="form-container fade-in">
                     <form onSubmit={handleSaveBook} className="add-book-form">
@@ -176,7 +207,7 @@ const AdminDashboard = () => {
                     </form>
                 </div>
             )}
-            
+
             <div className="table-container">
               {loading ? <p>Duke marrë librat...</p> : (
               <table>
@@ -199,7 +230,7 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        {/* === TABI 2: USERAT === */}
+        {/* TAB: USERS */}
         {activeTab === 'users' && (
           <div className="fade-in">
              <div className="content-header"><h1>👥 Lista e Anëtarëve</h1></div>
@@ -209,7 +240,7 @@ const AdminDashboard = () => {
                  <thead><tr><th>ID</th><th>Emri</th><th>Mbiemri</th><th>Email</th><th>Roli</th><th>Veprime</th></tr></thead>
                  <tbody>
   {users
-    .filter(u => u.role !== 'Admin' && u.role !== 'admin') // <--- KJO ESHTE E REJA: Heq Adminin nga lista
+    .filter(u => u.role !== 'Admin' && u.role !== 'admin')
     .map(u => (
       <tr key={u.personId}>
         <td>{u.personId}</td>
@@ -235,7 +266,7 @@ const AdminDashboard = () => {
           </div>
         )}
 
-        {/* === TABI 3: HUAZIMET (LOANS) - E KOMPLETUAR === */}
+        {/* TAB: LOANS */}
         {activeTab === 'loans' && (
           <div className="fade-in">
              <div className="content-header"><h1>📅 Regjistri i Huazimeve</h1></div>
@@ -254,7 +285,9 @@ const AdminDashboard = () => {
                    </tr>
                  </thead>
                  <tbody>
-                   {loans.length > 0 ? loans.map(loan => (
+                   {loans.length > 0 ? loans.map(loan => {
+                     const status = getLoanStatus(loan);
+                     return (
                      <tr key={loan.loanId}>
                        <td>{loan.loanId}</td>
                        <td><strong>{loan.bookTitle}</strong></td>
@@ -264,25 +297,38 @@ const AdminDashboard = () => {
                        <td>
                          <span style={{
                              padding:'4px 8px', borderRadius:'4px', fontWeight:'bold',
-                             backgroundColor: loan.status === 'Active' ? '#fff3e0' : '#e0f2f1',
-                             color: loan.status === 'Active' ? '#ef6c00' : '#00695c'
+                             backgroundColor: status.bg,
+                             color: status.color
                          }}>
-                             {loan.status === 'Active' ? '⏳ Në Përdorim' : '✅ Kthyer'}
+                             {status.text}
                          </span>
                        </td>
                        <td>
-                         {loan.status === 'Active' && (
+                         {loan.status !== 'Returned' && (
+                           <>
                              <button 
                                 className="btn-action" 
-                                style={{backgroundColor: '#2ecc71', color:'white', border:'none'}}
+                                style={{backgroundColor: '#2ecc71', color:'white', border:'none', marginRight:'5px'}}
                                 onClick={() => handleReturnBook(loan.loanId)}
                              >
                                 Kthe Librin
                              </button>
+
+                             {status.text === '⛔ VONË' && (
+                               <button 
+                                  className="btn-action" 
+                                  style={{backgroundColor: '#e74c3c', color:'white', border:'none'}}
+                                  onClick={() => handleNotifyUser(loan)}
+                               >
+                                 Njofto
+                               </button>
+                             )}
+                           </>
                          )}
                        </td>
                      </tr>
-                   )) : (
+                     )
+                   }) : (
                      <tr><td colSpan="7" style={{textAlign:'center', padding:'20px'}}>Nuk ka huazime aktive.</td></tr>
                    )}
                  </tbody>
