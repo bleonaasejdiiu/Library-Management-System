@@ -60,6 +60,33 @@ class BookService {
     async deleteBook(id) {
         return await bookRepository.delete(id);
     }
+    // FUNKSIONI GET BOOK BY ID
+async getBookById(id) {
+    return await bookRepository.findById(id);
+}
+
+// FUNKSIONI BORROW BOOK
+async borrowBook(bookId, memberId) {
+    const book = await bookRepository.findById(bookId);
+    if (!book) throw new Error("Book not found");
+    if (book.quantity <= 0) throw new Error("Book not available");
+
+    const loanDate = new Date();
+    const dueDate = new Date();
+    dueDate.setDate(dueDate.getDate() + 14); // afat 14 ditë
+
+    await bookRepository.createLoan({
+        loanDate,
+        dueDate,
+        memberId,
+        bookId
+    });
+
+    await bookRepository.updateQuantity(bookId, book.quantity - 1);
+
+    return "Book borrowed successfully";
+}
+
 }
 
 module.exports = new BookService();

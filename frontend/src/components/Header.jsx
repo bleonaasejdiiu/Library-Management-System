@@ -51,16 +51,20 @@ function Header() {
                     <NavLink to="/books?category=art">Art</NavLink>
                     <NavLink to="/books?category=romance">Romance</NavLink>
                     <NavLink to="/books?category=adolescence">Adolescence</NavLink>
+                    <NavLink to="/books?category=language">Language</NavLink>
                   </div>
                   <div className="mega-column">
                     <h4>Science & Business</h4>
                     <NavLink to="/books?category=science">Science</NavLink>
                     <NavLink to="/books?category=business">Business</NavLink>
+                    <NavLink to="/books?category=leadership">Leadership</NavLink>
+                     <NavLink to="/books?category=News&Articles">News&Articles</NavLink>
                   </div>
                   <div className="mega-column">
                     <h4>Special collections</h4>
                     <NavLink to="/books?category=history">History</NavLink>
                     <NavLink to="/books?category=technology">Technology</NavLink>
+                    <NavLink to="/books?category=psychology">Psychology</NavLink>
                     <NavLink to="/books">All Categories →</NavLink>
                   </div>
                 </div>

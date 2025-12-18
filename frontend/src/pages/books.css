@@ -89,3 +89,35 @@
   font-size: 1.1rem;
 }
 
+.book-details {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+}
+
+.book-details img {
+  width: 300px;
+  height: auto;
+  border-radius: 10px;
+  object-fit: cover;
+}
+
+.book-details div {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.book-details button {
+  padding: 10px 15px;
+  background-color: #e67e22;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.book-details button:hover {
+  background-color: #d35400;
+}

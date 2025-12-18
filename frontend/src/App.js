@@ -20,6 +20,8 @@ import Books from './pages/books';
 
 
 import Authors from './pages/Authors';
+import BookDetails from './pages/BookDetails';
+
 
 
 <Route path="/authors" element={<Authors />} />
@@ -38,6 +40,7 @@ function App() {
             <Route path="/authors" element={<Authors />} />
             <Route path="/login" element={<Login />} />
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
+            <Route path="/books/:id" element={<BookDetails />} /> 
 
           </Routes>
         </div>
