@@ -20,43 +20,55 @@ function Login() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // Kur klikon butonin Login ose Register
-  // Brenda Login.jsx
+  // --- KY ËSHTË NDRYSHIMI I VETËM ---
+  // Ky funksion pastron fushat kur klikon "Sign Up" ose "Login" te linku poshtë
+  const switchMode = () => {
+    setIsLogin(!isLogin);
+    setFormData({
+      name: '',
+      lastname: '',
+      phoneNumber: '',
+      email: '',
+      password: ''
+    });
+  };
+  // ----------------------------------
 
-const handleSubmit = async (e) => {
+  // Kur klikon butonin Login ose Register
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     // Pjesa brenda handleSubmit për login
-if (isLogin) {
-  try {
-    const response = await axios.post('http://localhost:5000/api/auth/login', {
-      email: formData.email,
-      password: formData.password
-    });
+    if (isLogin) {
+      try {
+        const response = await axios.post('http://localhost:5000/api/auth/login', {
+          email: formData.email,
+          password: formData.password
+        });
 
-    if (response.data.success) {
-      const user = response.data.user;
+        if (response.data.success) {
+          const user = response.data.user;
 
-      // Ruaj të dhënat
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(user));
-      localStorage.setItem('role', user.role);
-      localStorage.setItem('userId', user.memberId || user.userId || user.personId); // ⚡ Rregullim
+          // Ruaj të dhënat
+          localStorage.setItem('token', response.data.token);
+          localStorage.setItem('user', JSON.stringify(user));
+          localStorage.setItem('role', user.role);
+          localStorage.setItem('userId', user.memberId || user.userId || user.personId); 
 
-      console.log("Logged in userId:", localStorage.getItem('userId'));
+          console.log("Logged in userId:", localStorage.getItem('userId'));
 
-      // Redirect bazuar në rol
-      if (user.role === 'admin' || user.role === 'Admin') {
-          navigate('/admin-dashboard');
-      } else {
-          navigate('/user-dashboard'); 
+          // Redirect bazuar në rol
+          if (user.role === 'admin' || user.role === 'Admin') {
+              navigate('/admin-dashboard');
+          } else {
+              navigate('/user-dashboard'); 
+          }
+        }
+      } catch (error) {
+        console.error("Login error", error);
+        alert("Gabim në Login! " + (error.response?.data?.error || ""));
       }
     }
-  } catch (error) {
-    console.error("Login error", error);
-    alert("Gabim në Login! " + (error.response?.data?.error || ""));
-  }
-}
 
     // --- LOGJIKA E REGJISTRIMIT ---
     else {
@@ -71,8 +83,7 @@ if (isLogin) {
 
         if (response.data.success) {
           alert("✅ Regjistrimi u krye me sukses! Tani ju lutem bëni Login.");
-          setIsLogin(true); 
-          setFormData({ ...formData, password: '' });
+          switchMode(); // Kthehemi te login dhe pastrojmë fushat
         }
       } catch (error) {
         console.error("Register Error:", error);
@@ -80,6 +91,7 @@ if (isLogin) {
       }
     }
   };
+
   return (
     <div className="auth-container">
       <div className="auth-card">
@@ -102,9 +114,9 @@ if (isLogin) {
             <p>Please enter your details</p>
           </div>
 
-          <form className="auth-form" onSubmit={handleSubmit}>
+          {/* Shtohet autoComplete="off" te forma për të ndaluar mbushjen automatike */}
+          <form className="auth-form" onSubmit={handleSubmit} autoComplete="off">
             
-            {/* Fushat shtesë shfaqen vetëm kur je duke bërë Register (!isLogin) */}
             {!isLogin && (
               <>
                 <div className="input-group">
@@ -116,6 +128,7 @@ if (isLogin) {
                     value={formData.name}
                     onChange={handleChange}
                     required 
+                    autoComplete="off" // E zbrazët
                   />
                 </div>
                 
@@ -128,6 +141,7 @@ if (isLogin) {
                     value={formData.lastname}
                     onChange={handleChange}
                     required 
+                    autoComplete="off" // E zbrazët
                   />
                 </div>
 
@@ -139,12 +153,12 @@ if (isLogin) {
                     placeholder="+383..." 
                     value={formData.phoneNumber}
                     onChange={handleChange}
+                    autoComplete="off"
                   />
                 </div>
               </>
             )}
             
-            {/* Fushat për Email dhe Password janë gjithmonë aty */}
             <div className="input-group">
               <label>Email Address</label>
               <input 
@@ -154,6 +168,7 @@ if (isLogin) {
                 value={formData.email}
                 onChange={handleChange}
                 required
+                autoComplete={isLogin ? "on" : "off"} // Te register mos e mbush vet
               />
             </div>
 
@@ -166,6 +181,7 @@ if (isLogin) {
                 value={formData.password}
                 onChange={handleChange}
                 required
+                autoComplete="new-password" // Kjo e bën që mos të dalë passwordi i ruajtur kur regjistrohesh
               />
             </div>
 
@@ -177,7 +193,8 @@ if (isLogin) {
           <div className="auth-footer">
             <p>
               {isLogin ? "Don't have an account?" : "Already have an account?"}
-              <span onClick={() => setIsLogin(!isLogin)} className="toggle-auth">
+              {/* Këtu thërrasim funksionin switchMode në vend të setIsLogin direkt */}
+              <span onClick={switchMode} className="toggle-auth">
                 {isLogin ? " Sign Up" : " Login"}
               </span>
             </p>
