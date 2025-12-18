@@ -25,48 +25,51 @@ const BookDetails = () => {
 
   // Borrow function
   const handleBorrow = async () => {
-    const userId = 1;
-    try {
-      const res = await fetch(`http://localhost:5000/api/books/${id}/borrow`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ memberId: userId })
-      });
-      if (!res.ok) throw new Error("Error borrowing book");
-      const data = await res.json();
+  const userId = 1;
 
-      // ✅ Përditëso quantity në state
-      setBook(prevBook => ({
-        ...prevBook,
-        quantity: prevBook.quantity - 1
-      }));
+  // kontroll frontend
+  if (book.quantity <= 0) {
+    showPopup("❌ Libri nuk është i disponueshëm", "error");
+    return;
+  }
 
-      showPopup(data.message, "success");
-    } catch (err) {
-      showPopup(err.message, "error");
+  try {
+    const res = await fetch(`http://localhost:5000/api/books/${id}/borrow`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ memberId: userId })
+    });
+
+    if (!res.ok) {
+      throw new Error("Libri nuk u huazua");
     }
-  };
+
+    await res.json();
+
+    // update quantity
+    setBook(prev => ({
+      ...prev,
+      quantity: prev.quantity - 1
+    }));
+
+    showPopup("📚 The book was successfully borrowed!", "success");
+
+  } catch (err) {
+    showPopup("❌ Failed to borrow the book", "error");
+  }
+};
+
 
   if (!book) return <p>Loading...</p>;
 
   return (
     <div className="book-details-page">
-      {popup.visible && (
-        <div
-          style={{
-            position: "fixed",
-            top: "20px",
-            right: "20px",
-            backgroundColor: popup.type === "success" ? "#4CAF50" : "#f44336",
-            color: "white",
-            padding: "12px 20px",
-            borderRadius: "6px",
-            boxShadow: "0 4px 8px rgba(0,0,0,0.2)"
-          }}
-        >
-          {popup.message}
-        </div>
-      )}
+     {popup.visible && (
+  <div className={`popup ${popup.type}`}>
+    {popup.message}
+  </div>
+)}
+
 
      <div className="book-details">
   <img src={book.image} alt={book.title} />
