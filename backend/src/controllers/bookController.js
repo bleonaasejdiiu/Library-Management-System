@@ -44,6 +44,33 @@ class BookController {
             res.status(500).json({ error: error.message });
         }
     }
+    // MERR DETAJET E NJË LIBRI
+    async getBookById(req, res) {
+        try {
+            const { id } = req.params;
+            const book = await bookService.getBookById(id);
+            if (!book) return res.status(404).json({ message: 'Book not found' });
+            res.json(book);
+        } catch (error) {
+            console.error("GET BY ID Error:", error);
+            res.status(500).json({ error: error.message });
+        }
+    }
+
+    // HUAZIMI I NJË LIBRI
+    async borrowBook(req, res) {
+        try {
+            const { id } = req.params; // bookId
+            const { memberId } = req.body; // nga frontend
+
+            const result = await bookService.borrowBook(id, memberId);
+            res.json({ message: result });
+        } catch (error) {
+            console.error("BORROW Error:", error);
+            res.status(500).json({ error: error.message });
+        }
+    }
+
 }
 
 module.exports = new BookController();

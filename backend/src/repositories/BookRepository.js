@@ -74,6 +74,38 @@ class BookRepository {
         const [result] = await db.execute('INSERT INTO publisher (name) VALUES (?)', [name]);
         return result.insertId;
     }
+
+    // MERR NJË LIBËR Sipas ID
+async findById(id) {
+  const sql = `
+    SELECT b.*, 
+           c.categoryName, 
+           p.name AS publisherName
+    FROM book b
+    LEFT JOIN category c ON b.categoryId = c.categoryId
+    LEFT JOIN publisher p ON b.publisherId = p.publisherId
+    WHERE b.bookId = ?
+  `;
+  const [rows] = await db.query(sql, [id]);
+  return rows[0];
+}
+
+
+// KRIJO NJË HUAZIM
+async createLoan({ loanDate, dueDate, memberId, bookId }) {
+    const sql = `
+        INSERT INTO loan (loanDate, dueDate, memberId, bookId)
+        VALUES (?, ?, ?, ?)
+    `;
+    await db.query(sql, [loanDate, dueDate, memberId, bookId]);
+}
+
+// UPDATE SASTI I LIBRIT
+async updateQuantity(bookId, quantity) {
+    const sql = `UPDATE book SET quantity = ? WHERE bookid = ?`;
+    await db.query(sql, [quantity, bookId]);
+}
+
 }
 
 module.exports = new BookRepository();

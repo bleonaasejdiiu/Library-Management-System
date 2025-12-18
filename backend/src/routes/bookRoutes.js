@@ -13,4 +13,22 @@ router.delete('/:id', bookController.deleteBook);
 
 router.put('/:id', bookController.updateBook);
 
+// MERR DETAJET E NJË LIBRI
+router.get('/:id', bookController.getBookById);
+
+// HUAZIMI I LIBRIT
+router.post('/:id/borrow', bookController.borrowBook);
+
+router.get("/member/:id", async (req, res) => {
+  const { id } = req.params;
+  const [rows] = await db.query(
+    `SELECT l.*, b.title
+     FROM loan l
+     JOIN book b ON l.bookId = b.bookid
+     WHERE l.memberId = ?`,
+    [id]
+  );
+  res.json(rows);
+});
+
 module.exports = router;
