@@ -24,25 +24,22 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
 .app-layout { display: flex; flex-direction: column; min-height: 100vh; }
 .main-content { flex: 1; }
 
-/* =========================================
-   2. NAVBAR (E ZEZA SI JUNKYBOOKS)
-   ========================================= */
+/* =============================== DESKTOP =============================== */
 .navbar {
-  background-color: #2c241b; /* E zezë */
+  background-color: #2c241b;
   height: 80px;
   display: flex;
   justify-content: center;
   position: sticky;
   top: 0;
   z-index: 1000;
-  border-bottom: 3px solid #e67e22; 
+  border-bottom: 3px solid #e67e22;
 }
 
-
 .navbar-container {
-  width: 100%;       
-  max-width: 100%;   
-  padding: 0 50px;   
+  width: 100%;
+  max-width: 1400px;
+  padding: 0 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -59,9 +56,14 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
   align-items: center;
   gap: 10px;
 }
+
 .logo-image { height: 40px; width: auto; }
 
-.nav-menu { display: flex; gap: 30px; }
+.nav-menu {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
 
 .nav-links {
   color: #ccc;
@@ -86,15 +88,8 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
 }
 .btn-login:hover { background: #d35400; }
 
-/* =========================================
-   3. DROPDOWN BOOKS (KATEGORI)
-   ========================================= */
-
-/* === MEGA DROPDOWN === */
-.mega-dropdown {
-  position: relative;
-}
-
+/* Mega Dropdown Desktop */
+.mega-dropdown { position: relative; }
 .mega-menu {
   position: absolute;
   top: 120%;
@@ -113,15 +108,8 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
   transition: 0.3s ease;
   z-index: 999;
 }
+.mega-dropdown:hover .mega-menu { opacity: 1; visibility: visible; top: 100%; }
 
-/* SHFAQJA NË HOVER */
-.mega-dropdown:hover .mega-menu {
-  opacity: 1;
-  visibility: visible;
-  top: 100%;
-}
-
-/* KOLONAT */
 .mega-column h4 {
   font-size: 1rem;
   margin-bottom: 14px;
@@ -129,7 +117,6 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
   border-bottom: 1px solid #eee;
   padding-bottom: 6px;
 }
-
 .mega-column a {
   display: block;
   text-decoration: none;
@@ -138,11 +125,81 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
   margin-bottom: 10px;
   transition: 0.2s;
 }
+.mega-column a:hover { color: #e67e22; padding-left: 5px; }
 
-.mega-column a:hover {
-  color: #e67e22;
-  padding-left: 5px;
+/* Hamburger button */
+.hamburger {
+  display: none;
+  flex-direction: column;
+  cursor: pointer;
+  gap: 5px;
 }
+.bar {
+  width: 25px;
+  height: 3px;
+  background-color: #fff;
+  transition: 0.3s;
+}
+.bar.open:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+.bar.open:nth-child(2) { opacity: 0; }
+.bar.open:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+/* Desktop */
+.mobile-auth { display: none; }
+
+/* Mobile */
+@media (max-width: 992px) {
+  .nav-auth { display: none; }  /* fsheh desktop auth */
+  .mobile-auth { display: flex; } /* shfaq mobile auth */
+}
+
+
+/* =============================== MEDIA QUERIES =============================== */
+@media (max-width: 992px) {
+  .hamburger { display: flex; }
+  .nav-menu {
+    flex-direction: column;
+    position: absolute;
+    top: 80px;
+    left: 0;
+    width: 100%;
+    background-color: #2c241b;
+    display: none;
+    padding: 10px 0;
+    gap: 0;
+  }
+  .nav-menu.active { display: flex; }
+
+  .nav-links { padding: 12px 20px; width: 100%; }
+  .mega-menu {
+    position: static;
+    display: none;
+    width: 100%;
+    padding: 15px;
+    box-shadow: none;
+    border-radius: 0;
+    background-color: #3a2e25;
+    flex-direction: column;
+  }
+  .mega-menu.active { display: flex; }
+  
+  .mobile-auth { display: flex; flex-direction: column; gap: 10px; padding: 10px 20px; }
+  
+  .navbar-container { flex-direction: column; align-items: flex-start; padding: 10px 20px; }
+  .navbar-logo { margin-bottom: 10px; }
+  
+  .nav-auth { display: none; } /* fsheh desktop auth */
+}
+
+@media (max-width: 576px) {
+  .navbar { height: auto; padding: 10px 0; }
+  .navbar-logo { font-size: 1.4rem; }
+  .nav-links { font-size: 0.8rem; }
+  .btn-login { padding: 8px 20px; font-size: 0.8rem; }
+  .mega-column h4 { font-size: 0.9rem; }
+  .mega-column a { font-size: 0.85rem; }
+}
+
 
 /* =========================================
    3. HERO SECTION (MASSIVE SLIDER STYLE)
