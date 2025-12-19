@@ -1,46 +1,28 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-import "./bookcard.css";
+import { Link } from "react-router-dom";
 
 const BookCard = ({ book }) => {
-  const navigate = useNavigate(); 
-
-  const rating = Math.floor(Math.random() * 5) + 1;
-
-  const handleViewDetails = () => {
-    navigate(`/books/${book.id}`);
-  };
+  const imageSource = book.image ? book.image : "/images/img1.jpg";
 
   return (
     <div className="book-card">
-      <div className="book-image">
-        <img src={book.image} alt={book.title} />
-      </div>
-
-      <div className="book-overlay">
-        <button className="details-btn" onClick={handleViewDetails}>
-          View Details
-        </button>
-      </div>
-
-      <div className="book-info">
+      <img src={imageSource} alt={book.title} style={{ width: '100%', height: '250px', objectFit: 'cover' }} />
+      <div className="book-card-info" style={{ padding: '15px' }}>
         <h3>{book.title}</h3>
-        <p className="author">by {book.author}</p>
-        <span className="category">{book.category}</span>
-
-        <div className="rating">
-          {[...Array(5)].map((_, i) => (
-            <span key={i} className={i < rating ? "star filled" : "star"}>
-              ★
-            </span>
-          ))}
-        </div>
+        <p>{book.author}</p>
+        <p><small>{book.categoryName || book.category}</small></p>
+        <Link to={`/books/${book.bookId || book.id}`} className="view-details-btn" style={{
+          display: 'block', marginTop: '10px', padding: '10px', backgroundColor: '#3498db', color: 'white', textDecoration: 'none', borderRadius: '5px', textAlign: 'center'
+        }}>
+          View Details
+        </Link>
       </div>
     </div>
   );
 };
 
 export default BookCard;
+
 
 
 
