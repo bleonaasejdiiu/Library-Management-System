@@ -769,6 +769,160 @@ button { font-family: 'Open Sans', sans-serif; cursor: pointer; }
   color: #666;
   font-size: 0.9rem;
 }
+
+/* ==========================================================
+   FOOTER FINAL - POZICIONIMI PERFEKT (33% - 33% - 33%)
+   ========================================================== */
+
+.footer-container {
+  background-color: #2c241b !important; /* Ngjyra Kafe e Errët */
+  color: #ccc !important;
+  padding: 60px 0 0;
+  margin-top: auto;
+  border-top: 5px solid #e67e22;
+}
+
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 1400px; /* E zgjeruar për ekranet e mëdha */
+  margin: 0 auto;
+  padding: 0 40px 50px;
+  gap: 20px; /* Distanca mes kolonave */
+}
+
+/* --------------------------------------------------------
+   1. PJESA E MAJTË (LOGO) - FIKS 33%
+   -------------------------------------------------------- */
+.footer-section:first-child {
+  flex: 1; /* Merr 1 pjesë */
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* E detyron të rrijë MAJTAS */
+}
+
+.footer-logo {
+  color: white !important;
+  font-size: 1.6rem;
+  font-weight: 900;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-transform: uppercase;
+}
+
+.footer-section p {
+  color: #bbb;
+  line-height: 1.6;
+  max-width: 350px; /* Që teksti mos të shkojë deri në mes */
+}
+
+/* --------------------------------------------------------
+   2. PJESA E MESIT (QUICK LINKS) - FIKS 33%
+   -------------------------------------------------------- */
+.footer-section:nth-child(2) {
+  flex: 1; /* Merr 1 pjesë */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* E detyron të rrijë fik në QENDËR */
+}
+
+.footer-section h3 {
+  color: white !important;
+  font-size: 1.2rem;
+  margin-bottom: 25px;
+  border-bottom: 2px solid #e67e22;
+  display: inline-block;
+  padding-bottom: 10px;
+}
+
+.footer-section ul {
+  padding: 0;
+  list-style: none;
+  text-align: center; /* Teksti i linkave në qendër */
+}
+
+/* ==========================================================
+   3. PJESA E CONTACT INFO - QENDËR
+   ========================================================== */
+.footer-section:last-child {
+  flex: 1; /* Merr 1 pjesë */
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* E detyron të rrijë në qendër */
+  text-align: center; /* Teksti i qendruar */
+}
+
+/* Sigurohemi që titulli "Contact Info" të qendrojë */
+.footer-section:last-child h3 {
+  align-self: center;
+  text-align: center;
+}
+
+/* Rreshtat e ikonave dhe tekstit */
+.footer-section:last-child p {
+  display: flex;
+  justify-content: center; /* Qendër e plotë */
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  margin-bottom: 15px;
+  color: #bbb;
+}
+
+/* ==========================================================
+   RESPONSIVE DESIGN PËR MOBILE (MAX 768px)
+   ========================================================== */
+@media (max-width: 768px) {
+  .footer-content {
+    flex-direction: column; /* Kolonat mbi njëra-tjetrën */
+    align-items: center;
+    padding: 0 20px 50px;
+  }
+
+  .footer-section {
+    margin-bottom: 30px;
+    align-items: center; /* Të gjitha kolonat në qendër */
+    text-align: center;
+  }
+
+  .footer-section:first-child p {
+    max-width: 100%; /* Teksti të zgjerohet në mobile */
+  }
+
+  .footer-section:last-child p {
+    justify-content: center; /* Qendër për ikonat */
+  }
+}
+
+
+/* Për ekrane të vogla - mobile 480px - 767px */
+@media (max-width: 767px) {
+  .footer-container {
+    padding: 40px 0 20px;
+  }
+
+  .footer-logo {
+    font-size: 1.4rem;
+  }
+
+  .footer-section h3 {
+    font-size: 1.1rem;
+  }
+
+  .footer-section ul li {
+    margin-bottom: 10px;
+  }
+
+  .footer-bottom {
+    font-size: 0.8rem;
+    padding: 15px;
+  }
+}
+
 /* =========================================
    12. LOGIN / REGISTER PAGE
    ========================================= */
