@@ -20,7 +20,17 @@ class BookService {
         return await bookRepository.update(id, { ...data, categoryId, publisherId });
     }
 
-    async deleteBook(id) { return await bookRepository.delete(id); }
+    // FIXED DELETE LOGIC
+    async deleteBook(id) { 
+        // 1. Delete all loans linked to this book first
+        await bookRepository.deleteRelatedLoans(id);
+        
+        // 2. Delete all reservations linked to this book
+        await bookRepository.deleteRelatedReservations(id);
+        
+        // 3. Finally, delete the book itself
+        return await bookRepository.delete(id); 
+    }
 
     async borrowBook(bookId, memberId) {
         const book = await bookRepository.findById(bookId);
@@ -43,7 +53,6 @@ class BookService {
 
     async getReservationsByMember(memberId) { return await bookRepository.findReservationsByMember(memberId); }
 
-    // LOGJIKA E RE: Kontrolli i njoftimeve
     async checkOverdueLoans(memberId) {
         try {
             const overdueLoans = await bookRepository.findOverdueLoans(memberId);

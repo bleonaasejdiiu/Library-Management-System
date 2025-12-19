@@ -1,7 +1,16 @@
 const db = require('../config/db');
 
 class BookRepository {
-    // --- LIBRAT ---
+    // --- NEW CLEANUP METHODS ---
+    async deleteRelatedLoans(bookId) {
+        await db.execute('DELETE FROM loan WHERE bookId = ?', [bookId]);
+    }
+
+    async deleteRelatedReservations(bookId) {
+        await db.execute('DELETE FROM reservation WHERE bookId = ?', [bookId]);
+    }
+
+    // --- EXISTING METHODS ---
     async findAll() {
         const sql = `
             SELECT b.*, c.categoryName, p.name as publisherName
@@ -70,7 +79,6 @@ class BookRepository {
         await db.execute(sql, [quantity, bookId]);
     }
 
-    // --- HUAZIMET (LOANS) ---
     async createLoan({ loanDate, dueDate, memberId, bookId }) {
         const sql = `INSERT INTO loan (loanDate, dueDate, memberId, bookId) VALUES (?, ?, ?, ?)`;
         await db.execute(sql, [
@@ -103,7 +111,6 @@ class BookRepository {
         return rows;
     }
 
-    // --- REZERVIMET (RESERVATIONS) ---
     async createReservation({ memberId, bookId }) {
         const sql = `INSERT INTO reservation (memberId, bookId, status) VALUES (?, ?, 'pending')`;
         await db.execute(sql, [memberId, bookId]);
@@ -120,7 +127,6 @@ class BookRepository {
         return rows;
     }
 
-    // --- NJOFTIMET (NOTIFICATIONS) ---
     async checkNotificationExists(memberId, messagePart) {
         const sql = "SELECT * FROM notification WHERE memberId = ? AND message LIKE ?";
         const [rows] = await db.execute(sql, [memberId, `%${messagePart}%`]);
@@ -132,7 +138,6 @@ class BookRepository {
         await db.execute(sql, [memberId, message]);
     }
 
-    // --- KATEGORITË DHE BOTUESIT ---
     async findCategoryByName(name) {
         const [rows] = await db.execute('SELECT * FROM category WHERE categoryName = ?', [name]);
         return rows[0];

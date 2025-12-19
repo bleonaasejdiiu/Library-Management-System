@@ -16,10 +16,28 @@ class BookController {
         catch (e) { res.status(500).json({ error: e.message }); }
     }
 
-    async deleteBook(req, res) {
-        try { await bookService.deleteBook(req.params.id); res.json({ message: "Deleted" }); } 
-        catch (e) { res.status(500).json({ error: e.message }); }
+   async deleteBook(req, res) {
+    try {
+        const { id } = req.params;
+        
+        // 1. Log the ID to ensure it's reaching the controller
+        console.log(`Attempting to delete book with ID: ${id}`);
+
+        const result = await bookService.deleteBook(id);
+        
+        // 2. Check if anything was actually deleted (Optional depending on your Service logic)
+        res.json({ message: "Deleted successfully" });
+    } catch (e) {
+        // 3. THIS IS CRUCIAL: Log the full error in the terminal to see why it failed
+        console.error("Error in deleteBook Controller:", e);
+        
+        // 4. Return the specific error message to the frontend
+        res.status(500).json({ 
+            error: "Failed to delete book", 
+            details: e.message 
+        });
     }
+}
 
     async getBookById(req, res) {
         try { res.json(await bookService.getBookById(req.params.id)); } 
