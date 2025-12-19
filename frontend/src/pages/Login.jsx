@@ -3,10 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 function Login() {
-  const [isLogin, setIsLogin] = useState(true); // State për të ndërruar Login/Register
-  const navigate = useNavigate(); // Për të kaluar te faqja Home pas loginit
+  const [isLogin, setIsLogin] = useState(true);
+  const navigate = useNavigate();
 
-  // Ruajmë të dhënat e formës
   const [formData, setFormData] = useState({
     name: '',
     lastname: '',
@@ -15,13 +14,10 @@ function Login() {
     password: ''
   });
 
-  // Kur shkruan në inpute, përditëso state-in
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // --- KY ËSHTË NDRYSHIMI I VETËM ---
-  // Ky funksion pastron fushat kur klikon "Sign Up" ose "Login" te linku poshtë
   const switchMode = () => {
     setIsLogin(!isLogin);
     setFormData({
@@ -32,13 +28,10 @@ function Login() {
       password: ''
     });
   };
-  // ----------------------------------
 
-  // Kur klikon butonin Login ose Register
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Pjesa brenda handleSubmit për login
     if (isLogin) {
       try {
         const response = await axios.post('http://localhost:5000/api/auth/login', {
@@ -49,16 +42,19 @@ function Login() {
         if (response.data.success) {
           const user = response.data.user;
 
-          // Ruaj të dhënat
+          // PËRDITËSIMI KRYESOR: Marrim ID-në nga çdo fushë e mundshme
+          const finalId = user.userId || user.memberId || user.id || user.personId;
+
+          // Ruajmë të dhënat në LocalStorage
           localStorage.setItem('token', response.data.token);
           localStorage.setItem('user', JSON.stringify(user));
           localStorage.setItem('role', user.role);
-          localStorage.setItem('userId', user.memberId || user.userId || user.personId); 
+          localStorage.setItem('userId', finalId); // Tani nuk do të jetë më undefined!
 
-          console.log("Logged in userId:", localStorage.getItem('userId'));
+          console.log("ID-ja e ruajtur me sukses:", finalId);
 
           // Redirect bazuar në rol
-          if (user.role === 'admin' || user.role === 'Admin') {
+          if (user.role.toLowerCase() === 'admin') {
               navigate('/admin-dashboard');
           } else {
               navigate('/user-dashboard'); 
@@ -68,10 +64,7 @@ function Login() {
         console.error("Login error", error);
         alert("Gabim në Login! " + (error.response?.data?.error || ""));
       }
-    }
-
-    // --- LOGJIKA E REGJISTRIMIT ---
-    else {
+    } else {
       try {
         const response = await axios.post('http://localhost:5000/api/auth/register', {
           name: formData.name,
@@ -83,11 +76,11 @@ function Login() {
 
         if (response.data.success) {
           alert("✅ Regjistrimi u krye me sukses! Tani ju lutem bëni Login.");
-          switchMode(); // Kthehemi te login dhe pastrojmë fushat
+          switchMode();
         }
       } catch (error) {
         console.error("Register Error:", error);
-        alert("❌ Gabim: " + (error.response?.data?.error || "Diçka shkoi keq gjatë regjistrimit."));
+        alert("❌ Gabim: " + (error.response?.data?.error || "Regjistrimi dështoi."));
       }
     }
   };
@@ -95,7 +88,6 @@ function Login() {
   return (
     <div className="auth-container">
       <div className="auth-card">
-        {/* Pjesa e Majtë - Imazhi/Informacioni */}
         <div className="auth-image-side">
           <div className="auth-overlay">
             <h2>{isLogin ? "Welcome Back!" : "Join Us!"}</h2>
@@ -107,82 +99,38 @@ function Login() {
           </div>
         </div>
 
-        {/* Pjesa e Djathtë - Forma */}
         <div className="auth-form-side">
           <div className="form-header">
             <h3>{isLogin ? "Member Login" : "Create Account"}</h3>
             <p>Please enter your details</p>
           </div>
 
-          {/* Shtohet autoComplete="off" te forma për të ndaluar mbushjen automatike */}
           <form className="auth-form" onSubmit={handleSubmit} autoComplete="off">
-            
             {!isLogin && (
               <>
                 <div className="input-group">
                   <label>First Name</label>
-                  <input 
-                    type="text" 
-                    name="name" 
-                    placeholder="Emri" 
-                    value={formData.name}
-                    onChange={handleChange}
-                    required 
-                    autoComplete="off" // E zbrazët
-                  />
+                  <input type="text" name="name" placeholder="Emri" value={formData.name} onChange={handleChange} required />
                 </div>
-                
                 <div className="input-group">
                   <label>Last Name</label>
-                  <input 
-                    type="text" 
-                    name="lastname" 
-                    placeholder="Mbiemri" 
-                    value={formData.lastname}
-                    onChange={handleChange}
-                    required 
-                    autoComplete="off" // E zbrazët
-                  />
+                  <input type="text" name="lastname" placeholder="Mbiemri" value={formData.lastname} onChange={handleChange} required />
                 </div>
-
                 <div className="input-group">
                   <label>Phone Number</label>
-                  <input 
-                    type="text" 
-                    name="phoneNumber" 
-                    placeholder="+383..." 
-                    value={formData.phoneNumber}
-                    onChange={handleChange}
-                    autoComplete="off"
-                  />
+                  <input type="text" name="phoneNumber" placeholder="+383..." value={formData.phoneNumber} onChange={handleChange} />
                 </div>
               </>
             )}
             
             <div className="input-group">
               <label>Email Address</label>
-              <input 
-                type="email" 
-                name="email"
-                placeholder="example@uni-library.com" 
-                value={formData.email}
-                onChange={handleChange}
-                required
-                autoComplete={isLogin ? "on" : "off"} // Te register mos e mbush vet
-              />
+              <input type="email" name="email" placeholder="example@uni-library.com" value={formData.email} onChange={handleChange} required />
             </div>
 
             <div className="input-group">
               <label>Password</label>
-              <input 
-                type="password" 
-                name="password"
-                placeholder="********" 
-                value={formData.password}
-                onChange={handleChange}
-                required
-                autoComplete="new-password" // Kjo e bën që mos të dalë passwordi i ruajtur kur regjistrohesh
-              />
+              <input type="password" name="password" placeholder="********" value={formData.password} onChange={handleChange} required />
             </div>
 
             <button type="submit" className="btn-auth">
@@ -193,7 +141,6 @@ function Login() {
           <div className="auth-footer">
             <p>
               {isLogin ? "Don't have an account?" : "Already have an account?"}
-              {/* Këtu thërrasim funksionin switchMode në vend të setIsLogin direkt */}
               <span onClick={switchMode} className="toggle-auth">
                 {isLogin ? " Sign Up" : " Login"}
               </span>
