@@ -23,9 +23,6 @@ import Authors from './pages/Authors';
 import BookDetails from './pages/BookDetails';
 import UserDashboard from './pages/UserDashboard';
 
-
-<Route path="/authors" element={<Authors />} />
-
 function App() {
   return (
     <Router>
