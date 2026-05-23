@@ -54,6 +54,43 @@ async function runTests() {
         failed++;
     }
 
+    // TEST 4 - Faqja e Regjistrimit ngarkohet
+    try {
+        await driver.get('http://localhost:3000/register');
+        await driver.wait(until.elementLocated(By.css('body')), 8000);
+        console.log('✅ TC-S04: Faqja e Regjistrimit u ngarkua me sukses');
+        passed++;
+    } catch (e) {
+        console.log('❌ TC-S04: Faqja e Regjistrimit dështoi');
+        failed++;
+    }
+
+    // TEST 5 - Fusha email ekziston në faqen e Login
+    try {
+        await driver.get('http://localhost:3000/login');
+        await driver.wait(until.elementLocated(By.name('email')), 8000);
+        let emailField = await driver.findElement(By.name('email'));
+        let passField = await driver.findElement(By.name('password'));
+        if (emailField && passField) {
+            console.log('✅ TC-S05: Fushat email dhe password ekzistojnë në Login');
+            passed++;
+        }
+    } catch (e) {
+        console.log('❌ TC-S05: Fushat e Login nuk u gjetën');
+        failed++;
+    }
+
+    // TEST 6 - Faqja About Us ngarkohet
+    try {
+        await driver.get('http://localhost:3000/about');
+        await driver.wait(until.elementLocated(By.css('body')), 8000);
+        console.log('✅ TC-S06: Faqja About Us u ngarkua me sukses');
+        passed++;
+    } catch (e) {
+        console.log('❌ TC-S06: Faqja About Us dështoi');
+        failed++;
+    }
+
     console.log('\n=== REZULTATET ===');
     console.log(`✅ Passed: ${passed}`);
     console.log(`❌ Failed: ${failed}`);
