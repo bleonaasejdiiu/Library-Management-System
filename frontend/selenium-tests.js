@@ -91,6 +91,59 @@ async function runTests() {
         failed++;
     }
 
+    // TEST 7 - Faqja Home ngarkohet
+    try {
+        await driver.get('http://localhost:3000');
+        await driver.wait(until.elementLocated(By.css('body')), 8000);
+        console.log('✅ TC-S07: Faqja kryesore (Home) u ngarkua me sukses');
+        passed++;
+    } catch (e) {
+        console.log('❌ TC-S07: Faqja kryesore dështoi');
+        failed++;
+    }
+
+    // TEST 8 - Titulli i faqes nuk është bosh
+    try {
+        await driver.get('http://localhost:3000/login');
+        await driver.wait(until.elementLocated(By.css('body')), 8000);
+        let title = await driver.getTitle();
+        if (title && title.length > 0) {
+            console.log('✅ TC-S08: Titulli i faqes ekziston: ' + title);
+            passed++;
+        } else {
+            console.log('❌ TC-S08: Titulli i faqes është bosh');
+            failed++;
+        }
+    } catch (e) {
+        console.log('❌ TC-S08: Dështoi');
+        failed++;
+    }
+
+    // TEST 9 - Butoni Submit ekziston në Login
+    try {
+        await driver.get('http://localhost:3000/login');
+        await driver.wait(until.elementLocated(By.css('button[type="submit"]')), 8000);
+        let btn = await driver.findElement(By.css('button[type="submit"]'));
+        if (btn) {
+            console.log('✅ TC-S09: Butoni Submit ekziston në faqen Login');
+            passed++;
+        }
+    } catch (e) {
+        console.log('❌ TC-S09: Butoni Submit nuk u gjet');
+        failed++;
+    }
+
+    // TEST 10 - Faqja Authors ngarkohet
+    try {
+        await driver.get('http://localhost:3000/authors');
+        await driver.wait(until.elementLocated(By.css('body')), 8000);
+        console.log('✅ TC-S10: Faqja Authors u ngarkua me sukses');
+        passed++;
+    } catch (e) {
+        console.log('❌ TC-S10: Faqja Authors dështoi');
+        failed++;
+    }
+
     console.log('\n=== REZULTATET ===');
     console.log(`✅ Passed: ${passed}`);
     console.log(`❌ Failed: ${failed}`);
